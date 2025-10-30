@@ -92,6 +92,9 @@ GEM
     arbre (1.7.0)
       activesupport (>= 3.0.0)
       ruby2_keywords (>= 0.0.2)
+    arctic_admin (4.3.3)
+      activeadmin (>= 1.1.0, < 4.0)
+      font-awesome-sass (~> 6.0)
     ast (2.4.3)
     base64 (0.3.0)
     bcrypt (3.1.20)
@@ -165,6 +168,8 @@ GEM
     ffi (1.17.2-x86_64-darwin)
     ffi (1.17.2-x86_64-linux-gnu)
     ffi (1.17.2-x86_64-linux-musl)
+    font-awesome-sass (6.7.2)
+      sassc (~> 2.0)
     formtastic (5.0.0)
       actionpack (>= 6.0.0)
     formtastic_i18n (0.7.0)
@@ -421,6 +426,12 @@ GEM
     rubyzip (3.2.1)
     sassc (2.4.0)
       ffi (~> 1.9)
+    sassc-rails (2.1.2)
+      railties (>= 4.0.0)
+      sassc (>= 2.0)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     securerandom (0.4.1)
     solid_cable (3.0.12)
       actioncable (>= 7.2)
@@ -462,6 +473,7 @@ GEM
     thruster (0.1.16-arm64-darwin)
     thruster (0.1.16-x86_64-darwin)
     thruster (0.1.16-x86_64-linux)
+    tilt (2.6.1)
     timeout (0.4.4)
     tsort (0.2.0)
     tzinfo (2.0.6)
@@ -504,7 +516,8 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
-  activeadmin
+  activeadmin (~> 3.3)
+  arctic_admin (~> 4.3.3)
   bcrypt (~> 3.1.7)
   bootsnap
   brakeman
@@ -526,10 +539,11 @@ DEPENDENCIES
   rswag
   rubocop-rails-omakase
   sassc (~> 2.4)
+  sassc-rails
   solid_cable
   solid_cache
   solid_queue
-  sprockets-rails (~> 3.5)
+  sprockets-rails
   streamio-ffmpeg
   thruster
   tzinfo-data
