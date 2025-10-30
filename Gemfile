@@ -43,9 +43,12 @@ gem 'active_model_serializers'
 
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
-
-gem 'activeadmin'
-gem "sprockets-rails", "~> 3.5"
+gem 'activeadmin', '~> 3.3'
+gem 'arctic_admin', '~> 4.3.3'
+gem 'sassc-rails' # ensure SCSS support with Rails 8 + Propshaft
+gem 'sprockets-rails'
+# Needed for Propshaft or Sprockets (Rails 8)
+# gem 'propshaft' # default for Rails 8
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

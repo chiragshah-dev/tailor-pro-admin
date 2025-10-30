@@ -1,0 +1,46 @@
+// === ArcticAdmin Fallback Variables (Rails 8 Compatible) ===
+
+// Input fields
+$input-height: 38px !default;
+$input-border-color: #ced4da !default;
+$input-focus-border-color: #80bdff !default;
+$input-background-color: #fff !default;
+$input-color: #495057 !default;
+
+// Buttons
+$button-primary-color: #007bff !default;
+$button-secondary-color: #6c757d !default;
+$button-success-color: #28a745 !default;
+$button-danger-color: #dc3545 !default;
+$button-warning-color: #ffc107 !default;
+$button-info-color: #17a2b8 !default;
+$button-padding: 0.5rem 1rem !default;
+$button-border-radius: 4px !default;
+
+// Typography
+$font-size: 14px !default;
+$font-family-base: "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$text-color: #333 !default;
+
+// Layout & body
+$body-background: #f8f9fa !default;
+$border-color: #dee2e6 !default;
+$background-color: #ffffff !default;
+$red: #e74c3c !default;
+
+// Flash messages
+$flash-background-color: #f8f9fa !default;
+$flash-text-color: #212529 !default;
+$flash-success-bg: #d4edda !default;
+$flash-error-bg: #f8d7da !default;
+$flash-warning-bg: #fff3cd !default;
+$flash-info-bg: #d1ecf1 !default;
+
+// Errors & status
+$error: #dc3545 !default;
+$success: #28a745 !default;
+$warning: #ffc107 !default;
+$info: #17a2b8 !default;
+
+// Form
+$form-margin-left: 0 !default;
