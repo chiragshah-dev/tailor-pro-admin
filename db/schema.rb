@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_29_133814) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_04_094036) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -66,6 +66,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_29_133814) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "admin_users_roles", id: false, force: :cascade do |t|
+    t.bigint "admin_user_id"
+    t.bigint "role_id"
+    t.index ["admin_user_id", "role_id"], name: "index_admin_users_roles_on_admin_user_id_and_role_id"
+    t.index ["admin_user_id"], name: "index_admin_users_roles_on_admin_user_id"
+    t.index ["role_id"], name: "index_admin_users_roles_on_role_id"
   end
 
   create_table "backup_settings", force: :cascade do |t|
@@ -326,6 +334,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_29_133814) do
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["store_id"], name: "index_orders_on_store_id"
     t.index ["worker_id"], name: "index_orders_on_worker_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
+    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource"
   end
 
   create_table "services", force: :cascade do |t|
