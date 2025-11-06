@@ -35,6 +35,14 @@ class OrderItem < ApplicationRecord
   after_update :update_order_total, if: :price_or_quantity_changed?
   after_destroy :update_order_total
 
+  def self.ransackable_associations(auth_object = nil)
+    ["customer_dress_measurement", "dress", "garment_type", "member", "order", "order_item_stitch_features", "order_measurements", "stitch_features", "worker"]
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["completion_date", "created_at", "customer_dress_measurement_id", "delivery_date", "dress_id", "function_date", "garment_type_id", "id", "id_value", "is_urgent", "last_visited_screen", "measurement_dress_given", "member_id", "name", "order_id", "order_item_number", "price", "quantity", "special_instruction", "status", "stichfor", "trial_date", "updated_at", "video_link", "work_type", "worker_id"]
+  end
+
   def order_status
     return 'pending_assign' if status == 'accepted' && worker.nil?
     return 'pending' if status == 'accepted' && worker.present?
