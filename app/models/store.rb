@@ -41,6 +41,7 @@ class Store < ApplicationRecord
   has_many :expertises, -> { distinct }, through: :store_service_expertises
   has_many :services, -> { distinct }, through: :store_service_expertises
   has_one :store_bank_detail, dependent: :destroy
+  has_many :store_measurement_fields, dependent: :destroy
   before_create :set_main_store
 
   accepts_nested_attributes_for :store_bank_detail

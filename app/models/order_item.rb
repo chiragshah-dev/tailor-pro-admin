@@ -16,6 +16,7 @@ class OrderItem < ApplicationRecord
   belongs_to :customer_dress_measurement, optional: true
   belongs_to :member, optional: true
   belongs_to :worker, optional: true
+  has_many_attached :files # can be photo or video
 
   # Validations
   # validates :name, :work_type, :price, :delivery_date, presence: true

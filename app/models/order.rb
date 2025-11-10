@@ -6,11 +6,13 @@ class Order < ApplicationRecord
   # Associations
   belongs_to :customer
   belongs_to :store
-  belongs_to :worker, optional: true
+  belongs_to :worker, optional: true, dependent: :destroy
   has_many :order_items, dependent: :destroy
   has_many :order_measurements, dependent: :destroy
   accepts_nested_attributes_for :order_measurements, allow_destroy: true
   accepts_nested_attributes_for :order_items, allow_destroy: true
+  has_many_attached :images
+  has_one_attached :voice_note
 
   # Validations
   validates :order_number, uniqueness: { scope: :store_id }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_04_094036) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_06_072529) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -184,6 +184,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_04_094036) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "store_id"
+    t.bigint "parent_id"
+    t.index ["parent_id"], name: "index_folders_on_parent_id"
     t.index ["store_id"], name: "index_folders_on_store_id"
     t.index ["user_id"], name: "index_folders_on_user_id"
   end
@@ -200,6 +202,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_04_094036) do
     t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "gender", default: 0, null: false
   end
 
   create_table "job_roles", force: :cascade do |t|
@@ -310,11 +313,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_04_094036) do
     t.string "unit", default: "cm", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "store_measurement_field_id"
     t.index ["customer_id"], name: "index_order_measurements_on_customer_id"
     t.index ["measurement_field_id"], name: "index_order_measurements_on_measurement_field_id"
     t.index ["member_id"], name: "index_order_measurements_on_member_id"
     t.index ["order_id"], name: "index_order_measurements_on_order_id"
     t.index ["order_item_id"], name: "index_order_measurements_on_order_item_id"
+    t.index ["store_measurement_field_id"], name: "index_order_measurements_on_store_measurement_field_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -415,6 +420,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_04_094036) do
     t.index ["store_id"], name: "index_store_galleries_on_store_id"
   end
 
+  create_table "store_measurement_fields", force: :cascade do |t|
+    t.bigint "store_id"
+    t.bigint "garment_type_id"
+    t.bigint "measurement_field_id"
+    t.string "label"
+    t.string "name"
+    t.boolean "active", default: true
+    t.boolean "custom", default: false
+    t.jsonb "changes_data", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["garment_type_id"], name: "index_store_measurement_fields_on_garment_type_id"
+    t.index ["measurement_field_id"], name: "index_store_measurement_fields_on_measurement_field_id"
+    t.index ["store_id"], name: "index_store_measurement_fields_on_store_id"
+  end
+
   create_table "store_service_expertises", force: :cascade do |t|
     t.bigint "store_id", null: false
     t.bigint "service_id"
@@ -454,6 +475,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_04_094036) do
     t.string "gst_number"
     t.string "gst_name"
     t.decimal "gst_percentage"
+    t.boolean "is_from_web", default: false
     t.index ["user_id"], name: "index_stores_on_user_id"
   end
 
@@ -544,6 +566,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_04_094036) do
   add_foreign_key "dress_stitch_features", "dresses"
   add_foreign_key "dress_stitch_features", "stitch_features"
   add_foreign_key "dresses", "users"
+  add_foreign_key "folders", "folders", column: "parent_id"
   add_foreign_key "folders", "stores"
   add_foreign_key "folders", "users"
   add_foreign_key "job_roles", "users"
@@ -564,6 +587,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_04_094036) do
   add_foreign_key "order_measurements", "members"
   add_foreign_key "order_measurements", "order_items"
   add_foreign_key "order_measurements", "orders"
+  add_foreign_key "order_measurements", "store_measurement_fields"
   add_foreign_key "orders", "customers"
   add_foreign_key "orders", "stores"
   add_foreign_key "orders", "workers"
@@ -573,6 +597,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_04_094036) do
   add_foreign_key "store_bank_details", "stores"
   add_foreign_key "store_galleries", "gallery_categories"
   add_foreign_key "store_galleries", "stores"
+  add_foreign_key "store_measurement_fields", "garment_types"
+  add_foreign_key "store_measurement_fields", "measurement_fields"
+  add_foreign_key "store_measurement_fields", "stores"
   add_foreign_key "store_service_expertises", "expertises"
   add_foreign_key "store_service_expertises", "services"
   add_foreign_key "store_service_expertises", "stores"
