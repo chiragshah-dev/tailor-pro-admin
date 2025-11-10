@@ -6,7 +6,8 @@ ActiveAdmin.register Order do
                   :measurement_dress_given, :quantity, :price, :delivery_date, :trial_date, :function_date,
                   :completion_date, :is_urgent, :dress_id, :customer_dress_measurement_id, :member_id,
                   :garment_type_id, :stichfor, :worker_id, :_destroy
-                ]
+                ],
+                order_measurements_attributes: [:id, :order_item_id, :measurement_field_id, :value, :unit, :_destroy]
 
   controller do
     before_action :authorize_super_admin!
@@ -16,6 +17,27 @@ ActiveAdmin.register Order do
         flash[:alert] = "Access denied."
         redirect_to admin_root_path
       end
+    end
+
+    def store_stitches_for
+      store = Store.find(params[:id])
+      render json: { stitches_for: store.stitches_for }
+    end
+
+    def garment_types_by_gender
+      gender = params[:gender]
+      garments =
+        if gender == "both"
+          GarmentType.all
+        else
+          GarmentType.where(gender: gender)
+        end
+      render json: garments.pluck(:garment_name, :id)
+    end
+
+    def measurement_fields
+      garment_type = GarmentType.find(params[:id])
+      render json: garment_type.measurement_fields.select(:id, :label)
     end
   end
 
@@ -77,7 +99,15 @@ ActiveAdmin.register Order do
     f.semantic_errors
 
     f.inputs "Order Details" do
-      f.input :store, as: :select, collection: Store.pluck(:name, :id)
+      f.input :store, as: :select,
+                      collection: Store.pluck(:name, :id),
+                      input_html: { id: "order_store_select" }
+
+      li do
+        label "Stitches For"
+        span "", id: "store_stitches_for", style: "font-weight:bold;"
+      end
+
       f.input :customer, as: :select, collection: Customer.pluck(:name, :id)
       f.input :worker, as: :select, collection: Worker.pluck(:name, :id), include_blank: true
       f.input :order_date, as: :datepicker
@@ -89,19 +119,98 @@ ActiveAdmin.register Order do
 
     f.inputs "Order Items" do
       f.has_many :order_items, allow_destroy: true, new_record: "Add Order Item" do |oi|
-        oi.input :name
-        oi.input :dress, as: :select, collection: Dress.pluck(:name, :id), include_blank: true
-        oi.input :garment_type, as: :select, collection: GarmentType.pluck(:garment_name, :id), include_blank: true
-        oi.input :work_type, as: :select, collection: OrderItem.work_types.keys.map { |w| [w.humanize, w] }
-        oi.input :status, as: :select, collection: OrderItem.statuses.keys.map { |s| [s.humanize, s] }
-        oi.input :quantity
-        oi.input :price
-        oi.input :delivery_date, as: :datepicker
-        oi.input :is_urgent
-        oi.input :special_instruction
+        oi.inputs "Item Details" do
+          oi.input :name
+          oi.input :garment_type, as: :select,
+                                  collection: [],
+                                  include_blank: true,
+                                  input_html: { class: "garment-type-select" }
+
+          # ✅ Now this div will render just below garment_type
+          oi.template.concat(
+            oi.template.content_tag(:div, "", class: "measurement-fields-container", style: "margin-left: 20px;")
+          )
+
+          oi.input :work_type, as: :select, collection: OrderItem.work_types.keys.map { |w| [w.humanize, w] }
+          oi.input :status, as: :select, collection: OrderItem.statuses.keys.map { |s| [s.humanize, s] }
+          oi.input :quantity
+          oi.input :price
+          oi.input :delivery_date, as: :datepicker
+          oi.input :is_urgent
+          oi.input :special_instruction
+        end
       end
     end
 
     f.actions
+
+    # === Inline JavaScript ===
+    script do
+      raw <<~JS
+        document.addEventListener("DOMContentLoaded", () => {
+          const storeSelect = document.querySelector("#order_store_select");
+          const stitchesField = document.querySelector("#store_stitches_for");
+
+          // Fetch stitches_for based on store
+          if (storeSelect) {
+            storeSelect.addEventListener("change", async (e) => {
+              const storeId = e.target.value;
+              if (!storeId) return;
+
+              // Fetch stitches_for
+              const response = await fetch(`/admin/stores/${storeId}/stitches_for`);
+              const data = await response.json();
+              stitchesField.textContent = data.stitches_for.charAt(0).toUpperCase() + data.stitches_for.slice(1);
+
+              // Fetch garment types based on store.stitches_for
+              const garmentsResp = await fetch(`/admin/garment_types/by_gender/${data.stitches_for}`);
+              const garmentOptions = await garmentsResp.json();
+
+              // Update all garment_type selects
+              document.querySelectorAll(".garment-type-select").forEach((select) => {
+                select.innerHTML = "<option value=''>Select Garment Type</option>";
+                garmentOptions.forEach(([name, id]) => {
+                  const option = document.createElement("option");
+                  option.value = id;
+                  option.textContent = name;
+                  select.appendChild(option);
+                });
+              });
+            });
+          }
+
+          // Fetch measurement fields when garment type changes
+          document.addEventListener("change", async (e) => {
+            if (e.target.classList.contains("garment-type-select")) {
+              const garmentId = e.target.value;
+              const container = e.target.closest(".has_many_fields").querySelector(".measurement-fields-container");
+              if (!garmentId || !container) return;
+
+              // Fetch measurement fields for garment type
+              const response = await fetch(`/admin/garment_types/${garmentId}/measurement_fields`);
+              const fields = await response.json();
+
+              container.innerHTML = "";
+              fields.forEach((field) => {
+                const wrapper = document.createElement("div");
+                wrapper.classList.add("measurement-field-group");
+                wrapper.style.marginBottom = "8px";
+                wrapper.innerHTML = `
+                  <label style="display:inline-block;width:150px;">${field.label}</label>
+                  <input type="number" step="0.01" name="order[order_measurements_attributes][][value]" placeholder="Value" style="width:120px; margin-right:10px;">
+                  <select name="order[order_measurements_attributes][][unit]" style="width:120px;">
+                    <option value="inches">Inches</option>
+                    <option value="cm">Centimeters</option>
+                  </select>
+                  <input type="hidden" name="order[order_measurements_attributes][][measurement_field_id]" value="${field.id}">
+                `;
+                container.appendChild(wrapper);
+              });
+            }
+          });
+        });
+      JS
+    end
+
   end
 end
