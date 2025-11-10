@@ -24,6 +24,14 @@ class Order < ApplicationRecord
   # Callbacks
   before_create :set_order_details
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["balance_due", "courier_to_customer", "created_at", "customer_id", "discount", "id", "id_value", "order_date", "order_number", "payment_received", "status", "store_id", "total_bill_amount", "updated_at", "worker_id"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["customer", "order_items", "order_measurements", "store", "worker"]
+  end
+
   def update_total
     # Update the order's total bill amount
     total = calculate_total
@@ -80,7 +88,7 @@ class Order < ApplicationRecord
   end
 
   def order_number_format
-    user.setting.order_number_format
+    user&.setting&.order_number_format || 'random'
   end
 
   def custom_order_number_validation

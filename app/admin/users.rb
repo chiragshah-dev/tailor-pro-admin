@@ -49,13 +49,13 @@ ActiveAdmin.register User do
       f.input :country_code
       f.input :device_id
       f.input :active_store_id
-      f.input :otp_code
-      f.input :otp_sent_at, as: :datetime_picker
-      f.input :otp_verified_at, as: :datetime_picker
-      f.input :reset_password_token
-      f.input :reset_password_sent_at, as: :datetime_picker
-      f.input :remember_created_at, as: :datetime_picker
-      f.input :jti
+      # f.input :otp_code
+      # f.input :otp_sent_at, as: :datetime_picker
+      # f.input :otp_verified_at, as: :datetime_picker
+      # f.input :reset_password_token
+      # f.input :reset_password_sent_at, as: :datetime_picker
+      # f.input :remember_created_at, as: :datetime_picker
+      # f.input :jti
       f.input :mpin_digest
       f.input :encrypted_password
     end
@@ -72,15 +72,15 @@ ActiveAdmin.register User do
       row :country_code
       row :device_id
       row :active_store_id
-      row :otp_code
-      row :otp_sent_at
-      row :otp_verified_at
-      row :reset_password_token
-      row :reset_password_sent_at
-      row :remember_created_at
-      row :jti
-      row :mpin_digest
-      row :encrypted_password
+      # row :otp_code
+      # row :otp_sent_at
+      # row :otp_verified_at
+      # row :reset_password_token
+      # row :reset_password_sent_at
+      # row :remember_created_at
+      # row :jti
+      # row :mpin_digest
+      # row :encrypted_password
       row :created_at
       row :updated_at
     end
