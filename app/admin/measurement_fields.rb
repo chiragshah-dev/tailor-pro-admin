@@ -66,7 +66,7 @@ ActiveAdmin.register MeasurementField do
           if measurement_field.garment_type
             link_to measurement_field.garment_type.garment_name, admin_garment_type_path(measurement_field.garment_type)
           else
-            status_tag "N/A", :warning
+            status_tag "N/A"
           end
         end
         row(:active) { measurement_field.active ? status_tag("Active") : status_tag("Inactive") }

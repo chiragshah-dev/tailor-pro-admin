@@ -60,7 +60,7 @@ ActiveAdmin.register GarmentType do
           if garment_type.image.attached?
             image_tag url_for(garment_type.image), size: "150x150", style: "border-radius: 8px;"
           else
-            status_tag "No Image", :warning
+            status_tag "No Image"
           end
         end
         row :created_at
