@@ -118,6 +118,9 @@ ActiveAdmin.register Order do
     end
 
     f.inputs "Order Items" do
+      # ✅ Build one blank order item for new orders
+      f.object.order_items.build if f.object.order_items.empty?
+
       f.has_many :order_items, allow_destroy: true, new_record: "Add Order Item" do |oi|
         oi.inputs "Item Details" do
           oi.input :name
@@ -150,6 +153,7 @@ ActiveAdmin.register Order do
         document.addEventListener("DOMContentLoaded", () => {
           const storeSelect = document.querySelector("#order_store_select");
           const stitchesField = document.querySelector("#store_stitches_for");
+          let currentGarmentOptions = []; // Store the current garment options for reuse
 
           // Fetch stitches_for based on store
           if (storeSelect) {
@@ -160,16 +164,18 @@ ActiveAdmin.register Order do
               // Fetch stitches_for
               const response = await fetch(`/admin/stores/${storeId}/stitches_for`);
               const data = await response.json();
-              stitchesField.textContent = data.stitches_for.charAt(0).toUpperCase() + data.stitches_for.slice(1);
+              const gender = data.stitches_for;
+
+              stitchesField.textContent = gender.charAt(0).toUpperCase() + gender.slice(1);
 
               // Fetch garment types based on store.stitches_for
-              const garmentsResp = await fetch(`/admin/garment_types/by_gender/${data.stitches_for}`);
-              const garmentOptions = await garmentsResp.json();
+              const garmentsResp = await fetch(`/admin/garment_types/by_gender/${gender}`);
+              currentGarmentOptions = await garmentsResp.json();
 
-              // Update all garment_type selects
+              // Update all existing garment_type selects
               document.querySelectorAll(".garment-type-select").forEach((select) => {
                 select.innerHTML = "<option value=''>Select Garment Type</option>";
-                garmentOptions.forEach(([name, id]) => {
+                currentGarmentOptions.forEach(([name, id]) => {
                   const option = document.createElement("option");
                   option.value = id;
                   option.textContent = name;
@@ -208,9 +214,53 @@ ActiveAdmin.register Order do
               });
             }
           });
+
+          // ✅ When new Order Item is added, auto-populate garment types
+          document.addEventListener("click", function (e) {
+            if (e.target.classList.contains("has_many_add")) {
+              // Delay a bit so new fields are in the DOM
+              setTimeout(() => {
+                const newSelects = document.querySelectorAll(".garment-type-select");
+                const lastSelect = newSelects[newSelects.length - 1]; // The latest added one
+
+                if (lastSelect && currentGarmentOptions.length > 0) {
+                  lastSelect.innerHTML = "<option value=''>Select Garment Type</option>";
+                  currentGarmentOptions.forEach(([name, id]) => {
+                    const option = document.createElement("option");
+                    option.value = id;
+                    option.textContent = name;
+                    lastSelect.appendChild(option);
+                  });
+                }
+              }, 300); // Wait for ActiveAdmin to render new fields
+            }
+          });
+
+          // ✅ If store already selected on page load, pre-load garment types
+          if (storeSelect && storeSelect.value) {
+            (async () => {
+              const response = await fetch(`/admin/stores/${storeSelect.value}/stitches_for`);
+              const data = await response.json();
+              const gender = data.stitches_for;
+
+              stitchesField.textContent = gender.charAt(0).toUpperCase() + gender.slice(1);
+
+              const garmentsResp = await fetch(`/admin/garment_types/by_gender/${gender}`);
+              currentGarmentOptions = await garmentsResp.json();
+
+              document.querySelectorAll(".garment-type-select").forEach((select) => {
+                select.innerHTML = "<option value=''>Select Garment Type</option>";
+                currentGarmentOptions.forEach(([name, id]) => {
+                  const option = document.createElement("option");
+                  option.value = id;
+                  option.textContent = name;
+                  select.appendChild(option);
+                });
+              });
+            })();
+          }
         });
       JS
     end
-
   end
 end
