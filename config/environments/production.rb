@@ -40,8 +40,8 @@ Rails.application.configure do
   config.active_storage.service = :amazon
 
   # 👇 Added this block
-  config.action_mailer.default_url_options = { host: "https://admin.tailorspro.com" }
-  Rails.application.routes.default_url_options[:host] = "https://admin.tailorspro.com"
+  config.action_mailer.default_url_options = { host: "https://devadmin.tailorspro.com" }
+  Rails.application.routes.default_url_options[:host] = "https://devadmin.tailorspro.com"
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
