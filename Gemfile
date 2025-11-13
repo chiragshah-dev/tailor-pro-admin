@@ -55,6 +55,8 @@ gem 'pundit'
 # Role Management
 gem "rolify"
 gem 'pry'
+gem "aws-sdk-s3"
+gem 'dotenv-rails'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -88,3 +90,5 @@ group :production do
 end
 
 gem "sassc", "~> 2.4"
+
+gem "ruby-vips", "~> 2.2"
