@@ -147,6 +147,45 @@ ActiveAdmin.register Order do
 
     f.actions
 
+    style do
+      raw <<~CSS
+        .measurement-fields-container {
+          margin-top: 10px;
+          padding: 12px 15px;
+          background: #f9fafb;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+        }
+
+        .measurement-field-group {
+          display: flex;
+          align-items: center;
+          margin-bottom: 8px;
+          gap: 12px;
+        }
+
+        .measurement-field-group label {
+          flex: 0 0 160px;
+          font-weight: 500;
+          color: #333;
+        }
+
+        .measurement-field-group input[type="number"] {
+          width: 120px;
+          padding: 4px 6px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+
+        .measurement-field-group select {
+          width: 130px;
+          padding: 4px 6px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+      CSS
+    end
+
     # === Inline JavaScript ===
     script do
       raw <<~JS
