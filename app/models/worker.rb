@@ -11,4 +11,12 @@ class Worker < ApplicationRecord
             numericality: { only_integer: true }, length: { is: 10 }
 
   # attr_accessor :otp_code
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["active", "contact_number", "created_at", "id", "id_value", "job_role_id", "jti", "mpin_digest", "name", "otp_code", "store_id", "updated_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["job_role", "order_items", "orders", "store"]
+  end
 end
