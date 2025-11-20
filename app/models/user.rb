@@ -31,7 +31,6 @@ class User < ApplicationRecord
   has_many :stitch_features, dependent: :destroy
   has_many :dresses, dependent: :destroy
   has_many :folders, dependent: :destroy
-  has_many :job_roles, dependent: :destroy
   has_many :notifications, dependent: :destroy
 
   has_many :tailor_subscriptions, dependent: :destroy
