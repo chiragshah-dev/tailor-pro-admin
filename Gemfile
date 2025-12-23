@@ -80,7 +80,6 @@ group :development, :test do
   gem 'faker'
   gem 'streamio-ffmpeg'
   gem 'city-state'
-  gem 'countries'
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
@@ -96,7 +95,6 @@ group :production do
   gem 'faker'
   gem 'streamio-ffmpeg'
   gem 'city-state'
-  gem 'countries'
 end
 
 gem "sassc", "~> 2.4"
