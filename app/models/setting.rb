@@ -30,16 +30,16 @@ class Setting < ApplicationRecord
 
   validate :order_statuses_must_be_valid, if: :send_message_to_customer?
 
-  CURRENCIES = ISO3166::Country.all.map do |country|
-    next unless country.currency
+  # CURRENCIES = ISO3166::Country.all.map do |country|
+  #   next unless country.currency
 
-    {
-      dialing_code: "+#{country.country_code}", # Using countries gem
-      flag: country.emoji_flag,
-      currency_code: country.currency.iso_code,
-      currency_symbol: country.currency.symbol,
-    }
-  end.compact.freeze
+  #   {
+  #     dialing_code: "+#{country.country_code}", # Using countries gem
+  #     flag: country.emoji_flag,
+  #     currency_code: country.currency.iso_code,
+  #     currency_symbol: country.currency.symbol,
+  #   }
+  # end.compact.freeze
 
   private
 
