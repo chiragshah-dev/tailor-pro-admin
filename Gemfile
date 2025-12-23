@@ -1,7 +1,5 @@
 source "https://rubygems.org"
 
-ruby "3.2.3"
-
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.2"
 # Use postgres as the database for Active Record
@@ -12,7 +10,7 @@ gem "puma", ">= 5.0"
 # gem "jbuilder"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-gem "bcrypt", "~> 3.1.7"
+# gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -43,20 +41,18 @@ gem 'active_model_serializers'
 
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
-gem 'activeadmin', '~> 3.3'
-gem 'arctic_admin', '~> 4.3.3'
-gem 'sassc-rails' # ensure SCSS support with Rails 8 + Propshaft
-gem 'sprockets-rails'
-# Needed for Propshaft or Sprockets (Rails 8)
-# gem 'propshaft' # default for Rails 8
-# Authorization
-gem 'pundit'
-
-# Role Management
-gem "rolify"
-gem 'pry'
 gem "aws-sdk-s3"
 gem 'dotenv-rails'
+gem "ruby-vips", "~> 2.2"
+
+gem 'countries'
+gem 'tzinfo' 
+gem 'money'
+gem 'phony'
+gem 'phony_rails'
+gem 'mime-types'
+gem 'numbers_and_words'
+gem 'kaminari'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -70,13 +66,12 @@ group :development, :test do
   gem 'faker'
   gem 'streamio-ffmpeg'
   gem 'city-state'
-  gem 'countries'
-
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+  gem 'byebug'
 end
 
 group :production do
@@ -86,9 +81,4 @@ group :production do
   gem 'faker'
   gem 'streamio-ffmpeg'
   gem 'city-state'
-  gem 'countries'
 end
-
-gem "sassc", "~> 2.4"
-
-gem "ruby-vips", "~> 2.2"
