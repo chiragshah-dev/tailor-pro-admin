@@ -1,7 +1,7 @@
 class OrderItem < ApplicationRecord
   enum :work_type, { stitching: 0, alteration: 1, material: 2, readymade: 3 }
   enum :status, {
-    accepted: 0, in_progress: 1, pending_assign: 2, pending: 3, completed: 4, ready_for_trial: 5, delivered: 6, cancelled: 7
+    pending: 0, in_progress: 1, ready_for_trial: 2, completed: 4, delivered: 5, cancelled: 6,
   }
   enum :stichfor, { male: 0, female: 1 }
 
@@ -36,18 +36,10 @@ class OrderItem < ApplicationRecord
   after_update :update_order_total, if: :price_or_quantity_changed?
   after_destroy :update_order_total
 
-  def self.ransackable_associations(auth_object = nil)
-    ["customer_dress_measurement", "dress", "garment_type", "member", "order", "order_item_stitch_features", "order_measurements", "stitch_features", "worker"]
-  end
-
-  def self.ransackable_attributes(auth_object = nil)
-    ["completion_date", "created_at", "customer_dress_measurement_id", "delivery_date", "dress_id", "function_date", "garment_type_id", "id", "id_value", "is_urgent", "last_visited_screen", "measurement_dress_given", "member_id", "name", "order_id", "order_item_number", "price", "quantity", "special_instruction", "status", "stichfor", "trial_date", "updated_at", "video_link", "work_type", "worker_id"]
-  end
-
   def order_status
-    return 'pending_assign' if status == 'accepted' && worker.nil?
-    return 'pending' if status == 'accepted' && worker.present?
-    status
+    return status unless pending?
+
+    worker.nil? ? "pending" : "pending"
   end
 
   def customer
@@ -91,7 +83,7 @@ class OrderItem < ApplicationRecord
 
   def set_order_item_details
     self.order_item_number = generate_order_item_number
-    self.status = :accepted
+    self.status = :pending
   end
 
   def generate_order_item_number

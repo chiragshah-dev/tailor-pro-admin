@@ -18,10 +18,6 @@ class StitchFeature < ApplicationRecord
   scope :accessible_by, ->(user) { where(user: [nil, user]) }
   scope :for_gender, ->(gender) { where(gender: gender ) }
 
-  def self.ransackable_attributes(auth_object = nil)
-    ["created_at", "gender", "id", "id_value", "is_default", "name", "updated_at", "user_id", "value_selection_type"]
-  end
-
   private
 
   def immutable_if_default

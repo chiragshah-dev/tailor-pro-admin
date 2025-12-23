@@ -1,6 +1,6 @@
 class Store < ApplicationRecord
   enum :store_type, { outlet: 0, workshop: 1, both: 2 }, prefix: true
-  enum :stitches_for, { male: 0, female: 1, both: 2 }
+  enum :stitches_for, { male: 0, female: 1, both: 2 }, default: nil
 
   # validations
   # validates :name, :store_type, :stitches_for, :contact_number, :location_name,
@@ -45,10 +45,6 @@ class Store < ApplicationRecord
   before_create :set_main_store
 
   accepts_nested_attributes_for :store_bank_detail
-
-  def self.ransackable_attributes(auth_object = nil)
-    ["address", "city", "code", "completed_steps", "contact_number", "country", "created_at", "email", "facebook_id", "gst_included_on_bill", "gst_name", "gst_number", "gst_percentage", "id", "instagram_id", "is_main_store", "last_visited_screen", "location_name", "map_location", "name", "postal_code", "state", "stitches_for", "store_type", "updated_at", "user_id", "website_url", "whatsapp_number"]
-  end
 
   def full_address
     [address, location_name, city, state, country, postal_code].compact.reject(&:blank?).join(", ")

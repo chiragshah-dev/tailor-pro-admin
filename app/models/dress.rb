@@ -18,10 +18,6 @@ class Dress < ApplicationRecord
   scope :accessible_by, ->(user) { where(user: [nil, user]) }
   scope :for_gender, ->(gender) { where(gender: gender ) }
 
-  def self.ransackable_attributes(auth_object = nil)
-    ["created_at", "gender", "id", "is_default", "name", "price", "updated_at", "user_id"]
-  end
-
   private
 
   def immutable_if_default
