@@ -17,7 +17,7 @@ class Store < ApplicationRecord
   validates :is_main_store, inclusion: { in: [true, false], message: "must be true or false" }
 
   validate :website_url_format, if: :website_url_present?
-
+  validates :name, presence: true
   # associations
   has_one_attached :logo
   has_many_attached :photos
