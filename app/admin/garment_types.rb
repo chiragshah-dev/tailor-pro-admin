@@ -1,7 +1,8 @@
 # app/admin/garment_types.rb
 ActiveAdmin.register GarmentType do
-  # ✅ Permit params
-  permit_params :garment_name, :gender, :active, :image
+  # ✅ Permit params (add measurement_field_ids for the many-to-many association)
+  permit_params :garment_name, :gender, :active, :image,
+                measurement_field_ids: []  # For checkboxes
 
   # ✅ Menu & Config
   menu priority: 6, label: "Garment Types"
@@ -17,6 +18,9 @@ ActiveAdmin.register GarmentType do
     column :active do |g|
       status_tag(g.active ? "Active" : "Inactive", class: g.active ? "ok" : "warning")
     end
+    column "Measurement Fields" do |g|
+      g.measurement_fields.pluck(:name).join(", ").truncate(50)
+    end
     column "Image" do |g|
       if g.image.attached?
         image_tag url_for(g.image), size: "50x50", style: "border-radius: 6px;"
@@ -27,22 +31,42 @@ ActiveAdmin.register GarmentType do
     actions
   end
 
-  # ✅ Filters
+  # ✅ Filters - FIXED
   filter :garment_name
   filter :gender, as: :select, collection: GarmentType.genders.keys.map { |g| [g.titleize, g] }
   filter :active
   filter :created_at
+  # Remove or comment out the problematic filter:
+  # filter :measurement_fields, as: :select, collection: -> { MeasurementField.all.map { |mf| [mf.name, mf.id] } }
+  
+  # ✅ Alternative: Create a custom Ransack predicate for the filter
+  filter :measurement_fields_id_eq, 
+         as: :select, 
+         collection: -> { MeasurementField.all.map { |mf| [mf.name, mf.id] } },
+         label: "Measurement Field"
 
   # ✅ Form Layout
   form do |f|
     f.inputs "Garment Type Details" do
       f.input :garment_name, label: "Name"
-      f.input :gender, as: :select, collection: GarmentType.genders.keys.map { |g| [g.titleize, g] }, include_blank: "Select Gender"
+      f.input :gender, as: :select, 
+              collection: GarmentType.genders.keys.map { |g| [g.titleize, g] }, 
+              include_blank: "Select Gender"
       f.input :active, as: :boolean, label: "Is Active?"
+      
+      # ✅ Add checkboxes for measurement fields
+      f.input :measurement_fields, 
+              as: :check_boxes, 
+              collection: MeasurementField.all.map { |mf| [mf.name, mf.id] },
+              label: "Select Measurement Fields",
+              input_html: { multiple: true }
     end
 
     f.inputs "Image Upload" do
-      f.input :image, as: :file, hint: (f.object.image.attached? ? image_tag(url_for(f.object.image), size: "100x100") : content_tag(:span, "No image uploaded"))
+      f.input :image, as: :file, 
+              hint: (f.object.image.attached? ? 
+                image_tag(url_for(f.object.image), size: "100x100") : 
+                content_tag(:span, "No image uploaded"))
     end
 
     f.actions
@@ -56,6 +80,13 @@ ActiveAdmin.register GarmentType do
         row :garment_name
         row(:gender) { garment_type.gender.titleize }
         row(:active) { garment_type.active ? status_tag("Active") : status_tag("Inactive") }
+        row "Measurement Fields" do
+          ul do
+            garment_type.measurement_fields.each do |mf|
+              li mf.name
+            end
+          end
+        end
         row(:image) do
           if garment_type.image.attached?
             image_tag url_for(garment_type.image), size: "150x150", style: "border-radius: 8px;"
@@ -66,6 +97,13 @@ ActiveAdmin.register GarmentType do
         row :created_at
         row :updated_at
       end
+    end
+  end
+
+  # ✅ Optional: Add a custom Ransack predicate in the model
+  controller do
+    def scoped_collection
+      super.includes(:measurement_fields)  # Prevent N+1 queries
     end
   end
 end
