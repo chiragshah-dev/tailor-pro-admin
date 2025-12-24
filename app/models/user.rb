@@ -45,6 +45,14 @@ class User < ApplicationRecord
   before_save :assign_timezone, if: :will_save_change_to_country_code?
   before_destroy :clear_active_store
 
+  def self.ransackable_associations(auth_object = nil)
+    ["active_store", "active_subscription", "dresses", "folders", "job_roles", "notifications", "setting", "stitch_features", "stores", "tailor_subscriptions", "tasks"]
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["active_store_id", "contact_number", "country_code", "created_at", "device_id", "email", "encrypted_password", "id", "id_value", "jti", "mpin_digest", "name", "otp_code", "otp_sent_at", "otp_verified_at", "remember_created_at", "reset_password_sent_at", "reset_password_token", "updated_at"]
+  end
+
   AMBIGUOUS_DIAL_CODES = {
     "1" => "America/New_York",   # USA/Canada default
     "44" => "Europe/London",     # UK
