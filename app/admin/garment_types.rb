@@ -19,7 +19,7 @@ ActiveAdmin.register GarmentType do
       status_tag(g.active ? "Active" : "Inactive", class: g.active ? "ok" : "warning")
     end
     column "Measurement Fields" do |g|
-      g.measurement_fields.pluck(:name).join(", ").truncate(50)
+      g.measurement_fields.pluck(:label).join(", ").truncate(50)
     end
     column "Image" do |g|
       if g.image.attached?
@@ -36,16 +36,12 @@ ActiveAdmin.register GarmentType do
   filter :gender, as: :select, collection: GarmentType.genders.keys.map { |g| [g.titleize, g] }
   filter :active
   filter :created_at
-  # Remove or comment out the problematic filter:
-  # filter :measurement_fields, as: :select, collection: -> { MeasurementField.all.map { |mf| [mf.name, mf.id] } }
-  
-  # ✅ Alternative: Create a custom Ransack predicate for the filter
   filter :measurement_fields_id_eq, 
          as: :select, 
          collection: -> { MeasurementField.all.map { |mf| [mf.name, mf.id] } },
          label: "Measurement Field"
 
-  # ✅ Form Layout
+  # ✅ Form Layout - FIXED
   form do |f|
     f.inputs "Garment Type Details" do
       f.input :garment_name, label: "Name"
@@ -54,12 +50,30 @@ ActiveAdmin.register GarmentType do
               include_blank: "Select Gender"
       f.input :active, as: :boolean, label: "Is Active?"
       
-      # ✅ Add checkboxes for measurement fields
-      f.input :measurement_fields, 
-              as: :check_boxes, 
-              collection: MeasurementField.all.map { |mf| [mf.name, mf.id] },
-              label: "Select Measurement Fields",
-              input_html: { multiple: true }
+      # ✅ Measurement fields in 4-column grid - FIXED
+      f.inputs "Select Measurement Fields" do
+        # Create 4 columns manually
+        mf_count = MeasurementField.count
+        slice_size = (mf_count.to_f / 4).ceil
+        mf_groups = MeasurementField.all.each_slice(slice_size).to_a
+        
+        div style: "display: flex; gap: 20px;" do
+          mf_groups.each_with_index do |group, index|
+            div style: "flex: 1;" do
+              group.each do |mf|
+                div style: "margin-bottom: 8px; display: flex; align-items: center;" do
+                  # FIX: Use safe_join or raw to render the checkbox
+                  raw(check_box_tag("garment_type[measurement_field_ids][]",
+                                   mf.id,
+                                   f.object.measurement_field_ids.include?(mf.id),
+                                   style: "margin-right: 8px;")) +
+                  mf.label
+                end
+              end
+            end
+          end
+        end
+      end
     end
 
     f.inputs "Image Upload" do
@@ -83,7 +97,7 @@ ActiveAdmin.register GarmentType do
         row "Measurement Fields" do
           ul do
             garment_type.measurement_fields.each do |mf|
-              li mf.name
+              li mf.label
             end
           end
         end
