@@ -6,6 +6,8 @@ class MeasurementField < ApplicationRecord
 	has_many :garment_type_measurements, dependent: :destroy
 	has_many :garment_types, through: :garment_type_measurements
 
+	validates :label, :name, presence: true
+
   def self.ransackable_attributes(auth_object = nil)
     ["active", "created_at", "garment_type_id", "id", "id_value", "image_url", "label", "name", "updated_at"]
   end
