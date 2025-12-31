@@ -40,9 +40,8 @@
       </li>
       <!-- Workers -->
       <li class="nav-item">
-        <%= link_to "#",
-          class: "nav-link text-dark" do %>
-          <i class="material-symbols-rounded opacity-5">engineering</i>
+        <%= link_to admin_workers_path, class: "nav-link #{controller_name == 'workers' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
+          <i class="material-symbols-rounded opacity-5">group</i>
           <span class="nav-link-text ms-1">Workers</span>
         <% end %>
       </li>
