@@ -4,15 +4,19 @@
     <div>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-1 p-0">
-          <li class="breadcrumb-item text-sm">
-            <span class="text-muted">Pages</span>
-          </li>
-          <li class="breadcrumb-item text-sm text-dark active">
-            Dashboard
-          </li>
+          <% dynamic_breadcrumbs.each_with_index do |crumb, i| %>
+            <% last = i == dynamic_breadcrumbs.size - 1 %>
+            <li class="breadcrumb-item text-sm <%= 'text-dark active' if last %>">
+              <% if last || crumb[:path].blank? %>
+                <span><%= crumb[:label] %></span>
+              <% else %>
+                <%= link_to crumb[:label], crumb[:path], class: "text-muted" %>
+              <% end %>
+            </li>
+          <% end %>
         </ol>
       </nav>
-      <h6 class="fw-bold mb-0">Dashboard</h6>
+      <h6 class="fw-bold mb-0"><%= dynamic_page_title %></h6>
     </div>
     <!-- RIGHT : Profile Dropdown -->
     <ul class="navbar-nav">
@@ -49,7 +53,7 @@
           <!-- Logout -->
           <li>
             <%= link_to destroy_admin_user_session_path,
-                  method: :delete,
+                  method: :delete,data: { turbo_method: :delete },
                   class: "dropdown-item d-flex align-items-center gap-2 text-danger" do %>
               <i class="material-symbols-rounded">logout</i>
               Logout
