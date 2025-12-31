@@ -1,5 +1,6 @@
 class Admin::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_admin_user!
 
   def index
     @users = User.all
@@ -16,6 +17,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def show
+    @stores = @user.stores.order(is_main_store: :desc, created_at: :asc)
   end
 
   def new
