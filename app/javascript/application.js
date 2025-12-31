@@ -1,10 +1,11 @@
-import Rails from "@rails/ujs";
-Rails.start();
+import * as Turbo from "https://cdn.jsdelivr.net/npm/@hotwired/turbo/+esm";
+Turbo.start()
+
+
 // Core
 import "core/bootstrap.bundle.min"
 import "core/popper.min"
 
-// 🔥 Import ALL plugins at once
 import "plugins/material-dashboard"
 // import "plugins/bootstrap-notify"
 // import "plugins/Chart.extension"
