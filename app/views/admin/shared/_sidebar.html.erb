@@ -55,10 +55,10 @@
       </li>
       <!-- Settings -->
       <li class="nav-item">
-        <%= link_to "#",
-          class: "nav-link text-dark" do %>
-          <i class="material-symbols-rounded opacity-5">settings</i>
-          <span class="nav-link-text ms-1">General Settings</span>
+        <%= link_to admin_currency_settings_path,
+          class: "nav-link #{controller_name == 'currency_settings' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
+          <i class="material-symbols-rounded opacity-5">currency_exchange</i>
+          <span class="nav-link-text ms-1">Currency Settings</span>
         <% end %>
       </li>
     </ul>

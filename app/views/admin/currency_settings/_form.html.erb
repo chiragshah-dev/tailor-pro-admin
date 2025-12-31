@@ -1,0 +1,31 @@
+<div class="card my-4">
+  <div class="card-body">
+    <%= form_with model: [:admin, @currency_setting], local: true do |f| %>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <label class="form-label font-weight-bold">Country</label>
+          <%= f.select :country,
+                CurrencySetting::SUPPORTED_CURRENCIES.keys,
+                {}, class: "form-control" %>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label font-weight-bold">Currency</label>
+          <%= f.select :currency_code,
+                CurrencySetting::SUPPORTED_CURRENCIES.values,
+                {}, class: "form-control" %>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label font-weight-bold">Amount Limit</label>
+          <%= f.number_field :amount_limit, step: 0.01, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <%= link_to "Back", admin_currency_settings_path, class: "btn btn-secondary me-2" %>
+        <%= f.submit "Save", class: "btn btn-info text-white" %>
+      </div>
+    <% end %>
+  </div>
+</div>
