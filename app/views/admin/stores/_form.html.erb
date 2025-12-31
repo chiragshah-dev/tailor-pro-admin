@@ -1,0 +1,200 @@
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card my-4">
+        <!-- HEADER -->
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+            <h6 class="text-white text-capitalize ps-3 mb-0">
+              Edit Store
+            </h6>
+          </div>
+        </div>
+        <!-- BODY -->
+        <div class="card-body px-4 pb-4">
+          <%= form_with model: [:admin, @store], local: true do |f| %>
+            <div class="row g-4">
+              <!-- Store Name -->
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">Store Name</label>
+                <div class="input-group input-group-outline">
+                  <%= f.text_field :name, class: "form-control" %>
+                </div>
+              </div>
+              <!-- Store Code -->
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">Store Code</label>
+                <div class="input-group input-group-outline">
+                  <%= f.text_field :code, class: "form-control" %>
+                </div>
+              </div>
+              <!-- Stitched For -->
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">Stitched For</label>
+                <div class="input-group input-group-outline">
+                  <%= f.select :stitches_for,
+                        [["Male", "male"], ["Female", "female"], ["Both", "both"]],
+                        {},
+                        class: "form-control" %>
+                </div>
+              </div>
+              <!-- Contact -->
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">Contact Number</label>
+                <div class="input-group input-group-outline">
+                  <%= f.text_field :contact_number, class: "form-control" %>
+                </div>
+              </div>
+              <!-- Email -->
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">Email</label>
+                <div class="input-group input-group-outline">
+                  <%= f.email_field :email, class: "form-control" %>
+                </div>
+              </div>
+              <!-- Location Name -->
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">Location Name</label>
+                <div class="input-group input-group-outline">
+                  <%= f.text_field :location_name, class: "form-control" %>
+                </div>
+              </div>
+              <!-- Address -->
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">Address</label>
+                <div class="input-group input-group-outline">
+                  <%= f.text_field :address, class: "form-control" %>
+                </div>
+              </div>
+              <!-- City -->
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">City</label>
+                <div class="input-group input-group-outline">
+                  <%= f.text_field :city, class: "form-control" %>
+                </div>
+              </div>
+              <!-- State -->
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">State</label>
+                <div class="input-group input-group-outline">
+                  <%= f.text_field :state, class: "form-control" %>
+                </div>
+              </div>
+              <!-- Country -->
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">Country</label>
+                <div class="input-group input-group-outline">
+                  <%= f.text_field :country, class: "form-control" %>
+                </div>
+              </div>
+              <!-- Postal Code -->
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">Postal Code</label>
+                <div class="input-group input-group-outline">
+                  <%= f.text_field :postal_code, class: "form-control" %>
+                </div>
+              </div>
+              <hr class="horizontal dark my-4">
+              <h6 class="text-uppercase text-dark mb-3">
+                GST Information
+              </h6>
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <label class="form-label font-weight-bold text-dark">GST Number</label>
+                  <div class="input-group input-group-outline">
+                    <%= f.text_field :gst_number, class: "form-control" %>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label font-weight-bold text-dark">GST Name</label>
+                  <div class="input-group input-group-outline">
+                    <%= f.text_field :gst_name, class: "form-control" %>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label font-weight-bold text-dark">GST Percentage</label>
+                  <div class="input-group input-group-outline">
+                    <%= f.number_field :gst_percentage,
+            step: 0.01,
+            class: "form-control",
+            placeholder: "e.g. 18" %>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label font-weight-bold text-dark">GST Included on Bill</label>
+                  <div class="form-check mt-2">
+                    <%= f.check_box :gst_included_on_bill, class: "form-check-input" %>
+                    <label class="form-check-label">Yes</label>
+                  </div>
+                </div>
+              </div>
+              <hr class="horizontal dark my-4">
+              <h6 class="text-uppercase text-dark mb-3">
+                Bank Details
+              </h6>
+              <%= f.fields_for :store_bank_detail do |b| %>
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <label class="form-label font-weight-bold text-dark">Account Holder Name</label>
+                    <div class="input-group input-group-outline">
+                      <%= b.text_field :account_holder_name, class: "form-control" %>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label font-weight-bold text-dark">Bank Name</label>
+                    <div class="input-group input-group-outline">
+                      <%= b.text_field :bank_name, class: "form-control" %>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label font-weight-bold text-dark">Account Number</label>
+                    <div class="input-group input-group-outline">
+                      <%= b.text_field :account_number, class: "form-control" %>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label font-weight-bold text-dark">IFSC Code</label>
+                    <div class="input-group input-group-outline">
+                      <%= b.text_field :ifsc_code, class: "form-control" %>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label font-weight-bold text-dark">UPI ID</label>
+                    <div class="input-group input-group-outline">
+                      <%= b.text_field :upi_id, class: "form-control" %>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label font-weight-bold text-dark">
+                      UPI QR Code
+                    </label>
+                    <% if b.object.qr_code.attached? %>
+                      <div class="mb-2">
+                        <%= image_tag b.object.qr_code,
+            class: "img-thumbnail",
+            style: "max-width: 120px;" %>
+                      </div>
+                    <% end %>
+                    <div class="input-group input-group-outline">
+                      <%= b.file_field :qr_code, class: "form-control" %>
+                    </div>
+                    <small class="text-muted">
+                      Upload PNG or JPG QR code
+                    </small>
+                  </div>
+                </div>
+              <% end %>
+              <!-- ACTIONS -->
+              <div class="d-flex justify-content-end mt-4">
+                <%= link_to "Back",
+                    admin_stores_path,
+                    class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+                <%= f.submit "Update",
+                    class: "btn btn-info text-white" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

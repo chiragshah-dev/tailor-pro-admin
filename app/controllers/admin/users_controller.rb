@@ -16,6 +16,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def show
+    @stores = @user.stores.order(is_main_store: :desc, created_at: :asc)
   end
 
   def new

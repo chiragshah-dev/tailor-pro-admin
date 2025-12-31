@@ -1,0 +1,131 @@
+<body class="g-sidenav-show bg-gray-100">
+  <div class="container-fluid py-2">
+    <div class="row">
+      <div class="col-12">
+        <div class="card my-4">
+          <!-- HEADER -->
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+              <h6 class="text-white text-capitalize ps-3">Stores</h6>
+            </div>
+          </div>
+          <!-- BODY -->
+          <div class="card-body px-0 pb-2">
+            <!-- SEARCH -->
+            <div class="px-3 pb-3">
+              <%= form_with url: admin_stores_path, method: :get, local: true do %>
+                <div class="row justify-content-end align-items-center">
+                  <div class="col-md-4 col-sm-6">
+                    <div class="input-group input-group-outline">
+                      <%= text_field_tag :search, params[:search],
+                          class: "form-control",
+                          placeholder: "Search stores..." %>
+                    </div>
+                  </div>
+                  <div class="col-md-1 col-sm-4">
+                    <%= submit_tag "Search", class: "btn bg-gradient-info w-100 mb-0" %>
+                  </div>
+                  <% if params[:search].present? %>
+                    <div class="col-md-2 col-sm-4">
+                      <%= link_to "Reset",
+                          admin_stores_path,
+                          class: "btn btn-outline-secondary w-100 mb-0" %>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+            <!-- TABLE -->
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-dark text-xxs font-weight-bold">#</th>
+                    <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Store Name</th>
+                    <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Code</th>
+                    <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Owner</th>
+                    <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Contact</th>
+                    <%# <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Location</th> %>
+                    <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @stores.each_with_index do |store, index| %>
+                    <tr>
+                      <!-- SR NO -->
+                      <td>
+                        <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                          <%= (@stores.current_page - 1) * @stores.limit_value + index + 1 %>
+                        </p>
+                      </td>
+                      <!-- STORE NAME -->
+                      <td>
+                        <h6 class="mb-0 text-sm">
+                          <%= store.name %>
+                          <% if store.is_main_store %>
+                            <span class="badge bg-gradient-info ms-1">Main</span>
+                          <% end %>
+                        </h6>
+                      </td>
+                      <!-- CODE -->
+                      <td>
+                        <p class="text-sm text-secondary mb-0 font-weight-bold">
+                          <%= store.code.presence || "—" %>
+                        </p>
+                      </td>
+                      <!-- OWNER -->
+                      <td>
+                        <p class="text-sm text-secondary mb-0 font-weight-bold">
+                          <%= store.user&.name || "—" %>
+                        </p>
+                      </td>
+                      <!-- CONTACT -->
+                      <td>
+                        <p class="text-sm text-secondary mb-0 font-weight-bold">
+                          <%= store.contact_number.presence || "—" %>
+                        </p>
+                      </td>
+                      <!-- LOCATION -->
+                      <%# <td>
+                        <p class="text-sm text-secondary mb-0 font-weight-bold">
+                          <%= [store.city, store.state].compact.join(", ").presence || "—" %>
+                      <%# </p> %>
+                      <%# </td> %>
+                      <!-- ACTIONS -->
+                      <td class="align-middle text-center">
+                        <div class="d-flex justify-content-center gap-1">
+                          <%= link_to admin_store_path(store),
+                              class: "btn btn-xs rounded btn-secondary",
+                              title: "Show" do %>
+                            <i class="fas fa-eye"></i>
+                          <% end %>
+                          <%= link_to edit_admin_store_path(store),
+                              class: "btn btn-xs rounded btn-secondary",
+                              title: "Edit" do %>
+                            <i class="fas fa-edit"></i>
+                          <% end %>
+                          <%= button_to admin_store_path(store),
+                              method: :delete,
+                              onclick: "return confirm('Are you sure you want to delete this store?')",
+                              class: "btn btn-xs rounded btn-secondary",
+                              form: { class: "d-inline" },
+                              title: "Delete" do %>
+                            <i class="fas fa-trash"></i>
+                          <% end %>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+            <!-- PAGINATION -->
+            <div class="d-flex justify-content-center px-3 mt-3">
+              <%= paginate @stores %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
