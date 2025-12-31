@@ -13,12 +13,12 @@
         </div>
 
         <%= submit_tag "Search",
-              class: "btn bg-gradient-info px-4 mb-0" %>
+              class: "btn bg-gradient-info px-4 mb-0 font-weight-bold text-uppercase" %>
 
         <% if params[:search].present? %>
           <%= link_to "Reset",
                 url,
-                class: "btn btn-secondary px-4 mb-0" %>
+                class: "btn btn-secondary px-4 mb-0 font-weight-bold text-uppercase" %>
         <% end %>
 
       </div>
