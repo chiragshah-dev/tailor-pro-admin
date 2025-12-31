@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   root to: "admin/dashboard#index"
   namespace :admin do
     resources :users
+    resources :currency_settings
     resources :stores
     get "stores/:id/stitches_for", to: "orders#store_stitches_for"
     get "garment_types/by_gender/:gender", to: "orders#garment_types_by_gender"
