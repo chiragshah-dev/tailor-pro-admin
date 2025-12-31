@@ -1,5 +1,5 @@
-// Configure your import map in config/importmap.rb
-
+import Rails from "@rails/ujs";
+Rails.start();
 // Core
 import "core/bootstrap.bundle.min"
 import "core/popper.min"

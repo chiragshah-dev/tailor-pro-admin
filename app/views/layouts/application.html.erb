@@ -22,27 +22,26 @@
     <%= javascript_importmap_tags %>
   </head>
   <body class="g-sidenav-show bg-gray-100">
-    <!-- SIDEBAR (PARTIAL) -->
-    <%= render "admin/shared/sidebar" %>
-    <!-- MAIN CONTENT -->
-    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
-      <!-- NAVBAR -->
-      <%= render "admin/shared/navbar" %>
-      <!-- PAGE CONTENT -->
-      <div class="container-fluid py-4">
-        <%= yield %>
-      </div>
-      <!-- FOOTER -->
-      <footer class="footer pt-4">
-        <div class="container-fluid">
-          <div class="text-center text-sm text-muted">
-            © <%= Time.current.year %> TailorPro
-          </div>
+    <% if controller_path == "admin/sessions" %>
+      <!-- Login page -->
+      <%= yield %>
+    <% else %>
+      <!-- Normal Admin Layout -->
+      <%= render "admin/shared/sidebar" %>
+      <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+        <%= render "admin/shared/navbar" %>
+        <div class="container-fluid py-4">
+          <%= yield %>
         </div>
-      </footer>
-    </main>
-    <!-- JS -->
-    <%# <%= javascript_include_tag "application", defer: true %>
-    <%= render "admin/shared/settings" %>
+        <footer class="footer pt-4">
+          <div class="container-fluid">
+            <div class="text-center text-sm text-muted">
+              © <%= Time.current.year %> TailorPro
+            </div>
+          </div>
+        </footer>
+      </main>
+      <%= render "admin/shared/settings" %>
+    <% end %>
   </body>
 </html>
