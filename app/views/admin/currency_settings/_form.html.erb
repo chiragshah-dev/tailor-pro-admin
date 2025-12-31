@@ -14,19 +14,20 @@
         <!-- BODY -->
         <div class="card-body px-4 pb-4">
           <%= form_with model: [:admin, @currency_setting],
-              local: true,
-              data: { turbo: false },
-              html: { id: "currency-setting-form" } do |f| %>
+                local: true,
+                data: { turbo: false },
+                html: { id: "currency-setting-form" } do |f| %>
+
             <div class="row g-4">
               <!-- Country -->
               <div class="col-md-4">
                 <label class="form-label font-weight-bold text-dark">Country</label>
 
-                <div class="input-group input-group-outline <%= 'is-invalid' if @currency_setting.errors[:country].any? %>">
+                <div class="input-group input-group-outline">
                   <%= f.select :country,
                         CurrencySetting::SUPPORTED_CURRENCIES.keys,
                         { prompt: "Select Country" },
-                        class: "form-control",
+                        class: "form-control #{'is-invalid' if @currency_setting.errors[:country].any?}",
                         id: "currency_country" %>
                 </div>
 
@@ -41,11 +42,11 @@
               <div class="col-md-4">
                 <label class="form-label font-weight-bold text-dark">Currency</label>
 
-                <div class="input-group input-group-outline <%= 'is-invalid' if @currency_setting.errors[:currency_code].any? %>">
+                <div class="input-group input-group-outline">
                   <%= f.select :currency_code,
                         CurrencySetting::SUPPORTED_CURRENCIES.values,
                         { prompt: "Select Currency" },
-                        class: "form-control",
+                        class: "form-control #{'is-invalid' if @currency_setting.errors[:currency_code].any?}",
                         id: "currency_code" %>
                 </div>
 
@@ -60,10 +61,10 @@
               <div class="col-md-4">
                 <label class="form-label font-weight-bold text-dark">Amount Limit</label>
 
-                <div class="input-group input-group-outline <%= 'is-invalid' if @currency_setting.errors[:amount_limit].any? %>">
+                <div class="input-group input-group-outline">
                   <%= f.number_field :amount_limit,
                         step: 0.01,
-                        class: "form-control",
+                        class: "form-control #{'is-invalid' if @currency_setting.errors[:amount_limit].any?}",
                         id: "amount_limit",
                         placeholder: "Enter amount limit" %>
                 </div>
@@ -94,7 +95,12 @@
   </div>
 </div>
 
-<!-- Frontend Validation -->
+<style>
+  .input-group:has(.field_with_errors) {
+      display: block;
+  }
+</style>
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("currency-setting-form");
