@@ -1,5 +1,7 @@
 # app/models/currency_setting.rb
 class CurrencySetting < ApplicationRecord
+  # Supported currencies are intentionally restricted for now.
+  # Extend SUPPORTED_CURRENCIES when new countries are approved.
   SUPPORTED_CURRENCIES = {
     "India" => "INR",
     "United States" => "USD",

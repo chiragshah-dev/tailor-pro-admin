@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-12">
       <div class="card my-4">
-        <!-- HEADER (same pattern as User Edit) -->
+        <!-- HEADER -->
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
             <h6 class="text-white text-capitalize ps-3 mb-0">
@@ -13,39 +13,66 @@
 
         <!-- BODY -->
         <div class="card-body px-4 pb-4">
-          <%= form_with model: [:admin, @currency_setting], local: true do |f| %>
+          <%= form_with model: [:admin, @currency_setting],
+              local: true,
+              data: { turbo: false },
+              html: { id: "currency-setting-form" } do |f| %>
             <div class="row g-4">
               <!-- Country -->
               <div class="col-md-4">
                 <label class="form-label font-weight-bold text-dark">Country</label>
-                <div class="input-group input-group-outline">
+
+                <div class="input-group input-group-outline <%= 'is-invalid' if @currency_setting.errors[:country].any? %>">
                   <%= f.select :country,
                         CurrencySetting::SUPPORTED_CURRENCIES.keys,
                         { prompt: "Select Country" },
-                        class: "form-control" %>
+                        class: "form-control",
+                        id: "currency_country" %>
                 </div>
+
+                <% if @currency_setting.errors[:country].any? %>
+                  <small class="text-danger">
+                    <%= @currency_setting.errors[:country].first %>
+                  </small>
+                <% end %>
               </div>
 
               <!-- Currency -->
               <div class="col-md-4">
                 <label class="form-label font-weight-bold text-dark">Currency</label>
-                <div class="input-group input-group-outline">
+
+                <div class="input-group input-group-outline <%= 'is-invalid' if @currency_setting.errors[:currency_code].any? %>">
                   <%= f.select :currency_code,
                         CurrencySetting::SUPPORTED_CURRENCIES.values,
                         { prompt: "Select Currency" },
-                        class: "form-control" %>
+                        class: "form-control",
+                        id: "currency_code" %>
                 </div>
+
+                <% if @currency_setting.errors[:currency_code].any? %>
+                  <small class="text-danger">
+                    <%= @currency_setting.errors[:currency_code].first %>
+                  </small>
+                <% end %>
               </div>
 
               <!-- Amount Limit -->
               <div class="col-md-4">
                 <label class="form-label font-weight-bold text-dark">Amount Limit</label>
-                <div class="input-group input-group-outline">
+
+                <div class="input-group input-group-outline <%= 'is-invalid' if @currency_setting.errors[:amount_limit].any? %>">
                   <%= f.number_field :amount_limit,
                         step: 0.01,
                         class: "form-control",
+                        id: "amount_limit",
                         placeholder: "Enter amount limit" %>
                 </div>
+
+                <% if @currency_setting.errors[:amount_limit].any? %>
+                  <small class="text-danger">
+                    <%= @currency_setting.errors[:amount_limit].first %>
+                  </small>
+                <% end %>
               </div>
             </div>
 
@@ -56,9 +83,9 @@
                     class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
 
               <%= f.submit(
-                            @currency_setting.persisted? ? "Update" : "Save",
-                            class: "btn btn-info text-white text-uppercase font-weight-bold"
-                          ) %>
+                    @currency_setting.persisted? ? "Update" : "Save",
+                    class: "btn btn-info text-white text-uppercase font-weight-bold"
+                  ) %>
             </div>
           <% end %>
         </div>
@@ -66,3 +93,52 @@
     </div>
   </div>
 </div>
+
+<!-- Frontend Validation -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("currency-setting-form");
+    if (!form) return;
+
+    form.addEventListener("submit", function (e) {
+      clearErrors();
+      let valid = true;
+
+      const country = document.getElementById("currency_country");
+      const currency = document.getElementById("currency_code");
+      const amount = document.getElementById("amount_limit");
+
+      if (!country.value) {
+        showError(country, "Country is required");
+        valid = false;
+      }
+
+      if (!currency.value) {
+        showError(currency, "Currency is required");
+        valid = false;
+      }
+
+      if (!amount.value || parseFloat(amount.value) <= 0) {
+        showError(amount, "Amount must be greater than 0");
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+
+    function showError(element, message) {
+      element.classList.add("is-invalid");
+
+      const error = document.createElement("small");
+      error.className = "text-danger validation-error";
+      error.innerText = message;
+
+      element.closest(".input-group").after(error);
+    }
+
+    function clearErrors() {
+      document.querySelectorAll(".validation-error").forEach(el => el.remove());
+      document.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+    }
+  });
+</script>
