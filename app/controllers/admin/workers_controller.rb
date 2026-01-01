@@ -4,13 +4,17 @@ class Admin::WorkersController < ApplicationController
   before_action :set_current_page, only: [:show, :edit, :update, :destroy]
 
   def index
-    @workers = Worker.includes(:store, :job_role)
+    @workers = Worker.left_joins(:store, :job_role)
+      .includes(:store, :job_role)
 
     if params[:search].present?
-      search = "%#{params[:search]}%"
+      search = "%#{params[:search].strip}%"
       @workers = @workers.where(
-        "workers.name ILIKE :search OR workers.contact_number ILIKE :search",
-        search: search
+        "workers.name ILIKE :search
+       OR workers.contact_number ILIKE :search
+       OR stores.name ILIKE :search
+       OR job_roles.name ILIKE :search",
+        search: search,
       )
     end
 
