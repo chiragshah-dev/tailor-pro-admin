@@ -1,16 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>TailorProAdmin</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TailorPro Admin</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    <!-- Google Fonts -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700"/>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <!-- Rails CSS -->
+    <%# <%= stylesheet_link_tag "application", data: { turbo_track: "reload" } %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
-  <body>
-    <%= yield %>
+  <body class="g-sidenav-show bg-gray-100">
+    <% if controller_path == "admin/sessions" %>
+      <!-- Login page -->
+      <%= yield %>
+    <% else %>
+      <!-- Normal Admin Layout -->
+      <%= render "admin/shared/sidebar" %>
+      <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+        <%= render "admin/shared/navbar" %>
+        <div class="container-fluid py-4">
+          <%= yield %>
+        </div>
+        <footer class="footer pt-4">
+          <div class="container-fluid">
+            <div class="text-center text-sm text-muted">
+              © <%= Time.current.year %> TailorPro
+            </div>
+          </div>
+        </footer>
+      </main>
+      <%= render "admin/shared/settings" %>
+    <% end %>
   </body>
 </html>

@@ -1,0 +1,65 @@
+<nav class="navbar navbar-main navbar-expand-lg bg-white px-4 py-1 shadow-sm border-radius-xl mt-2 pt-2">
+  <div class="container-fluid d-flex align-items-center justify-content-between">
+    <!-- LEFT : Breadcrumb + Page Title -->
+    <div>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-1 p-0">
+          <% dynamic_breadcrumbs.each_with_index do |crumb, i| %>
+            <% last = i == dynamic_breadcrumbs.size - 1 %>
+            <li class="breadcrumb-item text-sm <%= 'text-dark active' if last %>">
+              <% if last || crumb[:path].blank? %>
+                <span><%= crumb[:label] %></span>
+              <% else %>
+                <%= link_to crumb[:label], crumb[:path], class: "text-muted" %>
+              <% end %>
+            </li>
+          <% end %>
+        </ol>
+      </nav>
+    </div>
+    <!-- RIGHT : Profile Dropdown -->
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <a class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded"
+           href="#"
+           id="profileDropdown"
+           role="button"
+           data-bs-toggle="dropdown"
+           aria-expanded="false">
+          <i class="material-symbols-rounded fs-4">account_circle</i>
+          <span class="text-sm fw-semibold">
+            <%= current_admin_user&.email&.split('@')&.first || "Admin" %>
+          </span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow-sm mt-2"
+            aria-labelledby="profileDropdown"
+            style="min-width: 220px;">
+          <!-- Email -->
+          <li class="px-3 py-2">
+            <small class="text-muted">Signed in as</small><br>
+            <strong class="text-sm">
+              <%= current_admin_user&.email || "admin@example.com" %>
+            </strong>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <!-- Settings -->
+          <%# <li> %>
+          <%# <a href="javascript:;" class="dropdown-item d-flex align-items-center gap-2">
+              <i class="material-symbols-rounded">settings</i>
+              Settings
+            </a> %>
+          <%# </li> %>
+          <!-- Logout -->
+          <li>
+            <%= link_to destroy_admin_user_session_path,
+                  method: :delete,data: { turbo_method: :delete },
+                  class: "dropdown-item d-flex align-items-center gap-2 text-danger" do %>
+              <i class="material-symbols-rounded">logout</i>
+              Logout
+            <% end %>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>

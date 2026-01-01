@@ -1,3 +1,16 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
-import "@hotwired/turbo-rails"
-import "controllers"
+import * as Turbo from "https://cdn.jsdelivr.net/npm/@hotwired/turbo/+esm";
+Turbo.start()
+
+
+// Core
+import "core/bootstrap.bundle.min"
+import "core/popper.min"
+
+import "plugins/material-dashboard"
+// import "plugins/bootstrap-notify"
+// import "plugins/Chart.extension"
+// import "plugins/chartjs.min"
+// import "plugins/countup.min"
+import "plugins/perfect-scrollbar.min"
+// import "plugins/world"
+
