@@ -14,22 +14,31 @@
         <div class="card-body px-4 pb-4">
           <%= form_with model: [:admin, @user], local: true do |f| %>
             <div class="row g-4">
-              <div class="col-md-6">
+              <div class="form-group col-md-6">
                 <label class="form-label font-weight-bold text-dark">Full Name</label>
                 <div class="input-group input-group-outline">
                   <%= f.text_field :name, class: "form-control" %>
                 </div>
+                <div id="name_err" class="text-danger mt-2 text-xs">
+                  <%= @user.errors.full_messages_for(:name).first %>
+                </div>
               </div>
-              <div class="col-md-6">
+              <div class="form-group col-md-6">
                 <label class="form-label font-weight-bold text-dark">Email Address</label>
                 <div class="input-group input-group-outline">
                   <%= f.email_field :email, class: "form-control" %>
                 </div>
+                <div id="email_err" class="text-danger mt-2 text-xs">
+                  <%= @user.errors.full_messages_for(:email).first %>
+                </div>
               </div>
-              <div class="col-md-6">
+              <div class="form-group col-md-6">
                 <label class="form-label font-weight-bold text-dark">Contact Number</label>
                 <div class="input-group input-group-outline">
                   <%= f.text_field :contact_number, class: "form-control" %>
+                </div>
+                <div id="contact_err" class="text-danger mt-2 text-xs">
+                  <%= @user.errors.full_messages_for(:contact_number).first %>
                 </div>
               </div>
             </div>
@@ -45,3 +54,77 @@
     </div>
   </div>
 </div>
+<script>
+  document.addEventListener("turbo:load", () => {
+    const form  = document.querySelector("form");
+    if (!form) return;
+
+    const nameInput   = document.getElementById("user_name");
+    const emailInput  = document.getElementById("user_email");
+    const phoneInput  = document.getElementById("user_contact_number");
+
+    const nameErr  = document.getElementById("name_err");
+    const emailErr = document.getElementById("email_err");
+    const phoneErr = document.getElementById("contact_err");
+
+    form.addEventListener("submit", (e) => {
+      let valid = true;
+
+      nameErr.innerHTML  = "";
+      emailErr.innerHTML = "";
+      phoneErr.innerHTML = "";
+
+      // Name
+      if (!nameInput.value.trim()) {
+        nameErr.innerHTML = "Name can't be blank";
+        nameInput.classList.add("is-invalid");
+        valid = false;
+      }
+
+      // Email
+      const email = emailInput.value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!email) {
+        emailErr.innerHTML = "Email can't be blank";
+        emailInput.classList.add("is-invalid");
+        valid = false;
+      } else if (!emailRegex.test(email)) {
+        emailErr.innerHTML = "Enter valid email";
+        emailInput.classList.add("is-invalid");
+        valid = false;
+      }
+
+      // Phone
+      const phone = phoneInput.value.trim();
+      const phoneRegex = /^[6-9]\d{9}$/;
+
+      if (!phone) {
+        phoneErr.innerHTML = "Contact number can't be blank";
+        phoneInput.classList.add("is-invalid");
+        valid = false;
+      } else if (!phoneRegex.test(phone)) {
+        phoneErr.innerHTML = "Enter valid 10 digit mobile number";
+        phoneInput.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+
+    nameInput?.addEventListener("input", () => {
+      nameErr.innerHTML = "";
+      nameInput.classList.remove("is-invalid");
+    });
+
+    emailInput?.addEventListener("input", () => {
+      emailErr.innerHTML = "";
+      emailInput.classList.remove("is-invalid");
+    });
+
+    phoneInput?.addEventListener("input", () => {
+      phoneErr.innerHTML = "";
+      phoneInput.classList.remove("is-invalid");
+    });
+  });
+</script>
