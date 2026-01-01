@@ -220,18 +220,6 @@
               No bank details available for this store.
             </p>
           <% end %>
-          <hr class="horizontal dark my-4">
-          <!-- META -->
-          <div class="d-flex justify-content-between text-sm text-secondary">
-            <span>
-              Created:
-              <%= @store.created_at.strftime("%d %B %Y, %I:%M %p") %>
-            </span>
-            <span>
-              Updated:
-              <%= @store.updated_at.strftime("%d %B %Y, %I:%M %p") %>
-            </span>
-          </div>
           <%= link_to admin_stores_path,
               class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end mt-3" do %>
             Back
