@@ -20,12 +20,18 @@
                 <div class="input-group input-group-outline">
                   <%= f.text_field :name, class: "form-control" %>
                 </div>
+                <div id="name_err" class="text-danger mt-2 text-xs">
+                  <%= @store.errors.full_messages_for(:name).first %>
+                </div>
               </div>
               <!-- Store Code -->
               <div class="col-md-6">
                 <label class="form-label font-weight-bold text-dark">Store Code</label>
                 <div class="input-group input-group-outline">
                   <%= f.text_field :code, class: "form-control" %>
+                </div>
+                <div id="code_err" class="text-danger mt-2 text-xs">
+                  <%= @store.errors.full_messages_for(:code).first %>
                 </div>
               </div>
               <!-- Stitched For -->
@@ -44,12 +50,18 @@
                 <div class="input-group input-group-outline">
                   <%= f.text_field :contact_number, class: "form-control" %>
                 </div>
+                <div id="phone_err" class="text-danger mt-2 text-xs">
+                  <%= @store.errors.full_messages_for(:contact_number).first %>
+                </div>
               </div>
               <!-- Email -->
               <div class="col-md-6">
                 <label class="form-label font-weight-bold text-dark">Email</label>
                 <div class="input-group input-group-outline">
                   <%= f.email_field :email, class: "form-control" %>
+                </div>
+                <div id="email_err" class="text-danger mt-2 text-xs">
+                  <%= @store.errors.full_messages_for(:email).first %>
                 </div>
               </div>
               <!-- Location Name -->
@@ -65,12 +77,18 @@
                 <div class="input-group input-group-outline">
                   <%= f.text_field :address, class: "form-control" %>
                 </div>
+                <div id="address_err" class="text-danger mt-2 text-xs">
+                  <%= @store.errors.full_messages_for(:address).first %>
+                </div>
               </div>
               <!-- City -->
               <div class="col-md-6">
                 <label class="form-label font-weight-bold text-dark">City</label>
                 <div class="input-group input-group-outline">
                   <%= f.text_field :city, class: "form-control" %>
+                </div>
+                <div id="city_err" class="text-danger mt-2 text-xs">
+                  <%= @store.errors.full_messages_for(:city).first %>
                 </div>
               </div>
               <!-- State -->
@@ -79,6 +97,9 @@
                 <div class="input-group input-group-outline">
                   <%= f.text_field :state, class: "form-control" %>
                 </div>
+                <div id="state_err" class="text-danger mt-2 text-xs">
+                  <%= @store.errors.full_messages_for(:state).first %>
+                </div>
               </div>
               <!-- Country -->
               <div class="col-md-6">
@@ -86,12 +107,18 @@
                 <div class="input-group input-group-outline">
                   <%= f.text_field :country, class: "form-control" %>
                 </div>
+                <div id="country_err" class="text-danger mt-2 text-xs">
+                  <%= @store.errors.full_messages_for(:country).first %>
+                </div>
               </div>
               <!-- Postal Code -->
               <div class="col-md-6">
                 <label class="form-label font-weight-bold text-dark">Postal Code</label>
                 <div class="input-group input-group-outline">
                   <%= f.text_field :postal_code, class: "form-control" %>
+                </div>
+                <div id="postal_err" class="text-danger mt-2 text-xs">
+                  <%= @store.errors.full_messages_for(:postal_code).first %>
                 </div>
               </div>
               <hr class="horizontal dark my-4">
@@ -198,3 +225,80 @@
       </div>
     </div>
   </div>
+  <script>
+    document.addEventListener("turbo:load", () => {
+      const form = document.querySelector("form");
+      if (!form) return;
+
+      const fields = {
+        name: document.getElementById("store_name"),
+        code: document.getElementById("store_code"),
+        phone: document.getElementById("store_contact_number"),
+        address: document.getElementById("store_address"),
+        city: document.getElementById("store_city"),
+        state: document.getElementById("store_state"),
+        country: document.getElementById("store_country"),
+        postal: document.getElementById("store_postal_code"),
+      };
+
+      const err = {
+        name: document.getElementById("name_err"),
+        code: document.getElementById("code_err"),
+        phone: document.getElementById("phone_err"),
+        address: document.getElementById("address_err"),
+        city: document.getElementById("city_err"),
+        state: document.getElementById("state_err"),
+        country: document.getElementById("country_err"),
+        postal: document.getElementById("postal_err"),
+      };
+
+      const labels = {
+        name: "Store name",
+        code: "Store code",
+        phone: "Contact number",
+        address: "Address",
+        city: "City",
+        state: "State",
+        country: "Country",
+        postal: "Postal code"
+      };
+
+      form.addEventListener("submit", (e) => {
+        let valid = true;
+
+        Object.values(err).forEach(e => e.innerHTML = "");
+
+        const phoneRegex  = /^[6-9]\d{9}$/;
+        const postalRegex = /^\d{6}$/;
+
+        const required = ["name","code","phone","address","city","state","country","postal"];
+
+        required.forEach(key => {
+          if (!fields[key].value.trim()) {
+            err[key].innerHTML = `${labels[key]} can't be empty`;
+            fields[key].classList.add("is-invalid");
+            valid = false;
+          }
+        });
+
+        if (fields.phone.value && !phoneRegex.test(fields.phone.value.trim())) {
+          err.phone.innerHTML = "Enter valid 10 digit mobile number";
+          valid = false;
+        }
+
+        if (fields.postal.value && !postalRegex.test(fields.postal.value.trim())) {
+          err.postal.innerHTML = "Enter valid 6 digit postal code";
+          valid = false;
+        }
+
+        if (!valid) e.preventDefault();
+      });
+
+      Object.keys(fields).forEach(key => {
+        fields[key]?.addEventListener("input", () => {
+          err[key].innerHTML = "";
+          fields[key].classList.remove("is-invalid");
+        });
+      });
+    });
+  </script>
