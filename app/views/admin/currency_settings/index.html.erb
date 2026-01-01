@@ -16,6 +16,7 @@
                 <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">country</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Currency Code</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Amount Limit</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
               </tr>
             </thead>
@@ -41,10 +42,14 @@
                         <%= setting.currency_code || "—" %>
                       </p>
                     </td>
+                    <td>
+                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                        <%= number_to_currency(setting.amount_limit, unit: setting.currency_code + " ") %>
+                      </p>
+                    </td>
                     <!-- Actions -->
                     <td class="align-middle text-center">
                       <div class="d-flex justify-content-center gap-1">
-
                         <%= link_to edit_admin_currency_setting_path(setting,page: params[:page]),
                                   class: "btn btn-xs rounded btn-secondary",
                                   title: "Edit" do %>
