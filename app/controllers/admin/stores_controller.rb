@@ -20,7 +20,7 @@ class Admin::StoresController < ApplicationController
   end
 
   def edit
-    @store.build_store_bank_detail.includes(:user) if @store.store_bank_detail.blank?
+    @store.build_store_bank_detail if @store.store_bank_detail.blank?
   end
 
   def update
