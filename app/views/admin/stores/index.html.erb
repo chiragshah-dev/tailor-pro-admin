@@ -13,27 +13,9 @@
           <div class="card-body px-0 pb-2">
             <!-- SEARCH -->
             <div class="px-3 pb-3">
-              <%= form_with url: admin_stores_path, method: :get, local: true do %>
-                <div class="row justify-content-end align-items-center">
-                  <div class="col-md-4 col-sm-6">
-                    <div class="input-group input-group-outline">
-                      <%= text_field_tag :search, params[:search],
-                          class: "form-control",
-                          placeholder: "Search stores..." %>
-                    </div>
-                  </div>
-                  <div class="col-md-1 col-sm-4">
-                    <%= submit_tag "Search", class: "btn bg-gradient-info w-100 mb-0" %>
-                  </div>
-                  <% if params[:search].present? %>
-                    <div class="col-md-2 col-sm-4">
-                      <%= link_to "Reset",
-                          admin_stores_path,
-                          class: "btn btn-outline-secondary w-100 mb-0" %>
-                    </div>
-                  <% end %>
-                </div>
-              <% end %>
+              <%= render "admin/shared/search",
+        url: admin_stores_path,
+        placeholder: "Search stores..." %>
             </div>
             <!-- TABLE -->
             <div class="table-responsive p-0">
@@ -50,6 +32,7 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <% if @stores.present? %>
                   <% @stores.each_with_index do |store, index| %>
                     <tr>
                       <!-- SR NO -->
@@ -116,6 +99,13 @@
                       </td>
                     </tr>
                   <% end %>
+                  <%else%>
+                  <tr>
+                      <td colspan="12" class="text-center">
+                        <p class="no-content-text">No record found.</p>
+                      </td>
+                    </tr>
+                  <%end%>
                 </tbody>
               </table>
             </div>
