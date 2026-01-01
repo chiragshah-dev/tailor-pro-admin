@@ -84,12 +84,10 @@
                                   title: "Edit" do %>
                               <i class="fas fa-edit"></i>
                             <% end %>
-                            <%= button_to admin_worker_path(worker,page: params[:page]),
-                                  method: :delete,
-                                  onclick: "return confirm('Are you sure?')",
-                                  class: "btn btn-xs rounded btn-secondary",
-                                  form: { class: "d-inline" },
-                                  title: "Delete" do %>
+                            <%= button_to admin_worker_path(worker, page: params[:page]),
+              method: :delete,
+              class: "btn btn-xs rounded btn-secondary",
+              data: { turbo_confirm: "Are you sure you want to delete #{worker.name}?" } do %>
                               <i class="fas fa-trash"></i>
                             <% end %>
                           </div>

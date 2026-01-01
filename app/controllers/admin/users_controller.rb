@@ -13,7 +13,7 @@ class Admin::UsersController < ApplicationController
       )
     end
 
-    @users = @users.order(:id).page(params[:page]).per(5)
+    @users = @users.order(:id).page(params[:page]).per(10)
   end
 
   def show

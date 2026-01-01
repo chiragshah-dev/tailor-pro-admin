@@ -36,7 +36,7 @@ class Admin::WorkersController < ApplicationController
         notice: "Worker created successfully."
     else
       flash.now[:alert] = "Worker could not be created. Please fix the errors below."
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -49,7 +49,7 @@ class Admin::WorkersController < ApplicationController
         notice: "Worker updated successfully."
     else
       flash.now[:alert] = "Worker could not be updated. Please fix the errors below."
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
