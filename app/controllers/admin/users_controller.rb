@@ -52,7 +52,7 @@ class Admin::UsersController < ApplicationController
   private
 
   def set_user
-    @user = @user = User.includes(:stores).find(params[:id])
+    @user = @user = User.find(params[:id])
   end
 
   def user_params
