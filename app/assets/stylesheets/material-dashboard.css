@@ -29469,3 +29469,36 @@ pre[class*=language-] {
 .field_with_errors {
   display: contents;
 }
+
+/* flash alert css */
+
+  .flash-alert {
+    position: fixed;
+    top: 10px;
+    right: -400px;
+    color: #fff;
+    padding: 8px 18px;
+    font-size: 14px;
+    border-radius: 6px;
+    z-index: 9999;
+    transition: right 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+
+  .flash-alert.show {
+    right: 10px;
+  }
+
+  .flash-alert-content {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+  }
