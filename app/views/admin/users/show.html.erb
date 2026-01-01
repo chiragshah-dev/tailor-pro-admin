@@ -22,8 +22,11 @@
                 <%= link_to edit_admin_user_path(@user), class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold me-2" do %>
                   Edit 
                 <% end %>
-                <%= link_to admin_user_path(@user), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
-                  Delete 
+                <%= button_to admin_user_path(@user, page: params[:page]),
+              method: :delete,
+              class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold",
+              data: { turbo_confirm: "Are you sure you want to delete #{@user.name}?" } do %>
+                  Delete
                 <% end %>
               </div>
             </div>
@@ -58,18 +61,6 @@
                   <span class="fw-bold text-dark">Active Store:</span>
                   <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
                     <%= @user.active_store_id || "—" %>
-                  </span>
-                </p>
-                <p class="text-sm mb-2">
-                  <span class="fw-bold text-dark">Created At:</span>
-                  <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
-                    <%= @user.created_at.strftime("%d %B %Y, %I:%M %p") %>
-                  </span>
-                </p>
-                <p class="text-sm mb-2">
-                  <span class="fw-bold text-dark">Updated At:</span>
-                  <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
-                    <%= @user.updated_at.strftime("%d %B %Y, %I:%M %p") %>
                   </span>
                 </p>
                 <p class="text-sm mb-2">

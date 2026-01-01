@@ -3762,6 +3762,7 @@ textarea.form-control.is-invalid {
 .was-validated .input-group>.form-floating:not(:focus-within):invalid,
 .input-group>.form-floating:not(:focus-within).is-invalid {
   z-index: 4;
+  border: 1px solid #F44335;
 }
 
 .btn {
@@ -29460,3 +29461,11 @@ pre[class*=language-] {
 }
 
 /*# sourceMappingURL=dashboard-free.css.map */
+
+
+/* custom css overriden */
+
+
+.field_with_errors {
+  display: contents;
+}

@@ -13,10 +13,10 @@
                   class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
                 Edit
               <% end %>
-              <%= link_to admin_worker_path(@worker),
-                  method: :delete,
-                  data: { confirm: "Are you sure?" },
-                  class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
+              <%= button_to admin_worker_path(@worker, page: params[:page]),
+              method: :delete,
+              class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold",
+              data: { turbo_confirm: "Are you sure you want to delete #{@worker.name}?" } do %>
                 Delete
               <% end %>
             </div>
