@@ -46,12 +46,12 @@
                 </p>
                 <p class="text-sm mb-2">
                   <span class="fw-bold text-dark">Email:</span>
-                  <span class="text-sm text-secondary mb-0 font-weight-bold ms-2"><%= @user.email || "—" %></span>
+                  <span class="text-sm text-secondary mb-0 font-weight-bold ms-2"><%= @user.email || "-" %></span>
                 </p>
                 <p class="text-sm mb-2">
                   <span class="fw-bold text-dark">Country Code:</span>
                   <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
-                    <%= @user.country_code.presence || "—" %>
+                    <%= @user.country_code.presence || "-" %>
                   </span>
                 </p>
               </div>
@@ -60,13 +60,13 @@
                 <p class="text-sm mb-2">
                   <span class="fw-bold text-dark">Active Store:</span>
                   <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
-                    <%= @user.active_store_id || "—" %>
+                    <%= @user.active_store_id || "-" %>
                   </span>
                 </p>
                 <p class="text-sm mb-2">
                   <span class="fw-bold text-dark">Contact Number:</span>
                   <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
-                    <%= @user.contact_number.presence || "—" %>
+                    <%= @user.contact_number.presence || "-" %>
                   </span>
                 </p>
               </div>
@@ -105,7 +105,7 @@
                           <p class="text-sm mb-1 text-dark">
                             <strong>Contact:</strong>
                             <span class="text-secondary">
-                              <%= store.contact_number.presence || "—" %>
+                              <%= store.contact_number.presence || "-" %>
                             </span>
                           </p>
                           <p class="text-sm mb-1 text-dark">

@@ -25,6 +25,8 @@ Rails.application.routes.draw do
     resources :currencies do
       resources :currency_countries, only: %i[new create destroy]
     end
+    resources :orders, only: [:index, :show]
+    resources :order_items, only: [:show]
     get "stores/:id/stitches_for", to: "orders#store_stitches_for"
     get "garment_types/by_gender/:gender", to: "orders#garment_types_by_gender"
     get "garment_types/:id/measurement_fields", to: "orders#measurement_fields"
