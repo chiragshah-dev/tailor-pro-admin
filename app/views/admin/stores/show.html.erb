@@ -14,18 +14,19 @@
                 Edit
               <% end %>
               <%= button_to admin_store_path(@store, page: params[:page]),
-              method: :delete,
-              class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold",
-              data: { turbo_confirm: "Are you sure you want to delete #{@store.name}?" } do %>
-                Delete              <% end %>
+                  method: :delete,
+                  class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold",
+                  data: { turbo_confirm: "Are you sure you want to delete #{@store.name}?" } do %>
+                Delete
+              <% end %>
             </div>
           </div>
         </div>
         <!-- STORE DETAILS BODY -->
-        <div class="card-body px-4 pt-4 pb-2">
+        <div class="card-body px-4 pt-4 pb-4">
           <!-- BASIC INFO -->
-          <div class="row">
-            <!-- LEFT COLUMN -->
+          <div class="row mb-3">
+            <!-- LEFT -->
             <div class="col-md-6">
               <p class="text-sm mb-2 text-dark">
                 <strong>Store Name:</strong>
@@ -37,54 +38,47 @@
               </p>
               <p class="text-sm mb-2 text-dark">
                 <strong>Store Type:</strong>
-                <span class="text-secondary ms-2 text-capitalize">
-                  <%= @store.store_type %>
-                </span>
+                <span class="text-secondary ms-2 text-capitalize"><%= @store.store_type %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
-                <strong>Stitched For:</strong>
-                <span class="text-secondary ms-2 text-capitalize">
-                  <%= @store.stitches_for %>
-                </span>
+                <strong>Stitches For:</strong>
+                <span class="text-secondary ms-2 text-capitalize"><%= @store.stitches_for %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
                 <strong>Main Store:</strong>
-                <span class="text-secondary ms-2">
-                  <%= @store.is_main_store ? "Yes" : "No" %>
+                <span class="ms-2">
+                  <% if @store.is_main_store %>
+                    <span class="badge bg-gradient-success">YES</span>
+                  <% else %>
+                    <span class="badge bg-gradient-secondary">NO</span>
+                  <% end %>
                 </span>
               </p>
             </div>
-            <!-- RIGHT COLUMN -->
+            <!-- RIGHT -->
             <div class="col-md-6">
               <p class="text-sm mb-2 text-dark">
                 <strong>Contact Number:</strong>
-                <span class="text-secondary ms-2">
-                  <%= @store.contact_number.presence || "—" %>
-                </span>
+                <span class="text-secondary ms-2"><%= @store.contact_number.presence || "—" %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
                 <strong>Email:</strong>
-                <span class="text-secondary ms-2">
-                  <%= @store.email.presence || "—" %>
-                </span>
+                <span class="text-secondary ms-2"><%= @store.email.presence || "—" %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
                 <strong>Website:</strong>
-                <span class="text-secondary ms-2">
-                  <%= @store.website_url.presence || "—" %>
-                </span>
+                <span class="text-secondary ms-2"><%= @store.website_url.presence || "—" %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
                 <strong>Owner:</strong>
-                <span class="text-secondary ms-2">
-                  <%= @store.user&.name || "—" %>
-                </span>
+                <span class="text-secondary ms-2"><%= @store.user&.name || "—" %></span>
               </p>
             </div>
           </div>
-          <hr class="horizontal dark my-4">
-          <!-- LOCATION INFO -->
-          <div class="row">
+          <hr class="horizontal dark my-3">
+          <!-- LOCATION -->
+          <h6 class="text-uppercase text-dark mb-3">Location Details</h6>
+          <div class="row mb-3">
             <div class="col-md-6">
               <p class="text-sm mb-2 text-dark">
                 <strong>Location Name:</strong>
@@ -92,89 +86,66 @@
               </p>
               <p class="text-sm mb-2 text-dark">
                 <strong>Address:</strong>
-                <span class="text-secondary ms-2">
-                  <%= @store.address %>
-                </span>
+                <span class="text-secondary ms-2"><%= @store.address %></span>
               </p>
             </div>
             <div class="col-md-6">
               <p class="text-sm mb-2 text-dark">
                 <strong>City / State:</strong>
-                <span class="text-secondary ms-2">
-                  <%= @store.city %>, <%= @store.state %>
-                </span>
+                <span class="text-secondary ms-2"><%= @store.city %>, <%= @store.state %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
                 <strong>Country / Postal Code:</strong>
-                <span class="text-secondary ms-2">
-                  <%= @store.country %> - <%= @store.postal_code %>
-                </span>
+                <span class="text-secondary ms-2"><%= @store.country %> - <%= @store.postal_code %></span>
               </p>
             </div>
           </div>
-          <hr class="horizontal dark my-4">
-          <!-- GST INFO -->
-          <div class="row">
+          <hr class="horizontal dark my-3">
+          <!-- GST -->
+          <h6 class="text-uppercase text-dark mb-3">GST Details</h6>
+          <div class="row mb-3">
             <div class="col-md-6">
               <p class="text-sm mb-2 text-dark">
                 <strong>GST Number:</strong>
-                <span class="text-secondary ms-2">
-                  <%= @store.gst_number.presence || "—" %>
-                </span>
+                <span class="text-secondary ms-2"><%= @store.gst_number.presence || "—" %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
                 <strong>GST Name:</strong>
-                <span class="text-secondary ms-2">
-                  <%= @store.gst_name.presence || "—" %>
-                </span>
+                <span class="text-secondary ms-2"><%= @store.gst_name.presence || "—" %></span>
               </p>
             </div>
             <div class="col-md-6">
               <p class="text-sm mb-2 text-dark">
                 <strong>GST Included:</strong>
-                <span class="text-secondary ms-2">
-                  <%= @store.gst_included_on_bill ? "Yes" : "No" %>
-                </span>
+                <span class="text-secondary ms-2"><%= @store.gst_included_on_bill ? "Yes" : "No" %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
                 <strong>GST Percentage:</strong>
-                <span class="text-secondary ms-2">
-                  <%= @store.gst_percentage.present? ? "#{@store.gst_percentage}%" : "—" %>
-                </span>
+                <span class="text-secondary ms-2"><%= @store.gst_percentage.present? ? "#{@store.gst_percentage}%" : "—" %></span>
               </p>
             </div>
           </div>
-          <hr class="horizontal dark my-4">
-          <h6 class="text-uppercase text-dark mb-3">
-            Bank Details
-          </h6>
+          <hr class="horizontal dark my-3">
+          <!-- BANK -->
+          <h6 class="text-uppercase text-dark mb-3">Bank Details</h6>
           <% bank = @store.store_bank_detail %>
           <% if bank.present? %>
-            <div class="row">
-              <!-- LEFT COLUMN -->
+            <div class="row mb-3">
               <div class="col-md-6">
                 <p class="text-sm mb-2 text-dark">
                   <strong>Account Holder Name:</strong>
-                  <span class="text-secondary ms-2">
-                    <%= bank.account_holder_name.presence || "—" %>
-                  </span>
+                  <span class="text-secondary ms-2"><%= bank.account_holder_name.presence || "—" %></span>
                 </p>
                 <p class="text-sm mb-2 text-dark">
                   <strong>Bank Name:</strong>
-                  <span class="text-secondary ms-2">
-                    <%= bank.bank_name.presence || "—" %>
-                  </span>
+                  <span class="text-secondary ms-2"><%= bank.bank_name.presence || "—" %></span>
                 </p>
                 <p class="text-sm mb-2 text-dark">
                   <strong>Account Number:</strong>
-                  <span class="text-secondary ms-2">
-                    <%= bank.account_number.presence || "—" %>
-                  </span>
+                  <span class="text-secondary ms-2"><%= bank.account_number.presence || "—" %></span>
                 </p>
                 <% if bank.qr_code.attached? %>
-                  <p class="text-sm mb-2 text-dark">
-                    <strong>QR Code:</strong>
-                  </p>
+                  <p class="text-sm mb-2 text-dark"><strong>QR Code:</strong></p>
                   <div class="mb-3">
                     <%= image_tag bank.qr_code, class: "img-thumbnail", style: "max-width: 180px;", alt: "UPI QR Code" %>
                   </div>
@@ -185,19 +156,14 @@
                   </p>
                 <% end %>
               </div>
-              <!-- RIGHT COLUMN -->
               <div class="col-md-6">
                 <p class="text-sm mb-2 text-dark">
                   <strong>IFSC Code:</strong>
-                  <span class="text-secondary ms-2">
-                    <%= bank.ifsc_code.presence || "—" %>
-                  </span>
+                  <span class="text-secondary ms-2"><%= bank.ifsc_code.presence || "—" %></span>
                 </p>
                 <p class="text-sm mb-2 text-dark">
                   <strong>UPI ID:</strong>
-                  <span class="text-secondary ms-2">
-                    <%= bank.upi_id.presence || "—" %>
-                  </span>
+                  <span class="text-secondary ms-2"><%= bank.upi_id.presence || "—" %></span>
                 </p>
                 <p class="text-sm mb-2 text-dark">
                   <strong>Verified:</strong>
@@ -216,6 +182,8 @@
               No bank details available for this store.
             </p>
           <% end %>
+          <!-- workers section -->
+          <%= render 'worker' %>
           <%= link_to admin_stores_path,
               class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end mt-3" do %>
             Back
