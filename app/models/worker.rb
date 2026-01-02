@@ -8,7 +8,8 @@ class Worker < ApplicationRecord
   # Validations
   validates :name, presence: true
   validates :contact_number, presence: true, uniqueness: { scope: :store_id },
-            numericality: { only_integer: true }, length: { is: 10 }
+                             numericality: { only_integer: true }, length: { is: 10, message: "Contact number
+must be of 10 digits" }
 
   # attr_accessor :otp_code
 

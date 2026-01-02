@@ -15,23 +15,25 @@
           <%= form_with model: [:admin, @worker], local: true do |f| %>
             <div class="row g-4">
               <!-- Name -->
-              <div class="col-md-6">
+              <div class="form-group col-md-6">
                 <label class="form-label font-weight-bold text-dark">Full Name</label>
                 <div class="input-group input-group-outline">
                   <%= f.text_field :name, class: "form-control" %>
                 </div>
+                <div id="name_err" class="text-danger mt-2 text-xs "><%= @worker.errors.full_messages_for(:name).first %> </div>
               </div>
               <!-- Contact -->
-              <div class="col-md-6">
+              <div class="form-group col-md-6">
                 <label class="form-label font-weight-bold text-dark">
                   Contact Number
                 </label>
                 <div class="input-group input-group-outline">
-                  <%= f.text_field :contact_number, class: "form-control" %>
+                  <%= f.number_field :contact_number, class: "form-control" %>
                 </div>
+                <div id="contat_err" class="text-danger mt-2 text-xs "><%= @worker.errors.full_messages_for(:contact_number).first %> </div>
               </div>
               <!-- Job Role -->
-              <div class="col-md-6">
+              <div class="form-group col-md-6">
                 <label class="form-label font-weight-bold text-dark">
                   Job Role
                 </label>
@@ -43,6 +45,7 @@
                         { prompt: "Select Role" },
                         class: "form-control" %>
                 </div>
+                <div id="job_role_err" class="text-danger mt-2 text-xs "><%= @worker.errors.full_messages_for(:job_role_id).first %> </div>
               </div>
             </div>
             <!-- ACTIONS -->
@@ -59,3 +62,89 @@
     </div>
   </div>
 </div>
+<script>
+  document.addEventListener("turbo:load", () => {
+
+    const form = document.querySelector("form");
+    if (!form) return;
+
+    const nameInput  = document.getElementById("worker_name");
+    const phoneInput = document.getElementById("worker_contact_number");
+    const roleInput  = document.getElementById("worker_job_role_id");
+
+    const nameErr  = document.getElementById("name_err");
+    const phoneErr = document.getElementById("contat_err");
+    const roleErr  = document.getElementById("job_role_err");
+
+    form.addEventListener("submit", function (e) {
+      let valid = true;
+
+      // reset errors
+      nameErr.innerHTML  = "";
+      phoneErr.innerHTML = "";
+      roleErr.innerHTML  = "";
+
+      // Name
+      if (!nameInput.value.trim()) {
+        nameErr.innerHTML = "Name can't be blank";
+          nameInput.classList.add("is-invalid");
+
+        valid = false;
+      }
+
+      // Phone Validation
+      const phone = phoneInput.value.trim();
+      const phoneRegex = /^[6-9]\d{9}$/;   // India 10-digit strict
+
+      if (!phone) {
+        phoneErr.innerHTML = "Contact number can't be blank";
+          phoneInput.classList.add("is-invalid");
+
+        valid = false;
+      } else if (!phoneRegex.test(phone)) {
+        phoneErr.innerHTML = "Enter valid 10 digit mobile number";
+          phoneInput.classList.add("is-invalid");
+
+        valid = false;
+      }
+
+      // Role
+      if (!roleInput.value) {
+        roleErr.innerHTML = "Job role is required";
+          roleInput.classList.add("is-invalid");
+
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+
+
+
+   // NAME clear err when type
+  nameInput?.addEventListener("input", () => {
+  const v = nameInput.value.trim();
+  if (v.length > 0) nameErr.innerHTML = "";
+      nameInput.classList.remove("is-invalid");
+
+  });
+
+  // PHONE clear err when type
+  phoneInput?.addEventListener("input", () => {
+  const v = String(phoneInput.value).trim();
+  if (v.length > 0) phoneErr.innerHTML = "";
+      phoneInput.classList.remove("is-invalid");
+
+  });
+
+  // ROLE clear err when type
+  roleInput?.addEventListener("change", () => {
+  if (roleInput.value) roleErr.innerHTML = "";
+      roleInput.classList.remove("is-invalid");
+
+  });
+
+
+
+  });
+</script>

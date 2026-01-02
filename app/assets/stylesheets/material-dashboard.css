@@ -3020,23 +3020,19 @@ textarea.form-control-lg {
 }
 
 .form-select {
-  --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23262626' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-  display: block;
+  display: inline-block;
   width: 100%;
-  padding: 0.5rem 1rem 0.5rem 0;
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.5rem;
-  color: #404040;
-  appearance: none;
-  background-color: transparent;
-  background-image: var(--bs-form-select-bg-img), var(--bs-form-select-bg-icon, none);
-  background-repeat: no-repeat;
-  background-position: right 0 center;
-  background-size: 16px 12px;
-  border: 1px solid #d2d6da;
+  height: calc(2.75rem + 2px);
+  padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+  line-height: 1.5;
+  color: #8898aa;
+  vertical-align: middle;
+  background: #fff url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath fill='%2332325d' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E") no-repeat right 0.75rem center;
+  background-size: 8px 10px;
+  border: 1px solid #cad1d7;
   border-radius: 0.375rem;
-  transition: 0.2s ease;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+  appearance: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3046,7 +3042,7 @@ textarea.form-control-lg {
 }
 
 .form-select:focus {
-  border-color: transparent;
+  border-color: #cad1d7;
   outline: 0;
   box-shadow: none;
 }
@@ -3762,6 +3758,7 @@ textarea.form-control.is-invalid {
 .was-validated .input-group>.form-floating:not(:focus-within):invalid,
 .input-group>.form-floating:not(:focus-within).is-invalid {
   z-index: 4;
+  border: 1px solid #F44335;
 }
 
 .btn {
@@ -3931,152 +3928,152 @@ fieldset:disabled .btn {
 
 /* APPLE */
 .btn-apple {
-  --bs-btn-color:#fff;
-  --bs-btn-bg:#000000;
-  --bs-btn-border-color:#000000;
-  --bs-btn-hover-bg:#111111;
-  --bs-btn-hover-border-color:#111111;
-  --bs-btn-focus-shadow-rgb:0,0,0;
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #000000;
+  --bs-btn-border-color: #000000;
+  --bs-btn-hover-bg: #111111;
+  --bs-btn-hover-border-color: #111111;
+  --bs-btn-focus-shadow-rgb: 0, 0, 0;
 }
 
 /* SPOTIFY */
 .btn-spotify {
-  --bs-btn-color:#000;
-  --bs-btn-bg:#1DB954;
-  --bs-btn-border-color:#1DB954;
-  --bs-btn-hover-bg:#1aa84c;
-  --bs-btn-hover-border-color:#199b45;
-  --bs-btn-focus-shadow-rgb:29,185,84;
+  --bs-btn-color: #000;
+  --bs-btn-bg: #1DB954;
+  --bs-btn-border-color: #1DB954;
+  --bs-btn-hover-bg: #1aa84c;
+  --bs-btn-hover-border-color: #199b45;
+  --bs-btn-focus-shadow-rgb: 29, 185, 84;
 }
 
 /* NETFLIX */
 .btn-netflix {
-  --bs-btn-color:#fff;
-  --bs-btn-bg:#E50914;
-  --bs-btn-border-color:#E50914;
-  --bs-btn-hover-bg:#c40812;
-  --bs-btn-hover-border-color:#a90710;
-  --bs-btn-focus-shadow-rgb:229,9,20;
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #E50914;
+  --bs-btn-border-color: #E50914;
+  --bs-btn-hover-bg: #c40812;
+  --bs-btn-hover-border-color: #a90710;
+  --bs-btn-focus-shadow-rgb: 229, 9, 20;
 }
 
 /* AMAZON */
 .btn-amazon {
-  --bs-btn-color:#000;
-  --bs-btn-bg:#FF9900;
-  --bs-btn-border-color:#FF9900;
-  --bs-btn-hover-bg:#e08a00;
-  --bs-btn-hover-border-color:#c97a00;
-  --bs-btn-focus-shadow-rgb:255,153,0;
+  --bs-btn-color: #000;
+  --bs-btn-bg: #FF9900;
+  --bs-btn-border-color: #FF9900;
+  --bs-btn-hover-bg: #e08a00;
+  --bs-btn-hover-border-color: #c97a00;
+  --bs-btn-focus-shadow-rgb: 255, 153, 0;
 }
 
 /* MICROSOFT */
 .btn-microsoft {
-  --bs-btn-color:#fff;
-  --bs-btn-bg:#0078D4;
-  --bs-btn-border-color:#0078D4;
-  --bs-btn-hover-bg:#0669b8;
-  --bs-btn-hover-border-color:#065ea6;
-  --bs-btn-focus-shadow-rgb:0,120,212;
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #0078D4;
+  --bs-btn-border-color: #0078D4;
+  --bs-btn-hover-bg: #0669b8;
+  --bs-btn-hover-border-color: #065ea6;
+  --bs-btn-focus-shadow-rgb: 0, 120, 212;
 }
 
 /* DISCORD */
 .btn-discord {
-  --bs-btn-color:#fff;
-  --bs-btn-bg:#5865F2;
-  --bs-btn-border-color:#5865F2;
-  --bs-btn-hover-bg:#4754d8;
-  --bs-btn-hover-border-color:#3e4ac2;
-  --bs-btn-focus-shadow-rgb:88,101,242;
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #5865F2;
+  --bs-btn-border-color: #5865F2;
+  --bs-btn-hover-bg: #4754d8;
+  --bs-btn-hover-border-color: #3e4ac2;
+  --bs-btn-focus-shadow-rgb: 88, 101, 242;
 }
 
 /* DROPBOX */
 .btn-dropbox {
-  --bs-btn-color:#fff;
-  --bs-btn-bg:#0061FF;
-  --bs-btn-border-color:#0061FF;
-  --bs-btn-hover-bg:#0055de;
-  --bs-btn-hover-border-color:#004ec9;
-  --bs-btn-focus-shadow-rgb:0,97,255;
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #0061FF;
+  --bs-btn-border-color: #0061FF;
+  --bs-btn-hover-bg: #0055de;
+  --bs-btn-hover-border-color: #004ec9;
+  --bs-btn-focus-shadow-rgb: 0, 97, 255;
 }
 
 /* PAYPAL */
 .btn-paypal {
-  --bs-btn-color:#fff;
-  --bs-btn-bg:#003087;
-  --bs-btn-border-color:#003087;
-  --bs-btn-hover-bg:#022b73;
-  --bs-btn-hover-border-color:#022665;
-  --bs-btn-focus-shadow-rgb:0,48,135;
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #003087;
+  --bs-btn-border-color: #003087;
+  --bs-btn-hover-bg: #022b73;
+  --bs-btn-hover-border-color: #022665;
+  --bs-btn-focus-shadow-rgb: 0, 48, 135;
 }
 
 /* STRIPE */
 .btn-stripe {
-  --bs-btn-color:#fff;
-  --bs-btn-bg:#635BFF;
-  --bs-btn-border-color:#635BFF;
-  --bs-btn-hover-bg:#524ae4;
-  --bs-btn-hover-border-color:#493fd0;
-  --bs-btn-focus-shadow-rgb:99,91,255;
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #635BFF;
+  --bs-btn-border-color: #635BFF;
+  --bs-btn-hover-bg: #524ae4;
+  --bs-btn-hover-border-color: #493fd0;
+  --bs-btn-focus-shadow-rgb: 99, 91, 255;
 }
 
 /* TWITCH */
 .btn-twitch {
-  --bs-btn-color:#fff;
-  --bs-btn-bg:#9146FF;
-  --bs-btn-border-color:#9146FF;
-  --bs-btn-hover-bg:#7d3be4;
-  --bs-btn-hover-border-color:#7034cc;
-  --bs-btn-focus-shadow-rgb:145,70,255;
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #9146FF;
+  --bs-btn-border-color: #9146FF;
+  --bs-btn-hover-bg: #7d3be4;
+  --bs-btn-hover-border-color: #7034cc;
+  --bs-btn-focus-shadow-rgb: 145, 70, 255;
 }
 
 /* REDDIT */
 .btn-reddit {
-  --bs-btn-color:#fff;
-  --bs-btn-bg:#FF4500;
-  --bs-btn-border-color:#FF4500;
-  --bs-btn-hover-bg:#e03d00;
-  --bs-btn-hover-border-color:#c73700;
-  --bs-btn-focus-shadow-rgb:255,69,0;
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #FF4500;
+  --bs-btn-border-color: #FF4500;
+  --bs-btn-hover-bg: #e03d00;
+  --bs-btn-hover-border-color: #c73700;
+  --bs-btn-focus-shadow-rgb: 255, 69, 0;
 }
 
 /* TELEGRAM */
 .btn-telegram {
-  --bs-btn-color:#fff;
-  --bs-btn-bg:#0088cc;
-  --bs-btn-border-color:#0088cc;
-  --bs-btn-hover-bg:#0777af;
-  --bs-btn-hover-border-color:#06699c;
-  --bs-btn-focus-shadow-rgb:0,136,204;
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #0088cc;
+  --bs-btn-border-color: #0088cc;
+  --bs-btn-hover-bg: #0777af;
+  --bs-btn-hover-border-color: #06699c;
+  --bs-btn-focus-shadow-rgb: 0, 136, 204;
 }
 
 /* MICROSOFT TEAMS */
 .btn-teams {
-  --bs-btn-color:#fff;
-  --bs-btn-bg:#4B53BC;
-  --bs-btn-border-color:#4B53BC;
-  --bs-btn-hover-bg:#3e46a4;
-  --bs-btn-hover-border-color:#383e93;
-  --bs-btn-focus-shadow-rgb:75,83,188;
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #4B53BC;
+  --bs-btn-border-color: #4B53BC;
+  --bs-btn-hover-bg: #3e46a4;
+  --bs-btn-hover-border-color: #383e93;
+  --bs-btn-focus-shadow-rgb: 75, 83, 188;
 }
 
 /* ADOBE */
 .btn-adobe {
-  --bs-btn-color:#fff;
-  --bs-btn-bg:#FF0000;
-  --bs-btn-border-color:#FF0000;
-  --bs-btn-hover-bg:#d70000;
-  --bs-btn-hover-border-color:#c10000;
-  --bs-btn-focus-shadow-rgb:255,0,0;
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #FF0000;
+  --bs-btn-border-color: #FF0000;
+  --bs-btn-hover-bg: #d70000;
+  --bs-btn-hover-border-color: #c10000;
+  --bs-btn-focus-shadow-rgb: 255, 0, 0;
 }
 
 /* IBM */
 .btn-ibm {
-  --bs-btn-color:#fff;
-  --bs-btn-bg:#054ADA;
-  --bs-btn-border-color:#054ADA;
-  --bs-btn-hover-bg:#043fc0;
-  --bs-btn-hover-border-color:#0437ad;
-  --bs-btn-focus-shadow-rgb:5,74,218;
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #054ADA;
+  --bs-btn-border-color: #054ADA;
+  --bs-btn-hover-bg: #043fc0;
+  --bs-btn-hover-border-color: #0437ad;
+  --bs-btn-focus-shadow-rgb: 5, 74, 218;
 }
 
 /* GOOGLE */
@@ -6113,10 +6110,12 @@ fieldset:disabled .btn {
 }
 
 .page-link:hover {
-  z-index: 2;
-  color: var(--bs-pagination-hover-color);
-  background-color: var(--bs-pagination-hover-bg);
-  border-color: var(--bs-pagination-hover-border-color);
+  background: linear-gradient(195deg, #3488d8 0%, #1557c0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  border-color: #49a3f1;
+  transform: scale(1.08);
+  transition: all 0.2s ease;
 }
 
 .page-link:focus {
@@ -6124,7 +6123,7 @@ fieldset:disabled .btn {
   color: var(--bs-pagination-focus-color);
   background-color: var(--bs-pagination-focus-bg);
   outline: 0;
-  box-shadow: var(--bs-pagination-focus-box-shadow);
+  /* box-shadow: var(--bs-pagination-focus-box-shadow); */
 }
 
 .page-link.active,
@@ -29426,6 +29425,10 @@ pre[class*=language-] {
 
 /* Page buttons */
 .pagination .page-link {
+  background: linear-gradient(195deg, #49a3f1 0%, #1A73E8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   min-width: 36px;
   height: 36px;
   line-height: 36px;
@@ -29433,15 +29436,20 @@ pre[class*=language-] {
   text-align: center;
   border-radius: 50%;
   border: 1px solid #dee2e6;
-  color: #4f6cf7;
   font-size: 13px;
+  color: transparent;
+  /* Ensures fallback doesn't show */
 }
 
 /* Active page */
 .pagination .active .page-link {
-  background-color: #4f6cf7;
-  border-color: #4f6cf7;
-  color: #fff;
+  background-image: linear-gradient(195deg, #49a3f1 0%, #1A73E8 100%);
+  -webkit-background-clip: border-box;
+  -webkit-text-fill-color: white;
+  background-clip: padding-box;
+  color: white;
+  border-color: #fff;
+  font-weight: 600;
 }
 
 /* Next / Prev / First / Last */
@@ -29460,3 +29468,44 @@ pre[class*=language-] {
 }
 
 /*# sourceMappingURL=dashboard-free.css.map */
+
+
+/* custom css overriden */
+
+
+.field_with_errors {
+  display: contents;
+}
+
+/* flash alert css */
+
+.flash-alert {
+  position: fixed;
+  top: 10px;
+  right: -400px;
+  color: #fff;
+  padding: 8px 18px;
+  font-size: 14px;
+  border-radius: 6px;
+  z-index: 9999;
+  transition: right 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.flash-alert.show {
+  right: 10px;
+}
+
+.flash-alert-content {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}

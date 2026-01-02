@@ -1,0 +1,28 @@
+<% ['alert', 'notice'].each do |type| %>
+  <% if flash[type] %>
+    <div class="flash-alert bg-gradient-info font-weight-bold" id="flash-alert">
+      <div class="flash-alert-content d-flex align-items-center">
+        <span class="flash-alert-message text-center">
+          <%= flash[type] %>
+        </span>
+        <button class="close-btn" onclick="closeAlert()">
+          <i class="fas fa-times-circle"></i>
+        </button>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<script>
+  function closeAlert() {
+    const alert = document.getElementById("flash-alert");
+    if (alert) alert.classList.remove("show");
+  }
+
+  document.addEventListener("turbo:load", () => {
+    const alert = document.getElementById("flash-alert");
+    if (alert) {
+      setTimeout(() => alert.classList.add("show"), 200);
+      setTimeout(() => closeAlert(), 4000);  
+    }
+  });
+</script>

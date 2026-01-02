@@ -27,6 +27,8 @@
       <%= yield %>
     <% else %>
       <!-- Normal Admin Layout -->
+      <%= render 'admin/shared/flash' %>
+
       <%= render "admin/shared/sidebar" %>
       <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
         <%= render "admin/shared/navbar" %>

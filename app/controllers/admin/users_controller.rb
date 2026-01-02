@@ -6,14 +6,14 @@ class Admin::UsersController < ApplicationController
     @users = User.all
 
     if params[:search].present?
-      search = "%#{params[:search]}%"
+      search = "%#{params[:search].strip}%"
       @users = @users.where(
         "name ILIKE :search OR email ILIKE :search OR contact_number ILIKE :search",
         search: search,
       )
     end
 
-    @users = @users.order(:id).page(params[:page]).per(5)
+    @users = @users.order(:id).page(params[:page]).per(10)
   end
 
   def show
@@ -52,7 +52,7 @@ class Admin::UsersController < ApplicationController
   private
 
   def set_user
-    @user = @user = User.includes(:stores).find(params[:id])
+    @user = @user = User.find(params[:id])
   end
 
   def user_params
