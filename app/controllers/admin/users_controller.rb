@@ -6,7 +6,7 @@ class Admin::UsersController < ApplicationController
     @users = User.all
 
     if params[:search].present?
-      search = "%#{params[:search]}%"
+      search = "%#{params[:search].strip}%"
       @users = @users.where(
         "name ILIKE :search OR email ILIKE :search OR contact_number ILIKE :search",
         search: search,
