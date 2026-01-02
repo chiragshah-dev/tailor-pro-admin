@@ -20,7 +20,11 @@ class Admin::StoresController < ApplicationController
   end
 
   def show
-    # @store already loaded
+    page = (params[:workers_page] || 1)
+
+    workers = @store.workers.includes(:job_role).order(created_at: :desc)
+
+    @workers = workers.page(page).per(5)
   end
 
   def edit

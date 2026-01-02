@@ -15,7 +15,7 @@
             <div class="px-3 pb-3">
               <%= render "admin/shared/search", url: admin_stores_path,placeholder: "Search stores..." do %>
                 <!-- FILTER: MAIN / BRANCH -->
-                <div class="w-10">
+                <div class="w-11">
                   <%= select_tag :main_store,options_for_select([["All Stores", "false"], ["Main Store", "true"]],
                   params[:main_store]),class: "form-select",onchange: "this.form.submit();"  %>
                 </div>

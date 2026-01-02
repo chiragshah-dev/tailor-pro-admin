@@ -52,7 +52,7 @@ gem 'sprockets-rails'
 # Authorization
 gem 'pundit'
 # Pagination
-gem "kaminari"
+# gem "kaminari"
 
 # Role Management
 gem "rolify"
@@ -60,7 +60,7 @@ gem 'pry'
 gem "aws-sdk-s3"
 gem 'dotenv-rails'
 
-gem "ruby-vips", "~> 2.2"
+# gem "ruby-vips", "~> 2.2"
 gem 'countries'
 gem 'tzinfo' 
 gem 'money'
@@ -70,19 +70,21 @@ gem 'mime-types'
 gem 'numbers_and_words'
 gem 'kaminari'
 gem "importmap-rails"
+gem 'streamio-ffmpeg'
+
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw mswin x64_mingw ], require: "debug/prelude"
-  gem "pry"
+  # gem "pry"
 
   gem 'bullet'
-  gem 'rspec-rails'
-  gem 'rswag'
-  gem 'factory_bot_rails'
-  gem 'faker'
-  gem 'streamio-ffmpeg'
-  gem 'city-state'
+  # gem 'rspec-rails'
+  # gem 'rswag'
+  # gem 'factory_bot_rails'
+  # gem 'faker'
+  # gem 'city-state'
+  gem 'byebug'
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
@@ -96,7 +98,7 @@ group :production do
   gem 'rswag'
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'streamio-ffmpeg'
+  # gem 'streamio-ffmpeg'
   gem 'city-state'
 end
 
