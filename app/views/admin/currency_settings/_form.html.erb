@@ -10,57 +10,37 @@
             </h6>
           </div>
         </div>
-
         <!-- BODY -->
         <div class="card-body px-4 pb-4">
           <%= form_with model: [:admin, @currency_setting],
                 local: true,
                 data: { turbo: false },
                 html: { id: "currency-setting-form" } do |f| %>
-
             <div class="row g-4">
-              <!-- Country -->
-              <div class="col-md-4">
-                <label class="form-label font-weight-bold text-dark">Country</label>
-
-                <div class="input-group input-group-outline">
-                  <%= f.select :country,
-                        CurrencySetting::SUPPORTED_CURRENCIES.keys,
-                        { prompt: "Select Country" },
-                        class: "form-control #{'is-invalid' if @currency_setting.errors[:country].any?}",
-                        id: "currency_country" %>
-                </div>
-
-                <% if @currency_setting.errors[:country].any? %>
-                  <small class="text-danger">
-                    <%= @currency_setting.errors[:country].first %>
-                  </small>
-                <% end %>
-              </div>
-
               <!-- Currency -->
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <label class="form-label font-weight-bold text-dark">Currency</label>
-
                 <div class="input-group input-group-outline">
-                  <%= f.select :currency_code,
-                        CurrencySetting::SUPPORTED_CURRENCIES.values,
-                        { prompt: "Select Currency" },
-                        class: "form-control #{'is-invalid' if @currency_setting.errors[:currency_code].any?}",
-                        id: "currency_code" %>
+                  <%= f.select :currency_id,
+      options_from_collection_for_select(
+        Currency.order(:name),
+        :id,      # ✅ VALUE (goes into currency_id)
+        :name,    # ✅ LABEL (shown to user)
+        @currency_setting.currency_id
+      ),
+      { prompt: "Select Currency" },
+      class: "form-control #{'is-invalid' if @currency_setting.errors[:currency_id].any?}",
+      id: "currency_id" %>
                 </div>
-
-                <% if @currency_setting.errors[:currency_code].any? %>
+                <% if @currency_setting.errors[:currency_id].any? %>
                   <small class="text-danger">
-                    <%= @currency_setting.errors[:currency_code].first %>
+                    <%= @currency_setting.errors[:currency_id].first %>
                   </small>
                 <% end %>
               </div>
-
               <!-- Amount Limit -->
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <label class="form-label font-weight-bold text-dark">Amount Limit</label>
-
                 <div class="input-group input-group-outline">
                   <%= f.number_field :amount_limit,
                         step: 0.01,
@@ -68,7 +48,6 @@
                         id: "amount_limit",
                         placeholder: "Enter amount limit" %>
                 </div>
-
                 <% if @currency_setting.errors[:amount_limit].any? %>
                   <small class="text-danger">
                     <%= @currency_setting.errors[:amount_limit].first %>
@@ -76,13 +55,11 @@
                 <% end %>
               </div>
             </div>
-
             <!-- ACTIONS -->
             <div class="d-flex justify-content-end mt-4">
               <%= link_to "Back",
                     admin_currency_settings_path,
                     class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
-
               <%= f.submit(
                     @currency_setting.persisted? ? "Update" : "Save",
                     class: "btn btn-info text-white text-uppercase font-weight-bold"
@@ -94,13 +71,11 @@
     </div>
   </div>
 </div>
-
 <style>
   .input-group:has(.field_with_errors) {
       display: block;
   }
 </style>
-
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("currency-setting-form");
@@ -110,14 +85,8 @@
       clearErrors();
       let valid = true;
 
-      const country = document.getElementById("currency_country");
       const currency = document.getElementById("currency_code");
       const amount = document.getElementById("amount_limit");
-
-      if (!country.value) {
-        showError(country, "Country is required");
-        valid = false;
-      }
 
       if (!currency.value) {
         showError(currency, "Currency is required");

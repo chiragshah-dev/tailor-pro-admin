@@ -12,7 +12,21 @@ class Admin::StoresController < ApplicationController
       )
     end
 
-    @stores = @stores.order(created_at: :desc).page(params[:page]).per(5)
+    @stores = @stores.order(created_at: :desc).page(params[:page]).per(10)
+  end
+
+  def new
+    @store = Store.new
+    @store.build_store_bank_detail
+  end
+
+  def create
+    @store = Store.new(store_params)
+    if @store.save
+      redirect_to admin_store_path(@store), notice: "Store was successfully created."
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def show

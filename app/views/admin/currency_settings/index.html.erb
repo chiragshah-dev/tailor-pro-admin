@@ -14,7 +14,7 @@
             <thead>
               <tr>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">country</th>
+                <%# <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">country</th> %>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Currency Code</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Amount Limit</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
@@ -33,18 +33,13 @@
                     <!-- Name -->
                     <td>
                       <p class="text-sm text-secondary mb-0 font-weight-bold">
-                        <h6 class="mb-0 text-sm"><%= setting.country %></h6>
+                        <h6 class="mb-0 text-sm"><%= setting.currency.name %></h6>
                       </p>
                     </td>
                     <!-- Contact -->
                     <td>
                       <p class="text-sm text-secondary mb-0 font-weight-bold">
-                        <%= setting.currency_code || "—" %>
-                      </p>
-                    </td>
-                    <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
-                        <%= number_to_currency(setting.amount_limit, unit: setting.currency_code + " ") %>
+                        <%= setting.amount_limit %>
                       </p>
                     </td>
                     <!-- Actions -->

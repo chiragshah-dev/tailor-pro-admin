@@ -4,7 +4,7 @@ module Admin
     before_action :set_currency_setting, only: %i[edit update destroy]
 
     def index
-      @currency_settings = CurrencySetting.order(:country).page(params[:page]).per(10)
+      @currency_settings = CurrencySetting.order(:created_at).page(params[:page]).per(10)
     end
 
     def new
@@ -42,7 +42,7 @@ module Admin
     end
 
     def currency_setting_params
-      params.require(:currency_setting).permit(:country, :currency_code, :amount_limit)
+      params.require(:currency_setting).permit(:amount_limit, :currency_id)
     end
   end
 end

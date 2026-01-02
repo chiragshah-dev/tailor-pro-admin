@@ -2,7 +2,6 @@
   <div class="row">
     <div class="col-12">
       <div class="card my-4">
-
         <!-- HEADER -->
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
@@ -11,13 +10,10 @@
             </h6>
           </div>
         </div>
-
         <!-- BODY -->
         <div class="card-body px-4 pb-4">
           <%= form_with model: [:admin, @worker], local: true do |f| %>
-
             <div class="row g-4">
-
               <!-- Name -->
               <div class="col-md-6">
                 <label class="form-label font-weight-bold text-dark">Full Name</label>
@@ -25,7 +21,6 @@
                   <%= f.text_field :name, class: "form-control" %>
                 </div>
               </div>
-
               <!-- Contact -->
               <div class="col-md-6">
                 <label class="form-label font-weight-bold text-dark">
@@ -35,7 +30,6 @@
                   <%= f.text_field :contact_number, class: "form-control" %>
                 </div>
               </div>
-
               <!-- Job Role -->
               <div class="col-md-6">
                 <label class="form-label font-weight-bold text-dark">
@@ -50,24 +44,17 @@
                         class: "form-control" %>
                 </div>
               </div>
-
-      
-
             </div>
-
             <!-- ACTIONS -->
             <div class="d-flex justify-content-end mt-4">
               <%= link_to "Back",
                     admin_workers_path(page: @current_page, search: @search),
                     class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
-
               <%= f.submit "Update",
                     class: "btn btn-info text-white text-uppercase font-weight-bold" %>
             </div>
-
           <% end %>
         </div>
-
       </div>
     </div>
   </div>
