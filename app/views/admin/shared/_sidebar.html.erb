@@ -50,6 +50,13 @@
       <span class="nav-link-text ms-1">Garment Types</span>
     <% end %>
   </li>
+  <!-- Measurement Fields -->
+  <li class="nav-item">
+    <%= link_to admin_measurement_fields_path, class: "nav-link #{controller_name == 'measurement_fields' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
+      <i class="material-symbols-rounded opacity-5">people</i>
+      <span class="nav-link-text ms-1">Measurement Fields</span>
+    <% end %>
+  </li>
   <!-- Workers -->
   <li class="nav-item">
     <%= link_to admin_workers_path, class: "nav-link #{controller_name == 'workers' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>

@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     resources :stores
     resources :workers
     resources :garment_types
+    resources :measurement_fields
     resources :currencies do
       resources :currency_countries, only: %i[new create destroy]
     end

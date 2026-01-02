@@ -1,6 +1,7 @@
 # app/controllers/admin/currency_settings_controller.rb
 module Admin
   class CurrencySettingsController < ApplicationController
+    before_action :authenticate_admin_user!
     before_action :set_currency_setting, only: %i[edit update destroy]
 
     def index

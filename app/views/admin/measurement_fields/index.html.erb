@@ -1,0 +1,96 @@
+<div class="container-fluid py-2">
+  <div class="row">
+    <div class="col-12">
+      <div class="card my-4">
+        <!-- HEADER -->
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+            <h6 class="text-white text-capitalize ps-3 mb-0">
+              Measurement Fields
+            </h6>
+            <%= link_to "Add Measurement Field",
+              new_admin_measurement_field_path,
+              class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold me-3" %>
+          </div>
+        </div>
+        <!-- BODY -->
+        <div class="card-body px-0 pb-2">
+          <!-- SEARCH -->
+          <div class="px-3 pb-3">
+            <!-- search partial -->
+            <%= render "admin/shared/search", url: admin_measurement_fields_path, placeholder: "Search measurements..." %>
+          </div>
+          <!-- TABLE -->
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-dark text-xxs font-weight-bold">#</th>
+                  <th class="text-uppercase text-dark text-xxs font-weight-bold">Label</th>
+                  <th class="text-uppercase text-dark text-xxs font-weight-bold">Garment Type</th>
+                  <th class="text-uppercase text-dark text-xxs font-weight-bold">Active</th>
+                  <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @measurement_fields.each_with_index do |field, index| %>
+                  <tr>
+                    <!-- SERIAL -->
+                    <td class="px-3">
+                      <%= (@measurement_fields.current_page - 1) * @measurement_fields.limit_value + index + 1 %>
+                    </td>
+                    <!-- LABEL -->
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                        <%= field.label %>
+                      </p>
+                    </td>
+                    <!-- GARMENT TYPE -->
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                        <%= field.garment_type&.garment_name || "—" %>
+                      </p>
+                    </td>
+                    <!-- ACTIVE -->
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                        <span class="badge bg-<%= field.active? ? 'success' : 'secondary' %>">
+                          <%= field.active? ? "Yes" : "No" %>
+                        </span>
+                      </p>
+                    </td>
+                    <!-- ACTIONS -->
+                    <td class="text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <%= link_to admin_measurement_field_path(field),
+                          class: "btn btn-xs btn-secondary" do %>
+                          <i class="fas fa-eye"></i>
+                        <% end %>
+                        <%= link_to edit_admin_measurement_field_path(field),
+                          class: "btn btn-xs btn-secondary" do %>
+                          <i class="fas fa-edit"></i>
+                        <% end %>
+                        <%= button_to admin_measurement_field_path(field, page: params[:page]),
+              method: :delete,
+              class: "btn btn-xs rounded btn-secondary",
+              data: { turbo_confirm: "Are you sure you want to delete #{field.name}?" } do %>
+                          <i class="fas fa-trash"></i>
+                        <% end %>
+                      </div>
+                    </td>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <!-- PAGINATION -->
+      <div class="d-flex justify-content-center mt-3">
+        <%= paginate @measurement_fields %>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>

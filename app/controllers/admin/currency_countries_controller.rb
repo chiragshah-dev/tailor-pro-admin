@@ -1,4 +1,5 @@
 class Admin::CurrencyCountriesController < ApplicationController
+  before_action :authenticate_admin_user!
   before_action :set_currency
 
   def new

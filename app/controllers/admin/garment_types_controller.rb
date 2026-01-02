@@ -1,19 +1,25 @@
 class Admin::GarmentTypesController < ApplicationController
+  before_action :authenticate_admin_user!
   before_action :set_garment_type, only: %i[show edit update destroy]
   before_action :load_measurements, only: %i[new edit create update]
 
   def index
-    @garment_types = GarmentType.order(created_at: :desc)
+    @garment_types = GarmentType.all
 
     if params[:search].present?
-      q = "%#{params[:search]}%"
+      q = params[:search].strip
+
       @garment_types = @garment_types.where(
-        "garment_name ILIKE :q OR gender ILIKE :q",
-        q: q
+        "garment_name ILIKE :q OR gender = :gender",
+        q: "%#{q}%",
+        gender: GarmentType.genders[q.downcase],
       )
     end
 
-    @garment_types = @garment_types.page(params[:page]).per(5)
+    @garment_types = @garment_types
+      .order(created_at: :desc)
+      .page(params[:page])
+      .per(10)
   end
 
   def show
@@ -90,7 +96,7 @@ class Admin::GarmentTypesController < ApplicationController
 
     params[:measurement_field_ids].each do |mid|
       @garment_type.garment_type_measurements.create(
-        measurement_field_id: mid
+        measurement_field_id: mid,
       )
     end
   end
