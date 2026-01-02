@@ -1,0 +1,101 @@
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <!-- HEADER -->
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+            <h6 class="text-white text-capitalize ps-3 mb-0">
+              Garment Type Details
+            </h6>
+            <div class="me-3 d-flex gap-2">
+              <button
+                class="btn btn-sm btn-white text-dark text-uppercase font-weight-bold"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#garmentMeasurements">
+                Measurements
+              </button>
+              <%= link_to edit_admin_garment_type_path(@garment_type),
+                    class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
+                Edit
+              <% end %>
+              <%= link_to admin_garment_type_path(@garment_type),
+                    method: :delete,
+                    data: { confirm: "Are you sure?" },
+                    class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
+                Delete
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <!-- BODY -->
+        <div class="card-body px-4 pt-4 pb-2">
+          <div class="row">
+            <!-- LEFT -->
+            <div class="col-md-6">
+              <p class="text-sm mb-2">
+                <strong>Garment Name:</strong>
+                <span class="text-secondary fw-bold ms-2">
+                  <%= @garment_type.garment_name.titleize %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <strong>Gender:</strong>
+                <span class="badge bg-gradient-info text-white ms-2 text-capitalize">
+                  <%= @garment_type.gender %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <strong>Active:</strong>
+                <span class="text-secondary fw-bold ms-2">
+                  <%= @garment_type.active? ? "Yes" : "No" %>
+                </span>
+              </p>
+            </div>
+            <!-- RIGHT -->
+            <div class="col-md-6">
+              <% if @garment_type.image.attached? %>
+                <p class="text-sm fw-bold text-dark mb-2">
+                  Garment Image:
+                </p>
+                <%= image_tag @garment_type.image,
+                      class: "img-thumbnail",
+                      style: "max-width: 180px;" %>
+              <% end %>
+            </div>
+          </div>
+          <!-- MEASUREMENTS -->
+          <div class="collapse show mt-4" id="garmentMeasurements">
+            <hr class="horizontal dark mb-3">
+            <h6 class="text-uppercase text-dark mb-3">
+              Measurement Fields
+            </h6>
+            <% if @measurement_fields.any? %>
+              <div class="row">
+                <% @measurement_fields.each do |field| %>
+                  <div class="col-md-3 mb-2">
+                    <span class="badge bg-light text-dark border w-100 text-start py-2">
+                      <%= field.label %>
+                    </span>
+                  </div>
+                <% end %>
+              </div>
+            <% else %>
+              <p class="text-sm text-secondary mb-0">
+                No measurement fields assigned.
+              </p>
+            <% end %>
+          </div>
+          <!-- BACK -->
+          <div class="mt-4 text-end">
+            <%= link_to admin_garment_types_path,
+                  class: "btn btn-secondary btn-sm text-uppercase font-weight-bold" do %>
+              Back
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

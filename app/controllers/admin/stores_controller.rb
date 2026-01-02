@@ -1,4 +1,5 @@
 class Admin::StoresController < ApplicationController
+  before_action :authenticate_admin_user!
   before_action :set_store, only: %i[show edit update destroy]
 
   def index
@@ -17,6 +18,20 @@ class Admin::StoresController < ApplicationController
     end
 
     @stores = @stores.order(created_at: :desc).page(params[:page]).per(10)
+  end
+
+  def new
+    @store = Store.new
+    @store.build_store_bank_detail
+  end
+
+  def create
+    @store = Store.new(store_params)
+    if @store.save
+      redirect_to admin_store_path(@store), notice: "Store was successfully created."
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def show

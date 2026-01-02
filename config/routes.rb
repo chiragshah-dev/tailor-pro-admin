@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
   # devise_for :admin_users, ActiveAdmin::Devise.config
   devise_for :admin_users,
-  path: "admin",
-  controllers: {
-    sessions: "admin/sessions"
-  }
+             path: "admin",
+             controllers: {
+               sessions: "admin/sessions",
+             }
 
   ActiveAdmin.routes(self)
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -20,6 +20,11 @@ Rails.application.routes.draw do
     resources :currency_settings
     resources :stores
     resources :workers
+    resources :garment_types
+    resources :measurement_fields
+    resources :currencies do
+      resources :currency_countries, only: %i[new create destroy]
+    end
     get "stores/:id/stitches_for", to: "orders#store_stitches_for"
     get "garment_types/by_gender/:gender", to: "orders#garment_types_by_gender"
     get "garment_types/:id/measurement_fields", to: "orders#measurement_fields"
