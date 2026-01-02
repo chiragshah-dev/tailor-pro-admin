@@ -59,19 +59,19 @@
             <div class="col-md-6">
               <p class="text-sm mb-2 text-dark">
                 <strong>Contact Number:</strong>
-                <span class="text-secondary ms-2"><%= @store.contact_number.presence || "—" %></span>
+                <span class="text-secondary ms-2"><%= @store.contact_number.presence || "-" %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
                 <strong>Email:</strong>
-                <span class="text-secondary ms-2"><%= @store.email.presence || "—" %></span>
+                <span class="text-secondary ms-2"><%= @store.email.presence || "-" %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
                 <strong>Website:</strong>
-                <span class="text-secondary ms-2"><%= @store.website_url.presence || "—" %></span>
+                <span class="text-secondary ms-2"><%= @store.website_url.presence || "-" %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
                 <strong>Owner:</strong>
-                <span class="text-secondary ms-2"><%= @store.user&.name || "—" %></span>
+                <span class="text-secondary ms-2"><%= @store.user&.name || "-" %></span>
               </p>
             </div>
           </div>
@@ -107,11 +107,11 @@
             <div class="col-md-6">
               <p class="text-sm mb-2 text-dark">
                 <strong>GST Number:</strong>
-                <span class="text-secondary ms-2"><%= @store.gst_number.presence || "—" %></span>
+                <span class="text-secondary ms-2"><%= @store.gst_number.presence || "-" %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
                 <strong>GST Name:</strong>
-                <span class="text-secondary ms-2"><%= @store.gst_name.presence || "—" %></span>
+                <span class="text-secondary ms-2"><%= @store.gst_name.presence || "-" %></span>
               </p>
             </div>
             <div class="col-md-6">
@@ -121,7 +121,7 @@
               </p>
               <p class="text-sm mb-2 text-dark">
                 <strong>GST Percentage:</strong>
-                <span class="text-secondary ms-2"><%= @store.gst_percentage.present? ? "#{@store.gst_percentage}%" : "—" %></span>
+                <span class="text-secondary ms-2"><%= @store.gst_percentage.present? ? "#{@store.gst_percentage}%" : "-" %></span>
               </p>
             </div>
           </div>
@@ -134,15 +134,15 @@
               <div class="col-md-6">
                 <p class="text-sm mb-2 text-dark">
                   <strong>Account Holder Name:</strong>
-                  <span class="text-secondary ms-2"><%= bank.account_holder_name.presence || "—" %></span>
+                  <span class="text-secondary ms-2"><%= bank.account_holder_name.presence || "-" %></span>
                 </p>
                 <p class="text-sm mb-2 text-dark">
                   <strong>Bank Name:</strong>
-                  <span class="text-secondary ms-2"><%= bank.bank_name.presence || "—" %></span>
+                  <span class="text-secondary ms-2"><%= bank.bank_name.presence || "-" %></span>
                 </p>
                 <p class="text-sm mb-2 text-dark">
                   <strong>Account Number:</strong>
-                  <span class="text-secondary ms-2"><%= bank.account_number.presence || "—" %></span>
+                  <span class="text-secondary ms-2"><%= bank.account_number.presence || "-" %></span>
                 </p>
                 <% if bank.qr_code.attached? %>
                   <p class="text-sm mb-2 text-dark"><strong>QR Code:</strong></p>
@@ -159,11 +159,11 @@
               <div class="col-md-6">
                 <p class="text-sm mb-2 text-dark">
                   <strong>IFSC Code:</strong>
-                  <span class="text-secondary ms-2"><%= bank.ifsc_code.presence || "—" %></span>
+                  <span class="text-secondary ms-2"><%= bank.ifsc_code.presence || "-" %></span>
                 </p>
                 <p class="text-sm mb-2 text-dark">
                   <strong>UPI ID:</strong>
-                  <span class="text-secondary ms-2"><%= bank.upi_id.presence || "—" %></span>
+                  <span class="text-secondary ms-2"><%= bank.upi_id.presence || "-" %></span>
                 </p>
                 <p class="text-sm mb-2 text-dark">
                   <strong>Verified:</strong>

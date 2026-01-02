@@ -18,6 +18,7 @@
             </tr>
           </thead>
           <tbody>
+          <% if @currencies.any? %>
             <% @currencies.each_with_index do |currency, index| %>
               <tr>
                 <td class="px-3">
@@ -49,6 +50,13 @@
                 </td>
               </tr>
             <% end %>
+            <%else%>
+                    <tr>
+                      <td colspan="12" class="text-center">
+                        <p class="no-content-text">No records found.</p>
+                      </td>
+                    </tr>
+            <%end%>
           </tbody>
         </table>
       </div>

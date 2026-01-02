@@ -37,10 +37,10 @@
                     <%= worker.name %>
                   </td>
                   <td class=" text-center text-sm">
-                    <%= worker.contact_number.presence || "—" %>
+                    <%= worker.contact_number.presence || "-" %>
                   </td>
                   <td class="text-center text-sm">
-                    <%= worker.job_role&.name&.capitalize || "—" %>
+                    <%= worker.job_role&.name&.capitalize || "-" %>
                   </td>
                   <td class=" text-center text-sm">
                     <% if worker.active %>

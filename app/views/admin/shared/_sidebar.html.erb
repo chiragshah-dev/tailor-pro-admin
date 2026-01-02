@@ -29,6 +29,12 @@
     <% end %>
   </li>
   <!-- Orders -->
+  <li class="nav-item">
+    <%= link_to admin_orders_path, class: "nav-link #{controller_name == 'orders' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
+      <i class="material-symbols-rounded opacity-5">group</i>
+      <span class="nav-link-text ms-1">Orders</span>
+    <% end %>
+  </li>
   <!-- Users -->
   <li class="nav-item">
     <%= link_to admin_users_path, class: "nav-link #{controller_name == 'users' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
