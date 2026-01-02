@@ -13,9 +13,13 @@
           <div class="card-body px-0 pb-2">
             <!-- SEARCH -->
             <div class="px-3 pb-3">
-              <%= render "admin/shared/search",
-        url: admin_stores_path,
-        placeholder: "Search stores..." %>
+              <%= render "admin/shared/search", url: admin_stores_path,placeholder: "Search stores..." do %>
+                <!-- FILTER: MAIN / BRANCH -->
+                <div class="w-10">
+                  <%= select_tag :main_store,options_for_select([["All Stores", "false"], ["Main Store", "true"]],
+                  params[:main_store]),class: "form-select",onchange: "this.form.submit();"  %>
+                </div>
+              <% end %>
             </div>
             <!-- TABLE -->
             <div class="table-responsive p-0">

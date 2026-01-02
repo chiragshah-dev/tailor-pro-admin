@@ -5,11 +5,15 @@ class Admin::StoresController < ApplicationController
     @stores = Store.includes(:user)
 
     if params[:search].present?
-      q = "%#{params[:search]}%"
+      q = "%#{params[:search].strip}%"
       @stores = @stores.where(
         "stores.name ILIKE :q OR stores.code ILIKE :q OR stores.contact_number ILIKE :q",
-        q: q
+        q: q,
       )
+    end
+
+    if params[:main_store].present? && params[:main_store] == "true"
+      @stores = @stores.where(is_main_store: true)
     end
 
     @stores = @stores.order(created_at: :desc).page(params[:page]).per(10)
@@ -62,8 +66,8 @@ class Admin::StoresController < ApplicationController
         :account_number,
         :ifsc_code,
         :upi_id,
-        :qr_code
-      ]
+        :qr_code,
+      ],
     )
   end
 end
