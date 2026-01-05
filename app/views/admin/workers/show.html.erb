@@ -34,13 +34,13 @@
               <p class="text-sm mb-2">
                 <span class="fw-bold text-dark">Contact Number:</span>
                 <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
-                  <%= @worker.contact_number.presence || "—" %>
+                  <%= @worker.contact_number.presence || "-" %>
                 </span>
               </p>
               <p class="text-sm mb-2">
                 <span class="fw-bold text-dark">Job Role:</span>
                 <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
-                  <%= @worker.job_role&.name || "—" %>
+                  <%= @worker.job_role&.name || "-" %>
                 </span>
               </p>
             </div>

@@ -57,25 +57,25 @@
                         <!-- CODE -->
                         <td>
                           <p class="text-sm text-secondary mb-0 font-weight-bold">
-                            <%= store.code.presence || "—" %>
+                            <%= store.code.presence || "-" %>
                           </p>
                         </td>
                         <!-- OWNER -->
                         <td>
                           <p class="text-sm text-secondary mb-0 font-weight-bold">
-                            <%= store.user&.name || "—" %>
+                            <%= store.user&.name || "-" %>
                           </p>
                         </td>
                         <!-- CONTACT -->
                         <td>
                           <p class="text-sm text-secondary mb-0 font-weight-bold">
-                            <%= store.contact_number.presence || "—" %>
+                            <%= store.contact_number.presence || "-" %>
                           </p>
                         </td>
                         <!-- LOCATION -->
                         <%# <td>
                         <p class="text-sm text-secondary mb-0 font-weight-bold">
-                          <%= [store.city, store.state].compact.join(", ").presence || "—" %>
+                          <%= [store.city, store.state].compact.join(", ").presence || "-" %>
                         <%# </p> %>
                         <%# </td> %>
                         <!-- ACTIONS -->

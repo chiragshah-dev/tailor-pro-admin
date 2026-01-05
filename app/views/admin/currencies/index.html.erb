@@ -22,22 +22,22 @@
             </tr>
           </thead>
           <tbody>
-            <% if @currencies.present? %>
-              <% @currencies.each_with_index do |currency, index| %>
-                <tr>
-                  <td class="px-3">
-                    <p class="text-xs font-weight-bold mb-0 px-3 py-1">
-                      <%= (@currencies.current_page - 1) * @currencies.limit_value + index + 1 %>
-                    </p>
-                  </td>
-                  <td>
-                    <p class="text-sm text-secondary mb-0 font-weight-bold">
-                      <h6 class="mb-0 text-sm"><%= currency.name %></h6>
-                    </p>
-                  </td>
-                  <td class="align-middle text-center">
-                    <div class="d-flex justify-content-center gap-1">
-                      <%= link_to edit_admin_currency_path(currency,page: params[:page]),
+          <% if @currencies.any? %>
+            <% @currencies.each_with_index do |currency, index| %>
+              <tr>
+                <td class="px-3">
+                  <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                    <%= (@currencies.current_page - 1) * @currencies.limit_value + index + 1 %>
+                  </p>
+                </td>
+                <td>
+                  <p class="text-sm text-secondary mb-0 font-weight-bold">
+                    <h6 class="mb-0 text-sm"><%= currency.name %></h6>
+                  </p>
+                </td>
+                <td class="align-middle text-center">
+                  <div class="d-flex justify-content-center gap-1">
+                    <%= link_to edit_admin_currency_path(currency,page: params[:page]),
                                   class: "btn btn-xs rounded btn-secondary",
                                   title: "Edit" do %>
                         <i class="fas fa-edit"></i>
@@ -61,6 +61,13 @@
                 </td>
               </tr>
             <% end %>
+            <%else%>
+                    <tr>
+                      <td colspan="12" class="text-center">
+                        <p class="no-content-text">No records found.</p>
+                      </td>
+                    </tr>
+            <%end%>
           </tbody>
         </table>
       </div>
