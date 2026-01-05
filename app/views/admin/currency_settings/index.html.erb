@@ -52,7 +52,7 @@
                         <% end %>
                         <%= button_to admin_currency_setting_path(setting,page: params[:page]),
                                   method: :delete,
-                                  onclick: "return confirm('Are you sure?')",
+                                  onclick: "return confirm('Are you sure you want to delete this #{setting.currency.name}?')",
                                   class: "btn btn-xs rounded btn-secondary",
                                   form: { class: "d-inline" },
                                   title: "Delete" do %>

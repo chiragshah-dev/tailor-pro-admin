@@ -78,6 +78,14 @@
       <span class="nav-link-text ms-1">Currency</span>
     <% end %>
   </li>
+  <!-- Country Codes -->
+  <li class="nav-item">
+    <%= link_to admin_currency_countries_path,
+          class: "nav-link #{controller_name == 'country_codes' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
+      <i class="fa fa-globe" aria-hidden="true"></i>
+      <span class="nav-link-text ms-1">Country Codes</span>
+    <% end %>
+  </li>
   <!-- Settings -->
   <li class="nav-item">
     <%= link_to admin_currency_settings_path,
