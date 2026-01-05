@@ -22,7 +22,7 @@
               <% end %>
               <%= link_to admin_garment_type_path(@garment_type),
                     method: :delete,
-                    data: { confirm: "Are you sure?" },
+                    data: { confirm: "Are you sure you want to delete this #{@garment_type.garment_name}?" },
                     class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
                 Delete
               <% end %>

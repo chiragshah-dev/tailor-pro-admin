@@ -24,8 +24,8 @@
                   <%= f.select :currency_id,
       options_from_collection_for_select(
         Currency.order(:name),
-        :id,      # ✅ VALUE (goes into currency_id)
-        :name,    # ✅ LABEL (shown to user)
+        :id,
+        :name,
         @currency_setting.currency_id
       ),
       { prompt: "Select Currency" },

@@ -78,7 +78,7 @@
                         <%= button_to admin_garment_type_path(garment),
                             method: :delete,
                             form: { class: "d-inline" },
-                            onclick: "return confirm('Are you sure?')",
+                            onclick: "return confirm('Are you sure you want to delete this #{garment.garment_name}?')",
                             class: "btn btn-xs btn-secondary" do %>
                           <i class="fas fa-trash"></i>
                         <% end %>
