@@ -3794,6 +3794,16 @@ textarea.form-control.is-invalid {
   transition: all 0.15s ease-in;
 }
 
+
+.btn-xs {
+  --bs-btn-padding-x: 0.5rem;
+  --bs-btn-padding-y: 0.25rem;
+  --bs-btn-font-size: 0.75rem;
+  --bs-btn-line-height: 1rem;
+  --bs-btn-border-radius: 0.25rem;
+}
+
+
 @media (prefers-reduced-motion: reduce) {
   .btn {
     transition: none;
