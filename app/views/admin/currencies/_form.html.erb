@@ -20,6 +20,9 @@
                 <div class="input-group input-group-outline">
                   <%= f.text_field :name, class: "form-control" %>
                 </div>
+                <div id="name_err" class="text-danger mt-2 text-xs">
+                  <%= @currency.errors.full_messages_for(:name).first %>
+                </div>
               </div>
             </div>
             <!-- ACTIONS -->
@@ -36,3 +39,37 @@
     </div>
   </div>
 </div>
+<script>
+  document.addEventListener("turbo:load", () => {
+    const form = document.querySelector("form");
+    if (!form) return;
+
+    const currencyField = document.getElementById("currency_name");
+    const errorDiv = document.getElementById("name_err");
+
+    const currencyRegex = /^[A-Z]{3}$/;
+
+    form.addEventListener("submit", (e) => {
+      let valid = true;
+      errorDiv.innerHTML = "";
+      currencyField.classList.remove("is-invalid");
+
+      if (!currencyField.value.trim()) {
+        errorDiv.innerHTML = "Currency code can't be empty";
+        currencyField.classList.add("is-invalid");
+        valid = false;
+      } else if (!currencyRegex.test(currencyField.value.trim())) {
+        errorDiv.innerHTML = "Currency code must be 3 uppercase letters (e.g. USD, INR)";
+        currencyField.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+
+    currencyField.addEventListener("input", () => {
+      errorDiv.innerHTML = "";
+      currencyField.classList.remove("is-invalid");
+    });
+  });
+</script>
