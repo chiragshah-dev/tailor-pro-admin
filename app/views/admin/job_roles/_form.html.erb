@@ -1,0 +1,57 @@
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card my-4">
+
+        <!-- HEADER -->
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+            <h6 class="text-white text-capitalize ps-3 mb-0">
+              <%= @job_role.persisted? ? "Edit Job Role" : "New Job Role" %>
+            </h6>
+          </div>
+        </div>
+
+        <!-- BODY -->
+        <div class="card-body px-4 pb-4">
+          <%= form_with model: [:admin, @job_role], local: true do |f| %>
+            <%= hidden_field_tag :page, params[:page] %>
+            <%= hidden_field_tag :search, params[:search] if params[:search].present? %>
+
+            <div class="row g-4">
+              <!-- ROLE NAME -->
+              <div class="form-group col-md-6">
+                <label class="form-label font-weight-bold text-dark">
+                  Role Name
+                </label>
+
+                <div class="input-group input-group-outline">
+                  <%= f.text_field :name,
+                        class: "form-control",
+                        placeholder: "e.g. Tailor, Alteration Expert" %>
+                </div>
+
+                <div id="name_err" class="text-danger mt-2 text-xs">
+                  <%= @job_role.errors.full_messages_for(:name).first %>
+                </div>
+              </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="d-flex justify-content-end mt-4">
+              <%= link_to "Back",
+                    admin_job_roles_path(page: @current_page, search: @search),
+                    class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+
+             <%= f.submit @job_role.persisted? ? "Update" : "Create",
+      class: "btn btn-info text-white text-uppercase font-weight-bold" %>
+
+            </div>
+
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
