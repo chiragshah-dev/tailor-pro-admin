@@ -54,6 +54,24 @@ class Store < ApplicationRecord
     [address, location_name, city, state, country, postal_code].compact.reject(&:blank?).join(", ")
   end
 
+  def total_billing_amount
+    orders.sum(:total_bill_amount)
+  end
+
+  def billing_limit
+    currency = Currency.from_country_code(user.country_code)
+    return 0 unless currency
+
+    CurrencySetting.find_by(currency_id: currency.id)&.amount_limit.to_f || 0
+  end
+
+  def order_limit_reached?
+    limit = billing_limit
+    return false if limit.zero?
+
+    total_billing_amount >= limit
+  end
+
   private
 
   def set_main_store

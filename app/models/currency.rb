@@ -14,6 +14,10 @@ class Currency < ApplicationRecord
 
   private
 
+  def self.from_country_code(country_code)
+    CurrencyCountry.find_by(country_code: country_code)&.currency
+  end
+
   def create_currency_countries
     CurrencyCountryMapper.call(self)
   end
