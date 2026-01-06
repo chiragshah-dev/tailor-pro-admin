@@ -1,0 +1,46 @@
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <!-- HEADER -->
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+            <h6 class="text-white text-capitalize ps-3 mb-0">
+              Job Role Details
+            </h6>
+            <div class="me-3 d-flex gap-2">
+              <%= link_to edit_admin_job_role_path(@job_role),
+                  class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
+                Edit
+              <% end %>
+              <%= button_to admin_job_role_path(@job_role, page: params[:page]),
+              method: :delete,
+              class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold",
+              data: { turbo_confirm: "Are you sure you want to delete #{@job_role.name}?" } do %>
+                Delete
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="card-body px-4 pt-4 pb-2">
+          <div class="row">
+            <div class="col-md-6">
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Name:</span>
+                <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
+                  <%= @job_role.name %>
+                </span>
+              </p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <%= link_to admin_job_roles_path(page: @current_page, search: @search),
+                class: "btn btn-secondary btn-sm text-uppercase font-weight-bold" do %>
+              Back
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
