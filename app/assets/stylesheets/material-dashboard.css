@@ -29520,3 +29520,31 @@ pre[class*=language-] {
   cursor: pointer;
   font-size: 18px;
 }
+
+
+/* dashboard cards  */
+
+.stat-card {
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  transition: all 0.25s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 35px rgba(0,0,0,0.08);
+}
+
+.stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.stat-icon i {
+  font-size: 26px;
+}
