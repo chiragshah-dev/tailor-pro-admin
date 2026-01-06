@@ -3862,7 +3862,7 @@ textarea.form-control.is-invalid {
 .btn.disabled,
 fieldset:disabled .btn {
   color: var(--bs-btn-disabled-color);
-  pointer-events: none;
+  pointer-events: none ;
   background-color: var(--bs-btn-disabled-bg);
   border-color: var(--bs-btn-disabled-border-color);
   opacity: var(--bs-btn-disabled-opacity);
@@ -6150,6 +6150,7 @@ fieldset:disabled .btn {
   pointer-events: none;
   background-color: var(--bs-pagination-disabled-bg);
   border-color: var(--bs-pagination-disabled-border-color);
+  cursor: none;
 }
 
 .page-item:not(:first-child) .page-link {
