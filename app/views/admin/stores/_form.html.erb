@@ -13,6 +13,7 @@
         <!-- BODY -->
         <div class="card-body px-4 pb-4">
           <%= form_with model: [:admin, @store], local: true do |f| %>
+          <%= hidden_field_tag :page, params[:page] %>
             <div class="row g-4">
               <!-- Store Name -->
               <div class="col-md-6">
@@ -214,7 +215,7 @@
               <!-- ACTIONS -->
               <div class="d-flex justify-content-end mt-4">
                 <%= link_to "Back",
-                    admin_stores_path,
+                    admin_stores_path(page: params[:page]),
                     class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
                 <%= f.submit "Update",
                     class: "btn btn-info text-white text-uppercase font-weight-bold" %>

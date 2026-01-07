@@ -48,7 +48,7 @@ class Admin::StoresController < ApplicationController
 
   def update
     if @store.update(store_params)
-      redirect_to admin_store_path(@store), notice: "Store was successfully updated."
+      redirect_to admin_store_path(@store,page: params[:page]), notice: "Store was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -56,7 +56,7 @@ class Admin::StoresController < ApplicationController
 
   def destroy
     @store.destroy
-    redirect_to admin_stores_path, notice: "Store was successfully deleted."
+    redirect_to admin_stores_path(page: params[:page]), notice: "Store was successfully deleted."
   end
 
   private
