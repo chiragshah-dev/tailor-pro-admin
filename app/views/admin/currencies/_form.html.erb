@@ -6,13 +6,13 @@
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
             <h6 class="text-white text-capitalize ps-3 mb-0">
-              Currency
-            </h6>
+              <%= @currency.persisted? ? "Edit Currency" : "New Currency" %>            </h6>
           </div>
         </div>
         <!-- BODY -->
         <div class="card-body px-4 pb-4">
           <%= form_with model: [:admin, @currency], local: true do |f| %>
+            <%= hidden_field_tag :page, params[:page] %>
             <div class="row g-4">
               <!-- Name -->
               <div class="col-md-6">
@@ -28,9 +28,9 @@
             <!-- ACTIONS -->
             <div class="d-flex justify-content-end mt-4">
               <%= link_to "Back",
-                    admin_currencies_path(page: @current_page, search: @search),
+                    admin_currencies_path(page: params[:page]),
                     class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
-              <%= f.submit "Save",
+              <%= f.submit @currency.persisted? ? "Update" : "Create",
                     class: "btn btn-info text-white text-uppercase font-weight-bold" %>
             </div>
           <% end %>
@@ -40,7 +40,7 @@
   </div>
 </div>
 <script>
-  document.addEventListener("turbo:load", () => {
+  document.addEventListener("turbo:render", () => {
     const form = document.querySelector("form");
     if (!form) return;
 
