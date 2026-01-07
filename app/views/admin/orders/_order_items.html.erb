@@ -10,10 +10,8 @@
           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">For</th>
           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Garment</th>
           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Qty</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Price</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Status</th>
+          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Unit Price</th>
           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Worker</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Delivery</th>
           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Action</th>
         </tr>
       </thead>
@@ -42,20 +40,11 @@
               <td class="text-center text-sm">
                 ₹ <%= item.price %>
               </td>
-              <td class="text-center text-sm">
-                <span class="badge badge-sm
-                <%= item.status == "completed" ? "bg-gradient-success" :
-                    item.status == "in_progress" ? "bg-gradient-info" :
-                    "bg-gradient-secondary" %>">
-                  <%= item.status.humanize %>
-                </span>
-              </td>
+              
               <td class="text-center text-sm">
                 <%= item.worker&.name || "-" %>
               </td>
-              <td class="text-center text-sm">
-                <%= item.delivery_date || "-" %>
-              </td>
+              
               <!-- ACTION -->
               <td class="text-center">
                 <%= link_to admin_order_item_path(item),
