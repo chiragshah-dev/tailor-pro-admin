@@ -1,7 +1,6 @@
 class Admin::WorkersController < ApplicationController
   before_action :authenticate_admin_user!
   before_action :set_worker, only: [:show, :edit, :update, :destroy]
-  before_action :set_current_page, only: [:show, :edit, :update, :destroy]
 
   def index
     @workers = Worker.left_joins(:store, :job_role)
@@ -45,7 +44,7 @@ class Admin::WorkersController < ApplicationController
 
   def update
     if @worker.update(worker_params)
-      redirect_to admin_worker_path(@worker, page: @current_page, search: @search),
+      redirect_to admin_worker_path(@worker, page: params[:page]),
         notice: "Worker updated successfully."
     else
       flash.now[:alert] = "Worker could not be updated. Please fix the errors below."
@@ -55,10 +54,10 @@ class Admin::WorkersController < ApplicationController
 
   def destroy
     if @worker.destroy
-      redirect_to admin_workers_path(page: @current_page, search: @search),
+      redirect_to admin_workers_path(page: params[:page]),
         notice: "Worker deleted successfully."
     else
-      redirect_to admin_worker_path(@worker, page: @current_page, search: @search),
+      redirect_to admin_worker_path(@worker, page: params[:page]),
         alert: "Worker could not be deleted."
     end
   end
@@ -78,8 +77,5 @@ class Admin::WorkersController < ApplicationController
     )
   end
 
-  def set_current_page
-    @current_page = params[:page] || 1
-    @search = params[:search]
-  end
+
 end
