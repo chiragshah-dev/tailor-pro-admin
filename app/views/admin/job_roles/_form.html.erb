@@ -40,7 +40,7 @@
             <!-- ACTIONS -->
             <div class="d-flex justify-content-end mt-4">
               <%= link_to "Back",
-                    admin_job_roles_path(page: @current_page, search: @search),
+                    admin_job_roles_path(page: params[:page]),
                     class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
 
              <%= f.submit @job_role.persisted? ? "Update" : "Create",
@@ -55,3 +55,39 @@
     </div>
   </div>
 </div>
+
+
+<script>
+  document.addEventListener("turbo:load", () => {
+    const form = document.querySelector("form");
+    if (!form) return;
+
+    const nameInput = document.getElementById("job_role_name");
+    const nameErr   = document.getElementById("name_err");
+
+    form.addEventListener("submit", (e) => {
+      let valid = true;
+
+      // reset error
+      nameErr.innerHTML = "";
+      nameInput.classList.remove("is-invalid");
+
+      // Name validation
+      if (!nameInput.value.trim()) {
+        nameErr.innerHTML = "Role name can't be blank";
+        nameInput.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+
+    // clear error while typing
+    nameInput?.addEventListener("input", () => {
+      if (nameInput.value.trim().length > 0) {
+        nameErr.innerHTML = "";
+        nameInput.classList.remove("is-invalid");
+      }
+    });
+  });
+</script>

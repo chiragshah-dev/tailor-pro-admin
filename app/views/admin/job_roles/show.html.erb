@@ -9,7 +9,7 @@
               Job Role Details
             </h6>
             <div class="me-3 d-flex gap-2">
-              <%= link_to edit_admin_job_role_path(@job_role),
+              <%= link_to edit_admin_job_role_path(@job_role,page: params[:page]),
                   class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
                 Edit
               <% end %>
@@ -34,7 +34,7 @@
             </div>
           </div>
           <div class="d-flex justify-content-end">
-            <%= link_to admin_job_roles_path(page: @current_page, search: @search),
+            <%= link_to admin_job_roles_path(page: params[:page]),
                 class: "btn btn-secondary btn-sm text-uppercase font-weight-bold" do %>
               Back
             <% end %>
