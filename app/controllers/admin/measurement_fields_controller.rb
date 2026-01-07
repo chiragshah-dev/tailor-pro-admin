@@ -1,10 +1,9 @@
 class Admin::MeasurementFieldsController < ApplicationController
   before_action :authenticate_admin_user!
   before_action :set_measurement_field, only: [:show, :edit, :update, :destroy]
-  before_action :set_current_page, only: [:show, :edit, :update, :destroy]
 
   def index
-    @measurement_fields = MeasurementField.all
+    @measurement_fields = MeasurementField.includes(:garment_type)
     
     if params[:search].present?
       search = "%#{params[:search].strip}%"
@@ -41,7 +40,7 @@ class Admin::MeasurementFieldsController < ApplicationController
 
   def update
     if @measurement_field.update(measurement_field_params)
-      redirect_to admin_measurement_fields_path(@measurement_field, page: @current_page),
+      redirect_to admin_measurement_fields_path(@measurement_field, page: params[:page]),
         notice: "Measurement Field updated successfully."
     else
       flash.now[:alert] = "Measurement Field could not be updated. Please fix the errors below."
@@ -51,10 +50,10 @@ class Admin::MeasurementFieldsController < ApplicationController
 
   def destroy
     if @measurement_field.destroy
-      redirect_to admin_measurement_fields_path(page: @current_page),
+      redirect_to admin_measurement_fields_path(page: params[:page]),
         notice: "Measurement Field deleted successfully."
     else
-      redirect_to admin_measurement_fields_path(page: @current_page),
+      redirect_to admin_measurement_fields_path(page: params[:page]),
         alert: "Measurement Field could not be deleted."
     end
   end
@@ -69,7 +68,5 @@ class Admin::MeasurementFieldsController < ApplicationController
     params.require(:measurement_field).permit(:label, :active, :measurement_image, :garment_type_id)
   end
 
-  def set_current_page
-    @current_page = params[:page] || 1
-  end
+
 end

@@ -2,118 +2,120 @@
   <div class="row">
     <div class="col-12">
       <div class="card my-4">
+
         <!-- HEADER -->
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
             <h6 class="text-white text-capitalize ps-3 mb-0">
-              <%= @currency_setting.persisted? ? "Edit Currency Setting" : "Add Currency Setting" %>
+              <%= @currency_setting.persisted? ? "Edit Currency Setting" : "New Currency Setting" %>
             </h6>
           </div>
         </div>
+
         <!-- BODY -->
         <div class="card-body px-4 pb-4">
-          <%= form_with model: [:admin, @currency_setting],
-                local: true,
-                data: { turbo: false },
-                html: { id: "currency-setting-form" } do |f| %>
+          <%= form_with model: [:admin, @currency_setting], local: true do |f| %>
+            <%= hidden_field_tag :page, params[:page] %>
+
             <div class="row g-4">
+
               <!-- Currency -->
               <div class="col-md-6">
                 <label class="form-label font-weight-bold text-dark">Currency</label>
                 <div class="input-group input-group-outline">
-                  <%= f.select :currency_id,
-      options_from_collection_for_select(
-        Currency.order(:name),
-        :id,
-        :name,
-        @currency_setting.currency_id
-      ),
-      { prompt: "Select Currency" },
-      class: "form-control #{'is-invalid' if @currency_setting.errors[:currency_id].any?}",
-      id: "currency_id" %>
+                  <%= f.collection_select :currency_id,
+                        Currency.order(:name),
+                        :id,
+                        :name,
+                        { prompt: "Select Currency" },
+                        class: "form-control" %>
                 </div>
-                <% if @currency_setting.errors[:currency_id].any? %>
-                  <small class="text-danger">
-                    <%= @currency_setting.errors[:currency_id].first %>
-                  </small>
-                <% end %>
+                <div id="currency_err" class="text-danger mt-2 text-xs">
+                  <%= @currency_setting.errors.full_messages_for(:currency_id).first %>
+                </div>
               </div>
+
               <!-- Amount Limit -->
               <div class="col-md-6">
                 <label class="form-label font-weight-bold text-dark">Amount Limit</label>
                 <div class="input-group input-group-outline">
                   <%= f.number_field :amount_limit,
                         step: 0.01,
-                        class: "form-control #{'is-invalid' if @currency_setting.errors[:amount_limit].any?}",
-                        id: "amount_limit",
+                        class: "form-control",
                         placeholder: "Enter amount limit" %>
                 </div>
-                <% if @currency_setting.errors[:amount_limit].any? %>
-                  <small class="text-danger">
-                    <%= @currency_setting.errors[:amount_limit].first %>
-                  </small>
-                <% end %>
+                <div id="amount_err" class="text-danger mt-2 text-xs">
+                  <%= @currency_setting.errors.full_messages_for(:amount_limit).first %>
+                </div>
               </div>
+
             </div>
+
             <!-- ACTIONS -->
             <div class="d-flex justify-content-end mt-4">
               <%= link_to "Back",
-                    admin_currency_settings_path,
+                    admin_currency_settings_path(page: params[:page]),
                     class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+
               <%= f.submit(
-                    @currency_setting.persisted? ? "Update" : "Save",
+                    @currency_setting.persisted? ? "Update" : "Create",
                     class: "btn btn-info text-white text-uppercase font-weight-bold"
                   ) %>
             </div>
+
           <% end %>
         </div>
+
       </div>
     </div>
   </div>
 </div>
-<style>
-  .input-group:has(.field_with_errors) {
-      display: block;
-  }
-</style>
+
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("currency-setting-form");
+  document.addEventListener("turbo:render", () => {
+
+    const form = document.querySelector("form");
     if (!form) return;
 
-    form.addEventListener("submit", function (e) {
-      clearErrors();
+    const currencyInput = document.getElementById("currency_setting_currency_id");
+    const amountInput   = document.getElementById("currency_setting_amount_limit");
+
+    const currencyErr = document.getElementById("currency_err");
+    const amountErr   = document.getElementById("amount_err");
+
+    form.addEventListener("submit", (e) => {
       let valid = true;
 
-      const currency = document.getElementById("currency_code");
-      const amount = document.getElementById("amount_limit");
+      currencyErr.innerHTML = "";
+      amountErr.innerHTML   = "";
 
-      if (!currency.value) {
-        showError(currency, "Currency is required");
+      currencyInput.classList.remove("is-invalid");
+      amountInput.classList.remove("is-invalid");
+
+      if (!currencyInput.value) {
+        currencyErr.innerHTML = "Currency can't be blank";
+        currencyInput.classList.add("is-invalid");
         valid = false;
       }
 
-      if (!amount.value || parseFloat(amount.value) <= 0) {
-        showError(amount, "Amount must be greater than 0");
+      if (!amountInput.value || parseFloat(amountInput.value) <= 0) {
+        amountErr.innerHTML = "Amount must be greater than 0";
+        amountInput.classList.add("is-invalid");
         valid = false;
       }
 
       if (!valid) e.preventDefault();
     });
 
-    function showError(element, message) {
-      element.classList.add("is-invalid");
+    currencyInput.addEventListener("change", () => {
+      currencyErr.innerHTML = "";
+      currencyInput.classList.remove("is-invalid");
+    });
 
-      const error = document.createElement("small");
-      error.className = "text-danger validation-error";
-      error.innerText = message;
+    amountInput.addEventListener("input", () => {
+      amountErr.innerHTML = "";
+      amountInput.classList.remove("is-invalid");
+    });
 
-      element.closest(".input-group").after(error);
-    }
-
-    function clearErrors() {
-      document.querySelectorAll(".validation-error").forEach(el => el.remove());
-      document.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
-    }
   });
 </script>

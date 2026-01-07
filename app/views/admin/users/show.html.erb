@@ -19,7 +19,7 @@
     aria-controls="userStores">
                   Stores
                 </button>
-                <%= link_to edit_admin_user_path(@user), class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold me-2" do %>
+                <%= link_to edit_admin_user_path(@user,page: params[:page]), class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold me-2" do %>
                   Edit 
                 <% end %>
                 <%= button_to admin_user_path(@user, page: params[:page]),
@@ -135,7 +135,7 @@
                     </p>
                   <% end %>
                 </div>
-                <%= link_to admin_users_path, class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end" do %>
+                <%= link_to admin_users_path(page: params[:page]), class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end" do %>
                   Back
                 <% end %>
               </div>

@@ -16,16 +16,17 @@
                 data-bs-target="#garmentMeasurements">
                 Measurements
               </button>
-              <%= link_to edit_admin_garment_type_path(@garment_type),
+              <%= link_to edit_admin_garment_type_path(@garment_type,page: params[:page]),
                     class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
                 Edit
               <% end %>
-              <%= link_to admin_garment_type_path(@garment_type),
+              <%= button_to admin_garment_type_path(@garment_type,page: params[:page]),
                     method: :delete,
-                    data: { confirm: "Are you sure you want to delete this #{@garment_type.garment_name}?" },
+                    data: { turbo_confirm: "Are you sure you want to delete this #{@garment_type.garment_name}?" },
                     class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
                 Delete
               <% end %>
+
             </div>
           </div>
         </div>
@@ -89,7 +90,7 @@
           </div>
           <!-- BACK -->
           <div class="mt-4 text-end">
-            <%= link_to admin_garment_types_path,
+            <%= link_to admin_garment_types_path(page: params[:page]),
                   class: "btn btn-secondary btn-sm text-uppercase font-weight-bold" do %>
               Back
             <% end %>

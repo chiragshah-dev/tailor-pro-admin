@@ -9,7 +9,7 @@
               Measurement Field Details
             </h6>
             <div class="me-3 d-flex gap-2">
-              <%= link_to edit_admin_measurement_field_path(@measurement_field),
+              <%= link_to edit_admin_measurement_field_path(@measurement_field,page: params[:page]),
                     class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
                 Edit
               <% end %>
@@ -74,7 +74,7 @@
           </div>
           <!-- BACK -->
           <div class="mt-4 text-end">
-            <%= link_to admin_measurement_fields_path(page: @current_page),
+            <%= link_to admin_measurement_fields_path(page: params[:page]),
                   class: "btn btn-secondary btn-sm text-uppercase font-weight-bold" do %>
               Back
             <% end %>

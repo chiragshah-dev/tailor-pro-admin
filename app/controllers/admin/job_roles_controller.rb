@@ -1,7 +1,6 @@
 class Admin::JobRolesController < ApplicationController
   before_action :authenticate_admin_user!
   before_action :set_job_role, only: [:show, :edit, :update, :destroy]
-  before_action :set_current_page, only: [:show, :edit, :update, :destroy]
 
   def index
     @job_roles = JobRole.all
@@ -11,7 +10,7 @@ class Admin::JobRolesController < ApplicationController
       @job_roles = @job_roles.where("job_roles.name ILIKE :search", search: search)
     end
 
-    @job_roles = @job_roles.order(:id).page(params[:page]).per(10)
+    @job_roles = @job_roles.order(created_at: :desc).page(params[:page]).per(10)
   end
 
   def show; end
@@ -36,7 +35,7 @@ class Admin::JobRolesController < ApplicationController
 
   def update
     if @job_role.update(job_role_params)
-      redirect_to admin_job_roles_path(page: @current_page, search: @search),
+      redirect_to admin_job_roles_path(page: params[:page]),
         notice: "Job role updated successfully."
     else
       flash.now[:alert] = "Job role could not be updated."
@@ -46,10 +45,10 @@ class Admin::JobRolesController < ApplicationController
 
   def destroy
     if @job_role.destroy
-      redirect_to admin_job_roles_path(page: @current_page, search: @search),
+      redirect_to admin_job_roles_path(page: params[:page]),
         notice: "Job role deleted successfully."
     else
-      redirect_to admin_job_role_path(@job_role, page: @current_page, search: @search),
+      redirect_to admin_job_role_path(@job_role, page: params[:page]),
         alert: "Job role could not be deleted."
     end
   end
@@ -64,8 +63,5 @@ class Admin::JobRolesController < ApplicationController
     params.require(:job_role).permit(:name)
   end
 
-  def set_current_page
-    @current_page = params[:page] || 1
-    @search = params[:search]
-  end
+  
 end

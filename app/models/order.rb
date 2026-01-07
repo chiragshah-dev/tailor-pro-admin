@@ -48,8 +48,8 @@ class Order < ApplicationRecord
   def update_total
     # Update the order's total bill amount
     total = calculate_total
-    final_total = total - discount
-    paid_amount = payment_received + advance_payment
+    final_total = total - discount.to_f
+    paid_amount = payment_received.to_f + advance_payment.to_f
     balance_due = final_total - paid_amount
 
     update(total_bill_amount: total, balance_due: balance_due)
