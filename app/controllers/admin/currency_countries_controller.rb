@@ -45,7 +45,7 @@ class Admin::CurrencyCountriesController < ApplicationController
 
   def update
     if @currency_country.update(currency_country_params)
-      redirect_to admin_currency_countries_path, notice: "Currency country was successfully updated."
+      redirect_to admin_currency_countries_path(page: params[:page]), notice: "Currency country was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -53,7 +53,7 @@ class Admin::CurrencyCountriesController < ApplicationController
 
   def destroy
     @currency_country.destroy
-    redirect_to admin_currency_countries_path, notice: "Currency country was successfully deleted."
+    redirect_to admin_currency_countries_path(page: params[:page]), notice: "Currency country was successfully deleted."
   end
 
   private
