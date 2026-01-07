@@ -53,7 +53,7 @@ class Admin::GarmentTypesController < ApplicationController
   def update
     if @garment_type.update(garment_type_params)
       update_measurements
-      redirect_to admin_garment_types_path,
+      redirect_to admin_garment_types_path(page: params[:page]),
                   notice: "Garment type updated successfully"
     else
       render :edit
@@ -63,7 +63,7 @@ class Admin::GarmentTypesController < ApplicationController
   def destroy
     @garment_type.garment_type_measurements.destroy_all
     @garment_type.destroy
-    redirect_to admin_garment_types_path,
+    redirect_to admin_garment_types_path(page: params[:page]),
                 notice: "Garment type deleted."
   end
 
