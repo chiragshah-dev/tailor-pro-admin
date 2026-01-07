@@ -25,7 +25,7 @@ module Admin
 
     def update
       if @currency_setting.update(currency_setting_params)
-        redirect_to admin_currency_settings_path, notice: "Currency setting updated successfully."
+        redirect_to admin_currency_settings_path(page: params[:page]), notice: "Currency setting updated successfully."
       else
         render :edit
       end
@@ -33,7 +33,7 @@ module Admin
 
     def destroy
       @currency_setting.destroy
-      redirect_to admin_currency_settings_path, notice: "Currency setting removed."
+      redirect_to admin_currency_settings_path(page: params[:page]), notice: "Currency setting removed."
     end
 
     private
