@@ -13,6 +13,8 @@
         <!-- BODY -->
         <div class="card-body px-4 pb-4">
           <%= form_with model: [:admin, @measurement_field], local: true do |f| %>
+            <%= hidden_field_tag :page, params[:page] %>
+
             <div class="row g-4">
               <!-- Label -->
               <div class="form-group col-md-6">
@@ -73,7 +75,7 @@
             <!-- ACTIONS -->
             <div class="d-flex justify-content-end mt-4">
               <%= link_to "Back",
-                admin_measurement_fields_path(page: @current_page, search: @search),
+                admin_measurement_fields_path(page: params[:page]),
                 class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
               <%= f.submit @measurement_field.persisted? ? "Update" : "Create",
                 class: "btn btn-info text-white text-uppercase font-weight-bold" %>
