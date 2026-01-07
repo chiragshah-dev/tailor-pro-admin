@@ -129,7 +129,7 @@
           <!-- ORDER ITEMS -->
           <%= render "order_items" %>
           <!-- BACK -->
-          <%= link_to admin_orders_path,
+          <%= link_to admin_orders_path(page:params[:page]),
               class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end mt-3",
               data: { turbo_frame: "_top" } do %>
             Back
