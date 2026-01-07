@@ -13,4 +13,5 @@ class CurrencySetting < ApplicationRecord
 
   validates :amount_limit, presence: true
   validates :amount_limit, numericality: { greater_than: 0 }
+  validates :currency_id, presence: true, uniqueness: true
 end

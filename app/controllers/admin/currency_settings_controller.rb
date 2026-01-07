@@ -17,7 +17,7 @@ module Admin
       if @currency_setting.save
         redirect_to admin_currency_settings_path, notice: "Currency setting created successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -27,7 +27,7 @@ module Admin
       if @currency_setting.update(currency_setting_params)
         redirect_to admin_currency_settings_path(page: params[:page]), notice: "Currency setting updated successfully."
       else
-        render :edit
+        render :edit,status: :unprocessable_entity
       end
     end
 
