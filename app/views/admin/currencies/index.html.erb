@@ -3,51 +3,70 @@
     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
       <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between">
         <h6 class="text-white ps-3 mb-0">Currency</h6>
-        <%= link_to "Add New Currency", new_admin_currency_path,
-          class: "btn btn-sm btn-white text-dark me-3 text-uppercase font-weight-bold" %>
+        <%= link_to "Add New Currency",
+                    new_admin_currency_path,
+                    class: "btn btn-sm btn-white text-dark me-3 text-uppercase font-weight-bold" %>
       </div>
     </div>
     <div class="card-body px-0 pb-2">
+      <!-- Search -->
       <div class="px-3 pb-3">
-        <%= render "admin/shared/search", url: admin_currencies_path, placeholder: "Search currency..." do %>
-        <% end %>
+        <%= render "admin/shared/search",
+                    url: admin_currencies_path,
+                    placeholder: "Search currency..." %>
       </div>
+      <!-- Table -->
       <div class="table-responsive p-0">
         <table class="table align-items-center mb-0">
           <thead>
             <tr>
-              <th class="text-uppercase text-dark text-xxs font-weight-bold">ID</th>
-              <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Name</th>
+              <th class="text-uppercase text-dark text-xxs font-weight-bold">#</th>
+              <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Currency</th>
+              <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Symbol</th>
               <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2 text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
-          <% if @currencies.any? %>
-            <% @currencies.each_with_index do |currency, index| %>
-              <tr>
-                <td class="px-3">
-                  <p class="text-xs font-weight-bold mb-0 px-3 py-1">
-                    <%= (@currencies.current_page - 1) * @currencies.limit_value + index + 1 %>
-                  </p>
-                </td>
-                <td>
-                  <p class="text-sm text-secondary mb-0 font-weight-bold">
-                    <h6 class="mb-0 text-sm"><%= currency.name %></h6>
-                  </p>
-                </td>
-                <td class="align-middle text-center">
-                  <div class="d-flex justify-content-center gap-1">
-                    <%= link_to edit_admin_currency_path(currency,page: params[:page]),
+            <% if @currencies.any? %>
+              <% @currencies.each_with_index do |currency, index| %>
+                <tr>
+                  <!-- ID -->
+                  <td class="px-3">
+                    <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                      <%= (@currencies.current_page - 1) * @currencies.limit_value + index + 1 %>
+                    </p>
+                  </td>
+                  <!-- Currency + Flag -->
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <span style="font-size: 20px;">
+                        <%= currency.flag_emoji || "🏳️" %>
+                      </span>
+                      <div>
+                        <h6 class="mb-0 text-sm"><%= currency.name %></h6>
+                      </div>
+                    </div>
+                  </td>
+                  <!-- Symbol -->
+                  <td>
+                    <p class="text-sm text-secondary mb-0 font-weight-bold">
+                      <h6 class="mb-0 text-sm"><%= currency.symbol || "-" %></h6>
+                    </p>
+                  </td>
+                  <!-- Actions -->
+                  <td class="align-middle text-center">
+                    <div class="d-flex justify-content-center gap-1">
+                      <%= link_to edit_admin_currency_path(currency, page: params[:page]),
                                   class: "btn btn-xs rounded btn-secondary",
                                   title: "Edit" do %>
                         <i class="fas fa-edit"></i>
                       <% end %>
-                      <%= button_to admin_currency_path(currency,page: params[:page]),
-                                  method: :delete,
-                                  onclick: "return confirm('Are you sure you want to delete this #{currency.name}?')",
-                                  class: "btn btn-xs rounded btn-secondary",
-                                  form: { class: "d-inline" },
-                                  title: "Delete" do %>
+                      <%= button_to admin_currency_path(currency, page: params[:page]),
+                                    method: :delete,
+                                    onclick: "return confirm('Are you sure you want to delete this #{currency.name}?')",
+                                    class: "btn btn-xs rounded btn-secondary",
+                                    form: { class: "d-inline" },
+                                    title: "Delete" do %>
                         <i class="fas fa-trash"></i>
                       <% end %>
                     </div>
@@ -61,10 +80,10 @@
                 </td>
               </tr>
             <% end %>
-            
           </tbody>
         </table>
       </div>
+      <!-- Pagination -->
       <div class="d-flex justify-content-center px-3 mt-3">
         <%= paginate @currencies %>
       </div>
