@@ -29548,3 +29548,87 @@ pre[class*=language-] {
 .stat-icon i {
   font-size: 26px;
 }
+
+
+/* confirmation modal */
+#turboConfirmModal{
+  z-index: 1050 !important;
+}
+
+
+.sidenav {
+  z-index: 1030 !important;
+}
+
+.tp-modal-wide {
+  max-width: 400px;
+}
+
+.tp-confirm-card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+}
+
+.tp-confirm-logo-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 6px;
+}
+
+.tp-confirm-logo {
+  height: 42px;
+}
+
+.tp-confirm-text {
+  font-size: 15.5px;
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.45;
+  max-width: 340px;
+  margin: 0 auto;
+}
+
+.tp-confirm-subtext {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.tp-confirm-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.tp-confirm-actions .btn {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: none;
+}
+
+.tp-btn-cancel {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.tp-btn-danger {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+.tp-btn-cancel:hover,
+.tp-btn-cancel:focus {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.tp-btn-danger:hover,
+.tp-btn-danger:focus {
+  background-color: #b91c1c;
+  color: #ffffff;
+}

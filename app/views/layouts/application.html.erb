@@ -27,6 +27,9 @@
       <!-- Login page -->
       <%= yield %>
     <% else %>
+
+    <%= render "admin/shared/turbo_confirm_modal" %>
+
       <!-- Normal Admin Layout -->
       <%= render 'admin/shared/flash' %>
 
