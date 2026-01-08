@@ -1,73 +1,54 @@
-<main class="main-content mt-0">
-  <div class="page-header align-items-start min-vh-100"
-       style="background-image:url('https://images.unsplash.com/photo-1497294815431-9365093b7331?auto=format&fit=crop&w=1950&q=80');">
-    <span class="mask bg-gradient-dark opacity-6"></span>
-
-    <div class="container my-auto">
-      <div class="row">
-        <div class="col-lg-4 col-md-8 col-12 mx-auto">
-
-          <div class="card z-index-0 fadeIn3 fadeInBottom">
-            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 text-center">
-                <h4 class="text-white font-weight-bolder mt-2 mb-0">
-                  Admin Login
-                </h4>
-              </div>
-            </div>
-
-            <div class="card-body">
-
-              <%= form_with scope: :admin_user,
-                            url: admin_user_session_path,
-                            local: true,
-                            class: "text-start" do |f| %>
-
-                <div class="input-group input-group-outline my-3">
-                  <%= f.email_field :email, class: "form-control",
-                                    placeholder: "Email",
-                                    autofocus: true,
-                                    required: true %>
-                </div>
-
-                <div class="input-group input-group-outline mb-3">
-                  <%= f.password_field :password,
-                                       class: "form-control",
-                                       placeholder: "Password",
-                                       required: true %>
-                </div>
-
-                <div class="form-check form-switch d-flex align-items-center mb-3">
-                  <%= f.check_box :remember_me,
-                                  class: "form-check-input",
-                                  id: "rememberMe" %>
-                  <label class="form-check-label mb-0 ms-3"
-                         for="rememberMe">
-                    Remember me
-                  </label>
-                </div>
-
-                <div class="text-center">
-                  <button type="submit"
-                          class="btn bg-gradient-dark w-100 my-4 mb-2">
-                    Sign In
-                  </button>
-                </div>
-
-              <% end %>
-
-              <% if flash[:alert] %>
-                <p class="invalid-feedback d-block text-center mt-2">
-                  <%= flash[:alert] %>
-                </p>
-              <% end %>
-
+<main class="main-content" style="overflow: hidden; height: 100vh; position: relative; width: 100vw;" id="login-page">
+  <div class="tailor-reveal-wrapper" id="revealWrapper" style="display: none;">
+    <div class="scissors-tool" id="scissors">
+      <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g class="scissor-part handle-bottom">
+          <circle cx="20" cy="70" r="10" stroke="white" stroke-width="4"/>
+          <path d="M30 65 L90 52" stroke="white" stroke-width="5" stroke-linecap="round"/>
+        </g>
+        <g class="scissor-part handle-top">
+          <circle cx="20" cy="30" r="10" stroke="white" stroke-width="4"/>
+          <path d="M30 35 L90 48" stroke="white" stroke-width="5" stroke-linecap="round"/>
+        </g>
+        <circle cx="42" cy="50" r="2.5" fill="white"/>
+      </svg>
+    </div>
+    
+    <div class="fabric fabric-top"></div>
+    <div class="fabric fabric-bottom"></div>
+  </div>
+  <div class="login-viewport-center" id="viewportCenter">
+    <div class="login-card fade-in-up" id="loginCard">
+      <div class="card-header text-center bg-transparent border-0 pt-4 pb-0">
+        <h6 class="logo-text">TAILOR<span class="fw-bold">PRO</span></h6>
+        <div class="divider-small"></div>
+        <% if flash[:alert] && flash[:alert] != 'You need to sign in or sign up before continuing.' %>
+          <div class="alert-error-bespoke" id="errorPresence">
+            <%= flash[:alert]  %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-body px-5 pb-4 pt-2">
+        <%= form_with scope: :admin_user, url: admin_user_session_path, local: true do |f| %>
+          <div class="mb-3">
+            <label class="label-tiny">IDENTIFICATION</label>
+            <%= f.email_field :email, class: "input-bespoke", placeholder: "Email address", required: true %>
+          </div>
+          <div class="mb-4">
+            <label class="label-tiny">PASSCODE</label>
+            <div class="password-wrapper">
+              <%= f.password_field :password, class: "input-bespoke", id: "admin_password", placeholder: "••••••••", required: true %>
+              <button type="button" class="password-toggle" id="togglePassword">
+                <i class="fas fa-eye" id="eyeIcon"></i>
+              </button>
             </div>
           </div>
-
-        </div>
+          <button type="submit" class="btn-submit-slim">
+            PROCEED
+          </button>
+        <% end %>
       </div>
     </div>
-
   </div>
 </main>
+

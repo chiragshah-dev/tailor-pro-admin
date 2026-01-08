@@ -12,6 +12,7 @@
 //= link plugins/bootstrap-notify.js
 //= link plugins/smooth-scrollbar.min.js
 //= link custom/central.js
+//= link custom/login.js
 //= link controllers/application.js
 //= link controllers/index.js
 //= link controllers/hello_controller.js
