@@ -3,7 +3,7 @@ class Admin::UsersController < ApplicationController
   before_action :authenticate_admin_user!
 
   def index
-    @users = User.order(created_at: :desc)
+    @users = User.includes(:active_store).order(created_at: :desc)
 
     if params[:search].present?
       search = "%#{params[:search].strip}%"

@@ -27,35 +27,28 @@
            data-bs-toggle="dropdown"
            aria-expanded="false">
           <i class="material-symbols-rounded fs-4">account_circle</i>
-          <span class="text-sm fw-semibold">
+          <span class="text-sm ">
             <%= current_admin_user&.email&.split('@')&.first || "Admin" %>
           </span>
         </a>
-        <ul class="dropdown-menu dropdown-menu-end shadow-sm mt-2"
-            aria-labelledby="profileDropdown"
-            style="min-width: 220px;">
-          <!-- Email -->
-          <li class="px-3 py-2">
-            <small class="text-muted">Signed in as</small><br>
-            <strong class="text-sm">
+        <ul class="dropdown-menu dropdown-menu-end mt-2 p-0"
+    aria-labelledby="profileDropdown"
+    style="min-width: 220px;">
+          <!-- USER INFO -->
+          <li class="px-3 py-2 border-bottom">
+            <div class="text-xs text-muted">Signed in as</div>
+            <div class="text-sm  text-dark">
               <%= current_admin_user&.email || "admin@example.com" %>
-            </strong>
+            </div>
           </li>
-          <li><hr class="dropdown-divider"></li>
-          <!-- Settings -->
-          <%# <li> %>
-          <%# <a href="javascript:;" class="dropdown-item d-flex align-items-center gap-2">
-              <i class="material-symbols-rounded">settings</i>
-              Settings
-            </a> %>
-          <%# </li> %>
-          <!-- Logout -->
+          <!-- LOGOUT -->
           <li>
             <%= link_to destroy_admin_user_session_path,
-                  method: :delete,data: { turbo_method: :delete },
-                  class: "dropdown-item d-flex align-items-center gap-2 text-danger" do %>
-              <i class="material-symbols-rounded">logout</i>
-              Logout
+          method: :delete,
+          data: { turbo_method: :delete , turbo_confirm: "Are you sure you want to logout?"},
+          class: "dropdown-item d-flex align-items-center gap-2 text-dark px-3 py-2" do %>
+              <i class="material-symbols-rounded fs-5">logout</i>
+              <span>Logout</span>
             <% end %>
           </li>
         </ul>
