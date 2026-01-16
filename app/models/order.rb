@@ -15,6 +15,8 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :order_items, allow_destroy: true
   has_many_attached :images
   has_one_attached :voice_note
+  has_many :order_payments, dependent: :destroy
+
 
   # Validations
   validates :order_number, uniqueness: { scope: :store_id }
