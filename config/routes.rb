@@ -27,7 +27,9 @@ Rails.application.routes.draw do
     resources :currencies do
       resources :currency_countries, only: %i[new create destroy]
     end
-    resources :orders, only: [:index, :show]
+    resources :orders, only: [:index, :show] do
+      resources :order_payments, only: [:index], as: :payments
+    end
     resources :order_items, only: [:show]
     resources :customers, only: [:index, :show]
     resources :job_roles
