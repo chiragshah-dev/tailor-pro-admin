@@ -30,24 +30,24 @@
               <% if @currency_countries.present? %>
                 <% @currency_countries.each_with_index do |currency_country, index| %>
                   <tr>
-                    <td class="px-3">
-                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                    <td >
+                      <p class="text-xs font-weight-bold mb-0 px-3">
                         <%= (@currency_countries.current_page - 1) * @currency_countries.limit_value + index + 1 %>
                       </p>
                     </td>
                     <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
-                        <h6 class="mb-0 text-sm"><%= currency_country.country_code %></h6>
+                      <p class="text-sm  mb-0 ">
+                        <span class="mb-0 text-sm"><%= currency_country.country_code %></span>
                       </p>
                     </td>
                     <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
-                        <h6 class="mb-0 text-sm"><%= currency_country.country_name %></h6>
+                      <p class="text-sm  mb-0 ">
+                        <span class="mb-0 text-sm"><%= currency_country.country_name %></span>
                       </p>
                     </td>
                     <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
-                        <h6 class="mb-0 text-sm"><%= currency_country.currency.name %></h6>
+                      <p class="text-sm  mb-0 ">
+                        <span class="mb-0 text-sm"><%= currency_country.currency.name %></span>
                       </p>
                     </td>
                     <td class="align-middle text-center">
