@@ -1,114 +1,108 @@
-
-    <div class="row">
-      <div class="col-12">
-        <div class="card my-4">
-          <!-- Header -->
-          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-            <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
-              <h6 class="text-white text-capitalize ps-3">Workers</h6>
-            </div>
-          </div>
-          <div class="card-body px-0 pb-2">
-            <!-- Search -->
-            <div class="px-3 pb-3">
-              <%= render "admin/shared/search",
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- Header -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">Workers</h6>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <!-- Search -->
+        <div class="px-3 pb-3">
+          <%= render "admin/shared/search",
                     url: admin_workers_path,
                     placeholder: "Search workers..." %>
-            </div>
-            <!-- Table -->
-            <div class="table-responsive p-0">
-              <table class="table align-items-center mb-0">
-                <thead>
+        </div>
+        <!-- Table -->
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Name</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Contact</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Store</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Role</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @workers.present? %>
+                <% @workers.each_with_index do |worker, index| %>
                   <tr>
-                    <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
-                    <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Name</th>
-                    <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Contact</th>
-                    <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Store</th>
-                    <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Role</th>
-                    <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% if @workers.present? %>
-                    <% @workers.each_with_index do |worker, index| %>
-                      <tr>
-                        <!-- Index -->
-                        <td>
-                          <p class="text-xs font-weight-bold mb-0 px-3 py-1">
-                            <%= (@workers.current_page - 1) * @workers.limit_value + index + 1 %>
-                          </p>
-                        </td>
-                        <!-- Name -->
-                        <td>
-                          <div class="d-flex px-2 py-1">
-                            <div class="d-flex flex-column justify-content-center">
-                              <h6 class="mb-0 text-sm"><%= worker.name %></h6>
-                            </div>
-                          </div>
-                        </td>
-                        <!-- Contact -->
-                        <td>
-                          <p class="text-sm text-secondary mb-0 font-weight-bold">
-                            <%= worker.contact_number.presence || "-" %>
-                          </p>
-                        </td>
-                        <!-- Store -->
-                        <td>
-                          <p class="text-sm text-secondary mb-0 font-weight-bold">
-                            <% if worker.store.present? %>
-                              <%= link_to worker.store.name,
+                    <!-- Index -->
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0 px-3">
+                        <%= (@workers.current_page - 1) * @workers.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <!-- Name -->
+                    <td>
+                      <span class="mb-0 text-sm"><%= worker.name %></span>
+                    </td>
+                    <!-- Contact -->
+                    <td>
+                      <p class="text-sm text-secondary mb-0 ">
+                        <%= worker.contact_number.presence || "-" %>
+                      </p>
+                    </td>
+                    <!-- Store -->
+                    <td>
+                      <p class="text-sm text-secondary mb-0 ">
+                        <% if worker.store.present? %>
+                          <%= link_to worker.store.name,
                             admin_store_path(worker.store),
-                            class: "text-decoration-none text-dark fw-bold" %>
-                            <% else %>
-                              —
-                            <% end %>
-                          </p>
-                        </td>
-                        <!-- Role -->
-                        <td>
-                          <p class="text-sm text-secondary mb-0 font-weight-bold">
-                            <%= worker.job_role&.name || "-" %>
-                          </p>
-                        </td>
-                        <!-- Actions -->
-                        <td class="align-middle text-center">
-                          <div class="d-flex justify-content-center gap-1">
-                            <%= link_to admin_worker_path(worker,page: params[:page]),
+                            class: "text-decoration-none text-info " %>
+                        <% else %>
+                          —
+                        <% end %>
+                      </p>
+                    </td>
+                    <!-- Role -->
+                    <td>
+                      <p class="text-sm text-secondary mb-0 text-capitalize ">
+                        <%= worker.job_role&.name || "-" %>
+                      </p>
+                    </td>
+                    <!-- Actions -->
+                    <td class="align-middle text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <%= link_to admin_worker_path(worker,page: params[:page]),
                                   class: "btn btn-xs rounded btn-secondary",
                                   title: "Show" do %>
-                              <i class="fas fa-eye"></i>
-                            <% end %>
-                            <%= link_to edit_admin_worker_path(worker,page: params[:page]),
+                          <i class="fas fa-eye"></i>
+                        <% end %>
+                        <%= link_to edit_admin_worker_path(worker,page: params[:page]),
                                   class: "btn btn-xs rounded btn-secondary",
                                   title: "Edit" do %>
-                              <i class="fas fa-edit"></i>
-                            <% end %>
-                            <%= button_to admin_worker_path(worker, page: params[:page]),
+                          <i class="fas fa-edit"></i>
+                        <% end %>
+                        <%= button_to admin_worker_path(worker, page: params[:page]),
               method: :delete,
               class: "btn btn-xs rounded btn-secondary",
               data: { turbo_confirm: "Are you sure you want to delete #{worker.name}?" } do %>
-                              <i class="fas fa-trash"></i>
-                            <% end %>
-                          </div>
-                        </td>
-                      </tr>
-                    <% end %>
-                  <% else %>
-                    <tr>
-                      <td colspan="12" class="text-center">
-                        <p class="no-content-text">No records found.</p>
-                      </td>
-                    </tr>
-                  <% end %>
-                </tbody>
-              </table>
-            </div>
-            <!-- Pagination -->
-            <div class="d-flex justify-content-center px-3 mt-3">
-              <%= paginate @workers %>
-            </div>
-          </div>
+                          <i class="fas fa-trash"></i>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr>
+                  <td colspan="12" class="text-center">
+                    <p class="no-content-text">No records found.</p>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center px-3 mt-3">
+          <%= paginate @workers %>
         </div>
       </div>
     </div>
-
+  </div>
+</div>
