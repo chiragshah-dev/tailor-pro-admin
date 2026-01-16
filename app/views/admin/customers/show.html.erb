@@ -1,12 +1,12 @@
-<div class="container-fluid py-4">
-  <div class="row">
-    <div class="col-12">
-      <div class="card mb-4">
-        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-          <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
-            <h6 class="text-white text-capitalize ps-3 mb-0">Customer Details</h6>
-            <div class="me-3 d-flex gap-2">
-              <button
+  
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+          <h6 class="text-white text-capitalize ps-3 mb-0">Customer Details</h6>
+          <div class="me-3 d-flex gap-2">
+            <button
                 class="btn btn-sm btn-white text-dark text-uppercase font-weight-bold"
                 type="button"
                 data-bs-toggle="collapse"
@@ -14,7 +14,7 @@
                 <%= 'disabled' if @members.blank? %>>
                 Members (<%= @members.size %>)
               </button>
-                <button
+              <button
                 class="btn btn-sm btn-white text-dark text-uppercase font-weight-bold"
                 type="button"
                 data-bs-toggle="collapse"
@@ -22,36 +22,35 @@
                 <%= 'disabled' if @orders.blank? %>>
                 Orders (<%= @orders.size %>)
               </button>
-                </div>
               </div>
             </div>
-            <div class="card-body px-4 pt-4 pb-2">
-              <div class="row">
-                <div class="col-md-6">
-                  <p class="text-sm mb-2"><span class="fw-bold text-dark">Name:</span>
-                    <span class="text-secondary font-weight-bold ms-2"><%= @customer&.name&.titleize || "-" %></span></p>
-                  <p class="text-sm mb-2"><span class="fw-bold text-dark">Contact:</span>
-                    <span class="text-secondary font-weight-bold ms-2"><%= @customer.contact_number %></span></p>
-                </div>
-                <div class="col-md-6 text-end">
-                  <p class="text-sm mb-2"><span class="fw-bold text-dark">Store:</span>
-                    <span class="text-secondary font-weight-bold ms-2"><%= @customer.store&.name %></span></p>
-                </div>
+          </div>
+          <div class="card-body px-4 pt-4 pb-2">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-sm mb-2"><span class="fw-bold text-dark">Name:</span>
+                  <span class="text-secondary font-weight-bold ms-2"><%= @customer&.name&.titleize || "-" %></span></p>
+                <p class="text-sm mb-2"><span class="fw-bold text-dark">Contact:</span>
+                  <span class="text-secondary font-weight-bold ms-2"><%= @customer.contact_number %></span></p>
               </div>
-              <!-- member and order dropdwons starts -->
-              <div class="collapse mt-4 <%= 'show' if params[:view] == 'members' %>" id="collapseMembers">
-                <turbo-frame id="customer_members_unique_frame">
-                  <%= render "members_table" %>
-                </turbo-frame>
+              <div class="col-md-6 text-end">
+                <p class="text-sm mb-2"><span class="fw-bold text-dark">Store:</span>
+                  <span class="text-secondary font-weight-bold ms-2"><%= @customer.store&.name %></span></p>
               </div>
-              <div class="collapse mt-4 <%= 'show' if params[:view] == 'orders' %>" id="collapseOrders">
-                <turbo-frame id="customer_orders_unique_frame">
-                  <%= render "customer_orders" %>
-                </turbo-frame>
-              </div>
-              <!-- member and order dropdwons end -->
-              <%= link_to admin_customers_path(page: params[:page]), class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end" do %>Back<% end %>
             </div>
+            <!-- member and order dropdwons starts -->
+            <div class="collapse mt-4 <%= 'show' if params[:view] == 'members' %>" id="collapseMembers">
+              <turbo-frame id="customer_members_unique_frame">
+                <%= render "members_table" %>
+              </turbo-frame>
+            </div>
+            <div class="collapse mt-4 <%= 'show' if params[:view] == 'orders' %>" id="collapseOrders">
+              <turbo-frame id="customer_orders_unique_frame">
+                <%= render "customer_orders" %>
+              </turbo-frame>
+            </div>
+            <!-- member and order dropdwons end -->
+            <%= link_to admin_customers_path(page: params[:page]), class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end" do %>Back<% end %>
           </div>
         </div>
       </div>
