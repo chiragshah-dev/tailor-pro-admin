@@ -1,139 +1,117 @@
-<div class="container-fluid py-4">
-  <div class="row">
-    <div class="col-12">
-      <div class="card my-4">
-
-        <!-- HEADER -->
-        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-          <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
-            <h6 class="text-white text-capitalize ps-3 mb-0">
-              <%= @garment_type.persisted? ? "Edit Garment Type" : "New Garment Type" %>
-            </h6>
-          </div>
+  
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            <%= @garment_type.persisted? ? "Edit Garment Type" : "New Garment Type" %>
+          </h6>
         </div>
-
-        <!-- BODY -->
-        <div class="card-body px-4 pb-4">
-          <%= form_with model: [:admin, @garment_type], local: true do |f| %>
-            <%= hidden_field_tag :page, params[:page] %>
-
-            <div class="row g-4">
-
-              <!-- GARMENT NAME -->
-              <div class="form-group col-md-6">
-                <label class="form-label font-weight-bold text-dark">
-                  Garment Name
-                </label>
-                <div class="input-group input-group-outline">
-                  <%= f.text_field :garment_name,
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-4 pb-4">
+        <%= form_with model: [:admin, @garment_type], local: true do |f| %>
+          <%= hidden_field_tag :page, params[:page] %>
+          <div class="row g-4">
+            <!-- GARMENT NAME -->
+            <div class="form-group col-md-6">
+              <label class="form-label font-weight-bold text-dark">
+                Garment Name
+              </label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :garment_name,
                         class: "form-control",
                         placeholder: "Enter garment name" %>
-                </div>
-                <div id="name_err" class="text-danger mt-2 text-xs">
-                  <%= @garment_type.errors.full_messages_for(:garment_name).first %>
-                </div>
               </div>
-
-              <!-- GENDER -->
-              <div class="form-group col-md-6">
-                <label class="form-label font-weight-bold text-dark">
-                  Gender
-                </label>
-                <div class="input-group input-group-outline">
-                  <%= f.select :gender,
+              <div id="name_err" class="text-danger mt-2 text-xs">
+                <%= @garment_type.errors.full_messages_for(:garment_name).first %>
+              </div>
+            </div>
+            <!-- GENDER -->
+            <div class="form-group col-md-6">
+              <label class="form-label font-weight-bold text-dark">
+                Gender
+              </label>
+              <div class="input-group input-group-outline">
+                <%= f.select :gender,
                         GarmentType.genders.keys.map { |g| [g.titleize, g] },
                         { prompt: "Select Gender" },
                         class: "form-control" %>
-                </div>
               </div>
-
-              <!-- ACTIVE -->
-              <div class="form-group col-md-6">
-                <label class="form-label font-weight-bold text-dark">
-                  Active
-                </label>
-                <div class="input-group input-group-outline">
-                  <%= f.select :active,
+            </div>
+            <!-- ACTIVE -->
+            <div class="form-group col-md-6">
+              <label class="form-label font-weight-bold text-dark">
+                Active
+              </label>
+              <div class="input-group input-group-outline">
+                <%= f.select :active,
                         [["Yes", true], ["No", false]],
                         {},
                         class: "form-control" %>
-                </div>
               </div>
-
             </div>
-
-            <hr class="my-4">
-
-            <!-- MEASUREMENT FIELDS -->
-            <h6 class="text-uppercase text-dark mb-3">
-              Measurement Fields
-            </h6>
-
-            <div class="row">
-              <% @measurement_fields.each do |field| %>
-                <div class="col-md-3 mb-2">
-                  <div class="form-check">
-                    <%= check_box_tag "measurement_field_ids[]",
+          </div>
+          <hr class="my-4">
+          <!-- MEASUREMENT FIELDS -->
+          <h6 class="text-uppercase text-dark mb-3">
+            Measurement Fields
+          </h6>
+          <div class="row">
+            <% @measurement_fields.each do |field| %>
+              <div class="col-md-3 mb-2">
+                <div class="form-check">
+                  <%= check_box_tag "measurement_field_ids[]",
                           field.id,
                           @garment_type.measurement_field_ids.include?(field.id),
                           id: "mf_#{field.id}",
                           class: "form-check-input" %>
-                    <%= label_tag "mf_#{field.id}",
+                  <%= label_tag "mf_#{field.id}",
                           field.label,
                           class: "form-check-label" %>
-                  </div>
                 </div>
-              <% end %>
-            </div>
-
-            <hr class="my-4">
-
-            <!-- IMAGE -->
-            <div class="form-group col-md-6">
-              <label class="form-label font-weight-bold text-dark">
-                Garment Image
-              </label>
-
-              <% if f.object.image.attached? %>
-                <div class="mb-2">
-                  <%= image_tag f.object.image,
+              </div>
+            <% end %>
+          </div>
+          <hr class="my-4">
+          <!-- IMAGE -->
+          <div class="form-group col-md-6">
+            <label class="form-label font-weight-bold text-dark">
+              Garment Image
+            </label>
+            <% if f.object.image.attached? %>
+              <div class="mb-2">
+                <%= image_tag f.object.image,
                         class: "img-thumbnail",
                         style: "max-width: 150px;" %>
-                </div>
-              <% end %>
-
-              <div class="d-flex align-items-center gap-2">
-                <label class="btn bg-gradient-info text-white mb-0">
-                  Choose Image
-                  <%= f.file_field :image,
+              </div>
+            <% end %>
+            <div class="d-flex align-items-center gap-2">
+              <label class="btn bg-gradient-info text-white mb-0">
+                Choose Image
+                <%= f.file_field :image,
                         class: "d-none",
                         accept: "image/png,image/jpeg",
                         onchange: "this.closest('.d-flex').querySelector('.file-name').innerText = this.files[0]?.name || 'No file chosen'" %>
-                </label>
-                <span class="file-name text-muted">No file chosen</span>
-              </div>
+              </label>
+              <span class="file-name text-muted">No file chosen</span>
             </div>
-
-            <!-- ACTIONS -->
-            <div class="d-flex justify-content-end mt-4">
-              <%= link_to "Back",
+          </div>
+          <!-- ACTIONS -->
+          <div class="d-flex justify-content-end mt-4">
+            <%= link_to "Back",
                     admin_garment_types_path(page: params[:page]),
                     class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
-
-              <%= f.submit @garment_type.persisted? ? "Update" : "Create",
+            <%= f.submit @garment_type.persisted? ? "Update" : "Create",
                     class: "btn btn-info text-white text-uppercase font-weight-bold" %>
-            </div>
-
-          <% end %>
-        </div>
-
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
 </div>
-
-
-
 <script>
   document.addEventListener("turbo:load", () => {
     const form = document.querySelector("form");

@@ -1,59 +1,53 @@
-<div class="container-fluid py-4">
-  <div class="row">
-    <div class="col-12">
-      <div class="card my-4">
-
-        <!-- HEADER -->
-        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-          <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
-            <h6 class="text-white text-capitalize ps-3 mb-0">
-              <%= @currency_country.persisted? ? "Edit Country Code" : "New Country Code" %>
-            </h6>
-          </div>
+  
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            <%= @currency_country.persisted? ? "Edit Country Code" : "New Country Code" %>
+          </h6>
         </div>
-
-        <!-- BODY -->
-        <div class="card-body px-4 pb-4">
-          <%= form_with model: @currency_country,
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-4 pb-4">
+        <%= form_with model: @currency_country,
                         url: @currency_country.persisted? ?
                              admin_currency_country_path(@currency_country,page: params[:page]) :
                              admin_currency_countries_path,
                         local: true,
                         html: { id: "currency-country-form" } do |f| %>
-
-            <div class="row g-4">
-
-              <!-- Country Name -->
-              <div class="col-md-6">
-                <label class="form-label font-weight-bold text-dark">Country Name</label>
-                <div class="input-group input-group-outline">
-                  <%= f.text_field :country_name,
+          <div class="row g-4">
+            <!-- Country Name -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Country Name</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :country_name,
                         class: "form-control",
                         placeholder: "Enter Country Name" %>
-                </div>
-                <div id="country_name_err" class="text-danger mt-2 text-xs">
-                  <%= @currency_country.errors.full_messages_for(:country_name).first %>
-                </div>
               </div>
-
-              <!-- Dialing Code -->
-              <div class="col-md-6">
-                <label class="form-label font-weight-bold text-dark">Dialing Code</label>
-                <div class="input-group input-group-outline">
-                  <%= f.text_field :country_code,
+              <div id="country_name_err" class="text-danger mt-2 text-xs">
+                <%= @currency_country.errors.full_messages_for(:country_name).first %>
+              </div>
+            </div>
+            <!-- Dialing Code -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Dialing Code</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :country_code,
                         class: "form-control",
                         placeholder: "+91" %>
-                </div>
-                <div id="country_code_err" class="text-danger mt-2 text-xs">
-                  <%= @currency_country.errors.full_messages_for(:country_code).first %>
-                </div>
               </div>
-
-              <!-- Currency -->
-              <div class="col-md-6">
-                <label class="form-label font-weight-bold text-dark">Currency</label>
-                <div class="input-group input-group-outline">
-                  <%= f.select :currency_id,
+              <div id="country_code_err" class="text-danger mt-2 text-xs">
+                <%= @currency_country.errors.full_messages_for(:country_code).first %>
+              </div>
+            </div>
+            <!-- Currency -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Currency</label>
+              <div class="input-group input-group-outline">
+                <%= f.select :currency_id,
                         options_from_collection_for_select(
                           Currency.order(:name),
                           :id,
@@ -62,30 +56,25 @@
                         ),
                         { prompt: "Select Currency" },
                         class: "form-control #{'is-invalid' if @currency_country.errors[:currency_id].any?}" %>
-                </div>
-                <div id="currency_err" class="text-danger mt-2 text-xs">
-                  <%= @currency_country.errors.full_messages_for(:currency_id).first %>
-                </div>
               </div>
-
+              <div id="currency_err" class="text-danger mt-2 text-xs">
+                <%= @currency_country.errors.full_messages_for(:currency_id).first %>
+              </div>
             </div>
-
-            <!-- ACTIONS -->
-            <div class="d-flex justify-content-end mt-4">
-              <%= link_to "Back",
+          </div>
+          <!-- ACTIONS -->
+          <div class="d-flex justify-content-end mt-4">
+            <%= link_to "Back",
                     admin_currency_countries_path(page: params[:page]),
                     class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
-              <%= f.submit @currency_country.persisted? ? "Update" : "Save",
+            <%= f.submit @currency_country.persisted? ? "Update" : "Save",
                     class: "btn btn-info text-white text-uppercase font-weight-bold" %>
-            </div>
-
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
 </div>
-
 <script>
   document.addEventListener("turbo:render", () => {
 

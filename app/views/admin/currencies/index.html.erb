@@ -21,7 +21,7 @@
           <table class="table align-items-center mb-0">
             <thead>
               <tr>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold">#</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">ID</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Currency</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Symbol</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2 text-center">Actions</th>
@@ -32,8 +32,8 @@
                 <% @currencies.each_with_index do |currency, index| %>
                   <tr>
                     <!-- ID -->
-                    <td class="px-3">
-                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                    <td >
+                      <p class="text-xs font-weight-bold mb-0 px-3">
                         <%= (@currencies.current_page - 1) * @currencies.limit_value + index + 1 %>
                       </p>
                     </td>
@@ -44,14 +44,14 @@
                           <%= currency.flag_emoji || "🏳️" %>
                         </span>
                         <div>
-                          <h6 class="mb-0 text-sm"><%= currency.name %></h6>
+                          <span class="mb-0 text-sm"><%= currency.name %></span>
                         </div>
                       </div>
                     </td>
                     <!-- Symbol -->
-                    <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
-                        <h6 class="mb-0 text-sm"><%= currency.symbol || "-" %></h6>
+                    <td >
+                      <p class=" text-sm mb-0 ">
+                        <%= currency.symbol || "-" %>
                       </p>
                     </td>
                     <!-- Actions -->

@@ -25,9 +25,9 @@
             <thead>
               <tr>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold">Label</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold">Garment Type</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold">Active</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Label</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Garment Type</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Active</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
               </tr>
             </thead>
@@ -36,24 +36,26 @@
                 <% @measurement_fields.each_with_index do |field, index| %>
                   <tr>
                     <!-- SERIAL -->
-                    <td class="px-3">
-                      <%= (@measurement_fields.current_page - 1) * @measurement_fields.limit_value + index + 1 %>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0 px-3">
+                        <%= (@measurement_fields.current_page - 1) * @measurement_fields.limit_value + index + 1 %>
+                      </p>
                     </td>
                     <!-- LABEL -->
                     <td>
-                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                      <p class="text-sm text-secondary mb-0">
                         <%= field.label %>
                       </p>
                     </td>
                     <!-- GARMENT TYPE -->
                     <td>
-                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                      <p class="text-sm text-secondary mb-0">
                         <%= field.garment_type&.garment_name || "-" %>
                       </p>
                     </td>
                     <!-- ACTIVE -->
                     <td>
-                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                      <p class="text-sm text-secondary mb-0 ">
                         <span class="badge bg-<%= field.active? ? 'success' : 'secondary' %>">
                           <%= field.active? ? "Yes" : "No" %>
                         </span>

@@ -1,194 +1,193 @@
-<div class="container-fluid py-4">
-  <div class="row">
-    <div class="col-12">
-      <div class="card mb-4">
-        <!-- PAGE HEADER -->
-        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-          <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
-            <h6 class="text-white text-capitalize ps-3 mb-0">
-              Store Details
-            </h6>
-            <div class="me-3 d-flex gap-2">
-              <%= link_to edit_admin_store_path(@store,page: params[:page]),
+  
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- PAGE HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            Store Details
+          </h6>
+          <div class="me-3 d-flex gap-2">
+            <%= link_to edit_admin_store_path(@store,page: params[:page]),
                   class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
-                Edit
-              <% end %>
-              <%= button_to admin_store_path(@store, page: params[:page]),
+              Edit
+            <% end %>
+            <%= button_to admin_store_path(@store, page: params[:page]),
                   method: :delete,
                   class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold",
                   data: { turbo_confirm: "Are you sure you want to delete #{@store.name}?" } do %>
-                Delete
-              <% end %>
-            </div>
+              Delete
+            <% end %>
           </div>
         </div>
-        <!-- STORE DETAILS BODY -->
-        <div class="card-body px-4 pt-4 pb-4">
-          <!-- BASIC INFO -->
+      </div>
+      <!-- STORE DETAILS BODY -->
+      <div class="card-body px-4 pt-4 pb-4">
+        <!-- BASIC INFO -->
+        <div class="row mb-3">
+          <!-- LEFT -->
+          <div class="col-md-6">
+            <p class="text-sm mb-2 text-dark">
+              <strong>Store Name:</strong>
+              <span class="text-secondary ms-2"><%= @store.name %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Store Code:</strong>
+              <span class="text-secondary ms-2"><%= @store.code %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Store Type:</strong>
+              <span class="text-secondary ms-2 text-capitalize"><%= @store.store_type %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Stitches For:</strong>
+              <span class="text-secondary ms-2 text-capitalize"><%= @store.stitches_for %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Main Store:</strong>
+              <span class="ms-2">
+                <% if @store.is_main_store %>
+                  <span class="badge bg-gradient-success">YES</span>
+                <% else %>
+                  <span class="badge bg-gradient-secondary">NO</span>
+                <% end %>
+              </span>
+            </p>
+          </div>
+          <!-- RIGHT -->
+          <div class="col-md-6">
+            <p class="text-sm mb-2 text-dark">
+              <strong>Contact Number:</strong>
+              <span class="text-secondary ms-2"><%= @store.contact_number.presence || "-" %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Email:</strong>
+              <span class="text-secondary ms-2"><%= @store.email.presence || "-" %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Website:</strong>
+              <span class="text-secondary ms-2"><%= @store.website_url.presence || "-" %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Owner:</strong>
+              <span class="text-secondary ms-2"><%= @store.user&.name || "-" %></span>
+            </p>
+          </div>
+        </div>
+        <hr class="horizontal dark my-3">
+        <!-- LOCATION -->
+        <h6 class="text-uppercase text-dark mb-3">Location Details</h6>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <p class="text-sm mb-2 text-dark">
+              <strong>Location Name:</strong>
+              <span class="text-secondary ms-2"><%= @store.location_name %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Address:</strong>
+              <span class="text-secondary ms-2"><%= @store.address %></span>
+            </p>
+          </div>
+          <div class="col-md-6">
+            <p class="text-sm mb-2 text-dark">
+              <strong>City / State:</strong>
+              <span class="text-secondary ms-2"><%= @store.city %>, <%= @store.state %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Country / Postal Code:</strong>
+              <span class="text-secondary ms-2"><%= @store.country %> - <%= @store.postal_code %></span>
+            </p>
+          </div>
+        </div>
+        <hr class="horizontal dark my-3">
+        <!-- GST -->
+        <h6 class="text-uppercase text-dark mb-3">GST Details</h6>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <p class="text-sm mb-2 text-dark">
+              <strong>GST Number:</strong>
+              <span class="text-secondary ms-2"><%= @store.gst_number.presence || "-" %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>GST Name:</strong>
+              <span class="text-secondary ms-2"><%= @store.gst_name.presence || "-" %></span>
+            </p>
+          </div>
+          <div class="col-md-6">
+            <p class="text-sm mb-2 text-dark">
+              <strong>GST Included:</strong>
+              <span class="text-secondary ms-2"><%= @store.gst_included_on_bill ? "Yes" : "No" %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>GST Percentage:</strong>
+              <span class="text-secondary ms-2"><%= @store.gst_percentage.present? ? "#{@store.gst_percentage}%" : "-" %></span>
+            </p>
+          </div>
+        </div>
+        <hr class="horizontal dark my-3">
+        <!-- BANK -->
+        <h6 class="text-uppercase text-dark mb-3">Bank Details</h6>
+        <% bank = @store.store_bank_detail %>
+        <% if bank.present? %>
           <div class="row mb-3">
-            <!-- LEFT -->
             <div class="col-md-6">
               <p class="text-sm mb-2 text-dark">
-                <strong>Store Name:</strong>
-                <span class="text-secondary ms-2"><%= @store.name %></span>
+                <strong>Account Holder Name:</strong>
+                <span class="text-secondary ms-2"><%= bank.account_holder_name.presence || "-" %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
-                <strong>Store Code:</strong>
-                <span class="text-secondary ms-2"><%= @store.code %></span>
+                <strong>Bank Name:</strong>
+                <span class="text-secondary ms-2"><%= bank.bank_name.presence || "-" %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
-                <strong>Store Type:</strong>
-                <span class="text-secondary ms-2 text-capitalize"><%= @store.store_type %></span>
+                <strong>Account Number:</strong>
+                <span class="text-secondary ms-2"><%= bank.account_number.presence || "-" %></span>
+              </p>
+              <% if bank.qr_code.attached? %>
+                <p class="text-sm mb-2 text-dark"><strong>QR Code:</strong></p>
+                <div class="mb-3">
+                  <%= image_tag bank.qr_code, class: "img-thumbnail", style: "max-width: 180px;", alt: "UPI QR Code" %>
+                </div>
+              <% else %>
+                <p class="text-sm mb-2 text-dark">
+                  <strong>QR Code:</strong>
+                  <span class="text-secondary ms-2">—</span>
+                </p>
+              <% end %>
+            </div>
+            <div class="col-md-6">
+              <p class="text-sm mb-2 text-dark">
+                <strong>IFSC Code:</strong>
+                <span class="text-secondary ms-2"><%= bank.ifsc_code.presence || "-" %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
-                <strong>Stitches For:</strong>
-                <span class="text-secondary ms-2 text-capitalize"><%= @store.stitches_for %></span>
+                <strong>UPI ID:</strong>
+                <span class="text-secondary ms-2"><%= bank.upi_id.presence || "-" %></span>
               </p>
               <p class="text-sm mb-2 text-dark">
-                <strong>Main Store:</strong>
+                <strong>Verified:</strong>
                 <span class="ms-2">
-                  <% if @store.is_main_store %>
-                    <span class="badge bg-gradient-success">YES</span>
+                  <% if bank.verified %>
+                    <span class="badge bg-gradient-success">Verified</span>
                   <% else %>
-                    <span class="badge bg-gradient-secondary">NO</span>
+                    <span class="badge bg-gradient-secondary">Not Verified</span>
                   <% end %>
                 </span>
               </p>
             </div>
-            <!-- RIGHT -->
-            <div class="col-md-6">
-              <p class="text-sm mb-2 text-dark">
-                <strong>Contact Number:</strong>
-                <span class="text-secondary ms-2"><%= @store.contact_number.presence || "-" %></span>
-              </p>
-              <p class="text-sm mb-2 text-dark">
-                <strong>Email:</strong>
-                <span class="text-secondary ms-2"><%= @store.email.presence || "-" %></span>
-              </p>
-              <p class="text-sm mb-2 text-dark">
-                <strong>Website:</strong>
-                <span class="text-secondary ms-2"><%= @store.website_url.presence || "-" %></span>
-              </p>
-              <p class="text-sm mb-2 text-dark">
-                <strong>Owner:</strong>
-                <span class="text-secondary ms-2"><%= @store.user&.name || "-" %></span>
-              </p>
-            </div>
           </div>
-          <hr class="horizontal dark my-3">
-          <!-- LOCATION -->
-          <h6 class="text-uppercase text-dark mb-3">Location Details</h6>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <p class="text-sm mb-2 text-dark">
-                <strong>Location Name:</strong>
-                <span class="text-secondary ms-2"><%= @store.location_name %></span>
-              </p>
-              <p class="text-sm mb-2 text-dark">
-                <strong>Address:</strong>
-                <span class="text-secondary ms-2"><%= @store.address %></span>
-              </p>
-            </div>
-            <div class="col-md-6">
-              <p class="text-sm mb-2 text-dark">
-                <strong>City / State:</strong>
-                <span class="text-secondary ms-2"><%= @store.city %>, <%= @store.state %></span>
-              </p>
-              <p class="text-sm mb-2 text-dark">
-                <strong>Country / Postal Code:</strong>
-                <span class="text-secondary ms-2"><%= @store.country %> - <%= @store.postal_code %></span>
-              </p>
-            </div>
-          </div>
-          <hr class="horizontal dark my-3">
-          <!-- GST -->
-          <h6 class="text-uppercase text-dark mb-3">GST Details</h6>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <p class="text-sm mb-2 text-dark">
-                <strong>GST Number:</strong>
-                <span class="text-secondary ms-2"><%= @store.gst_number.presence || "-" %></span>
-              </p>
-              <p class="text-sm mb-2 text-dark">
-                <strong>GST Name:</strong>
-                <span class="text-secondary ms-2"><%= @store.gst_name.presence || "-" %></span>
-              </p>
-            </div>
-            <div class="col-md-6">
-              <p class="text-sm mb-2 text-dark">
-                <strong>GST Included:</strong>
-                <span class="text-secondary ms-2"><%= @store.gst_included_on_bill ? "Yes" : "No" %></span>
-              </p>
-              <p class="text-sm mb-2 text-dark">
-                <strong>GST Percentage:</strong>
-                <span class="text-secondary ms-2"><%= @store.gst_percentage.present? ? "#{@store.gst_percentage}%" : "-" %></span>
-              </p>
-            </div>
-          </div>
-          <hr class="horizontal dark my-3">
-          <!-- BANK -->
-          <h6 class="text-uppercase text-dark mb-3">Bank Details</h6>
-          <% bank = @store.store_bank_detail %>
-          <% if bank.present? %>
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <p class="text-sm mb-2 text-dark">
-                  <strong>Account Holder Name:</strong>
-                  <span class="text-secondary ms-2"><%= bank.account_holder_name.presence || "-" %></span>
-                </p>
-                <p class="text-sm mb-2 text-dark">
-                  <strong>Bank Name:</strong>
-                  <span class="text-secondary ms-2"><%= bank.bank_name.presence || "-" %></span>
-                </p>
-                <p class="text-sm mb-2 text-dark">
-                  <strong>Account Number:</strong>
-                  <span class="text-secondary ms-2"><%= bank.account_number.presence || "-" %></span>
-                </p>
-                <% if bank.qr_code.attached? %>
-                  <p class="text-sm mb-2 text-dark"><strong>QR Code:</strong></p>
-                  <div class="mb-3">
-                    <%= image_tag bank.qr_code, class: "img-thumbnail", style: "max-width: 180px;", alt: "UPI QR Code" %>
-                  </div>
-                <% else %>
-                  <p class="text-sm mb-2 text-dark">
-                    <strong>QR Code:</strong>
-                    <span class="text-secondary ms-2">—</span>
-                  </p>
-                <% end %>
-              </div>
-              <div class="col-md-6">
-                <p class="text-sm mb-2 text-dark">
-                  <strong>IFSC Code:</strong>
-                  <span class="text-secondary ms-2"><%= bank.ifsc_code.presence || "-" %></span>
-                </p>
-                <p class="text-sm mb-2 text-dark">
-                  <strong>UPI ID:</strong>
-                  <span class="text-secondary ms-2"><%= bank.upi_id.presence || "-" %></span>
-                </p>
-                <p class="text-sm mb-2 text-dark">
-                  <strong>Verified:</strong>
-                  <span class="ms-2">
-                    <% if bank.verified %>
-                      <span class="badge bg-gradient-success">Verified</span>
-                    <% else %>
-                      <span class="badge bg-gradient-secondary">Not Verified</span>
-                    <% end %>
-                  </span>
-                </p>
-              </div>
-            </div>
-          <% else %>
-            <p class="text-sm text-secondary mb-0">
-              No bank details available for this store.
-            </p>
-          <% end %>
-          <!-- workers section -->
-          <%= render 'worker' %>
-          <%= link_to admin_stores_path(page: params[:page]),
+        <% else %>
+          <p class="text-sm text-secondary mb-0">
+            No bank details available for this store.
+          </p>
+        <% end %>
+        <!-- workers section -->
+        <%= render 'worker' %>
+        <%= link_to admin_stores_path(page: params[:page]),
               class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end mt-3" do %>
-            Back
-          <% end %>
-        </div>
+          Back
+        <% end %>
       </div>
     </div>
   </div>
