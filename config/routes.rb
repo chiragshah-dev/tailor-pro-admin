@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     resources :workers
     resources :garment_types
     resources :measurement_fields
-    resources :currencies 
+    resources :currencies
     resources :currency_countries
     resources :currencies do
       resources :currency_countries, only: %i[new create destroy]
@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     resources :order_items, only: [:show]
     resources :customers, only: [:index, :show]
     resources :job_roles
+    resources :wallets, only: [:index, :show]
     get "stores/:id/stitches_for", to: "orders#store_stitches_for"
     get "garment_types/by_gender/:gender", to: "orders#garment_types_by_gender"
     get "garment_types/:id/measurement_fields", to: "orders#measurement_fields"
