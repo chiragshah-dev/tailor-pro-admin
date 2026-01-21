@@ -29,6 +29,7 @@
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Code</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Owner</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Contact</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Wallet Balance</th>
                 <%# <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Location</th> %>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
               </tr>
@@ -54,28 +55,33 @@
                     </td>
                     <!-- CODE -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                      <p class="text-sm text-secondary mb-0 ">
                         <%= store.code.presence || "-" %>
                       </p>
                     </td>
                     <!-- OWNER -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                      <p class="text-sm text-secondary mb-0 ">
                         <%= store.user&.name || "-" %>
                       </p>
                     </td>
                     <!-- CONTACT -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                      <p class="text-sm text-secondary mb-0 ">
                         <%= store.contact_number.presence || "-" %>
                       </p>
                     </td>
-                    <!-- LOCATION -->
-                    <%# <td>
-                        <p class="text-sm text-secondary mb-0 font-weight-bold">
-                          <%= [store.city, store.state].compact.join(", ").presence || "-" %>
-                    <%# </p> %>
-                    <%# </td> %>
+                    <!-- WALLET -->
+                    <td>
+                      <div class="d-flex flex-column">
+                        <p class="text-sm text-secondary mb-1">
+                          <%= number_to_currency(store.wallet&.balance || 0, unit: "₹") %>
+                        </p>
+                        <%= link_to "View details",
+          admin_wallet_path(store.wallet),
+          class: "text-xs text-info fw-bold" %>
+                      </div>
+                    </td>
                     <!-- ACTIONS -->
                     <td class="align-middle text-center">
                       <div class="d-flex justify-content-center gap-1">
