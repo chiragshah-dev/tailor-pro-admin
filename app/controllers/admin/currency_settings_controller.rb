@@ -27,7 +27,7 @@ module Admin
       if @currency_setting.update(currency_setting_params)
         redirect_to admin_currency_settings_path(page: params[:page]), notice: "Currency setting updated successfully."
       else
-        render :edit,status: :unprocessable_entity
+        render :edit, status: :unprocessable_entity
       end
     end
 
@@ -43,7 +43,7 @@ module Admin
     end
 
     def currency_setting_params
-      params.require(:currency_setting).permit(:amount_limit, :currency_id)
+      params.require(:currency_setting).permit(:amount_limit, :currency_id, :commission_rate, :message)
     end
   end
 end
