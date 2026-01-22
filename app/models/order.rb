@@ -16,7 +16,7 @@ class Order < ApplicationRecord
   has_many_attached :images
   has_one_attached :voice_note
   has_many :order_payments, dependent: :destroy
-  has_many :wallet_transactions, dependent: :destroy
+  has_many :wallet_transactions, foreign_key: :reference_id, dependent: :destroy
 
   # Validations
   validates :order_number, uniqueness: { scope: :store_id }
