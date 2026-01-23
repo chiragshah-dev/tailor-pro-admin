@@ -67,6 +67,11 @@
                                   title: "Show" do %>
                           <i class="fas fa-eye"></i>
                         <% end %>
+                        <%= link_to history_admin_wallet_path(wallet),
+      class: "btn btn-xs rounded btn-secondary",
+      title: "View History" do %>
+                          <i class="fas fa-history"></i>
+                        <% end %>
                       </div>
                     </td>
                   </tr>

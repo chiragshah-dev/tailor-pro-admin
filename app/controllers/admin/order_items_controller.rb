@@ -1,8 +1,14 @@
 class Admin::OrderItemsController < ApplicationController
-  before_action :set_order_item, only: [:show]
+  include AuditableHistory
+
+  before_action :set_order_item, only: [:show, :history]
   before_action :authenticate_admin_user!
 
   def show
+  end
+
+  def history
+    load_audit_history(@order_item)
   end
 
   private
