@@ -1,12 +1,14 @@
 class Admin::CustomersController < ApplicationController
+  include AuditableHistory
   before_action :authenticate_admin_user!
+  before_action :set_customer, only: [:show, :history]
 
   def index
     # @customers = Customer
     #   .left_joins(:store)
     #   .includes(:store)
 
-    # to avoid separate queries for showing counts 
+    # to avoid separate queries for showing counts
     @customers = Customer
       .left_joins(:store)
       .left_joins(:members)
@@ -32,13 +34,22 @@ class Admin::CustomersController < ApplicationController
   end
 
   def show
-    @customer = Customer.find(params[:id])
-
     @members = @customer.members.page(params[:member_page]).per(5)
     @orders = @customer.orders
                        .includes(:order_items)
                        .order(created_at: :desc)
                        .page(params[:order_page])
                        .per(5)
+  end
+
+  def history
+    @customer = Customer.find(params[:id])
+    load_audit_history(@customer)
+  end
+
+  private
+
+  def set_customer
+    @customer = Customer.find(params[:id])
   end
 end

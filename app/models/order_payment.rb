@@ -1,4 +1,6 @@
 class OrderPayment < ApplicationRecord
+  include Auditable
+
   belongs_to :order
 
   enum :payment_method, { cash: 0, online: 1 }

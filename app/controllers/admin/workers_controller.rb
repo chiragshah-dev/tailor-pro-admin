@@ -1,6 +1,7 @@
 class Admin::WorkersController < ApplicationController
+  include AuditableHistory
   before_action :authenticate_admin_user!
-  before_action :set_worker, only: [:show, :edit, :update, :destroy]
+  before_action :set_worker, only: [:show, :edit, :update, :destroy, :history]
 
   def index
     @workers = Worker.left_joins(:store, :job_role)
@@ -62,6 +63,10 @@ class Admin::WorkersController < ApplicationController
     end
   end
 
+  def history
+    load_audit_history(@worker)
+  end
+
   private
 
   def set_worker
@@ -76,6 +81,4 @@ class Admin::WorkersController < ApplicationController
       :store_id
     )
   end
-
-
 end

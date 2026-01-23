@@ -1,9 +1,11 @@
 class Admin::StoresController < ApplicationController
+  include AuditableHistory
+
   before_action :authenticate_admin_user!
-  before_action :set_store, only: %i[show edit update destroy]
+  before_action :set_store, only: %i[show edit update destroy history]
 
   def index
-    @stores = Store.includes(:user)
+    @stores = Store.includes(:user, :wallet)
 
     if params[:search].present?
       q = "%#{params[:search].strip}%"
@@ -48,7 +50,7 @@ class Admin::StoresController < ApplicationController
 
   def update
     if @store.update(store_params)
-      redirect_to admin_store_path(@store,page: params[:page]), notice: "Store was successfully updated."
+      redirect_to admin_store_path(@store, page: params[:page]), notice: "Store was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -57,6 +59,10 @@ class Admin::StoresController < ApplicationController
   def destroy
     @store.destroy
     redirect_to admin_stores_path(page: params[:page]), notice: "Store was successfully deleted."
+  end
+
+  def history
+    load_audit_history(@store)
   end
 
   private

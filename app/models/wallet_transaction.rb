@@ -1,4 +1,6 @@
 class WalletTransaction < ApplicationRecord
+  include Auditable
+
   belongs_to :wallet
   belongs_to :order, foreign_key: :reference_id, primary_key: :id, optional: true
 

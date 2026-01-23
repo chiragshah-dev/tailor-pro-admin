@@ -84,6 +84,11 @@
               data: { turbo_confirm: "Are you sure you want to delete #{worker.name}?" } do %>
                           <i class="fas fa-trash"></i>
                         <% end %>
+                        <%= link_to history_admin_worker_path(worker),
+      class: "btn btn-xs rounded btn-secondary",
+      title: "View History" do %>
+                          <i class="fas fa-history"></i>
+                        <% end %>
                       </div>
                     </td>
                   </tr>

@@ -1,4 +1,6 @@
 class Currency < ApplicationRecord
+  include Auditable
+
   has_one :currency_setting, dependent: :destroy
   has_many :currency_countries, dependent: :destroy
 
@@ -22,7 +24,7 @@ class Currency < ApplicationRecord
     end
   end
 
-  # Generate flag emoji from ISO 
+  # Generate flag emoji from ISO
   def flag_emoji
     return nil unless country&.alpha2
 

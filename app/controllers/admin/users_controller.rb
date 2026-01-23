@@ -1,5 +1,7 @@
 class Admin::UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  include AuditableHistory
+
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :history]
   before_action :authenticate_admin_user!
 
   def index
@@ -38,7 +40,7 @@ class Admin::UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      redirect_to admin_user_path(@user,page: params[:page]), notice: "User was successfully updated."
+      redirect_to admin_user_path(@user, page: params[:page]), notice: "User was successfully updated."
     else
       render :edit
     end
@@ -47,6 +49,10 @@ class Admin::UsersController < ApplicationController
   def destroy
     @user.destroy
     redirect_to admin_users_path(page: params[:page]), notice: "User was successfully deleted."
+  end
+
+  def history
+    load_audit_history(@user)
   end
 
   private

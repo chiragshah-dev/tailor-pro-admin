@@ -1,6 +1,8 @@
 class Admin::OrdersController < ApplicationController
+  include AuditableHistory
+
   before_action :authenticate_admin_user!
-  before_action :set_order, only: :show
+  before_action :set_order, only: [:show, :history]
 
   def index
     @orders = Order.left_joins(:customer, :store)
@@ -38,6 +40,10 @@ class Admin::OrdersController < ApplicationController
                          .order(created_at: :asc)
                          .page(items_page)
                          .per(10)
+  end
+
+  def history
+    load_audit_history(@order)
   end
 
   private

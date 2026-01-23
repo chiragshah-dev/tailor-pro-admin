@@ -1,4 +1,6 @@
 class Wallet < ApplicationRecord
+  include Auditable
+
   belongs_to :store
   has_many :wallet_transactions, dependent: :destroy
   has_many :razorpay_orders, dependent: :destroy

@@ -1,4 +1,6 @@
 class Notification < ApplicationRecord
+  include Auditable
+
   # Associations
   belongs_to :user
 

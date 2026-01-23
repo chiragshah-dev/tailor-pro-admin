@@ -1,4 +1,6 @@
 class Store < ApplicationRecord
+  include Auditable
+
   enum :store_type, { outlet: 0, workshop: 1, both: 2 }, prefix: true
   enum :stitches_for, { male: 0, female: 1, both: 2 }, default: nil
 

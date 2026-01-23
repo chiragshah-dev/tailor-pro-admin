@@ -1,4 +1,6 @@
 class BackupSetting < ApplicationRecord
+  include Auditable
+
   belongs_to :store
 
   validates :frequency, inclusion: { in: %w[daily weekly monthly], allow_nil: true }

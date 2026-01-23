@@ -1,4 +1,6 @@
 class JobRole < ApplicationRecord
+  include Auditable
+
   # Associations
   has_many :workers, dependent: :destroy
 

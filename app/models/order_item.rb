@@ -1,4 +1,6 @@
 class OrderItem < ApplicationRecord
+  include Auditable
+
   enum :work_type, { stitching: 0, alteration: 1, material: 2, readymade: 3 }
   enum :status, {
     pending: 0, in_progress: 1, ready_for_trial: 2, completed: 4, delivered: 5, cancelled: 6,
@@ -73,16 +75,16 @@ class OrderItem < ApplicationRecord
     uri = URI.parse(video_link)
     # Check for HTTP or HTTPS scheme
     unless uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
-      errors.add(:video_link, 'must be a valid HTTP or HTTPS URL (e.g., https://example.com)')
+      errors.add(:video_link, "must be a valid HTTP or HTTPS URL (e.g., https://example.com)")
       return # Exit if scheme fails
     end
 
     # Check if host exists and is a valid domain
     unless uri.host.present? && uri.host.match?(/\A[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])*)*\.[a-z]{2,}\z/i)
-      errors.add(:video_link, 'must include a valid domain (e.g., example.com)')
+      errors.add(:video_link, "must include a valid domain (e.g., example.com)")
     end
   rescue URI::InvalidURIError
-    errors.add(:video_link, 'is not a valid URL')
+    errors.add(:video_link, "is not a valid URL")
   end
 
   def video_link_present?
@@ -101,7 +103,7 @@ class OrderItem < ApplicationRecord
     order_item_numbers = order.order_items.pluck(:order_item_number)
 
     # Extract numeric parts and find the highest number
-    next_id = order_item_numbers.compact.map { |no| no.split('-').last.to_i }.max.to_i + 1
+    next_id = order_item_numbers.compact.map { |no| no.split("-").last.to_i }.max.to_i + 1
 
     "#{prefix}-#{next_id}"
   end
@@ -126,9 +128,9 @@ class OrderItem < ApplicationRecord
 
     # Skip creating new records if attributes are empty
     case stitch_feature.value_selection_type
-    when 'radio', 'multiple'
+    when "radio", "multiple"
       attributes[:stitch_option_ids].blank? || attributes[:stitch_option_ids].empty?
-    when 'textbox'
+    when "textbox"
       attributes[:text_value].blank? || attributes[:text_value].strip.empty?
     else
       true

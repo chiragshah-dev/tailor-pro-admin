@@ -1,19 +1,19 @@
-  <div class="row">
-    <div class="col-12">
-      <div class="card my-4">
-        <!-- Header -->
-        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-          <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
-            <h6 class="text-white text-capitalize ps-3">Orders</h6>
-          </div>
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- Header -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">Orders</h6>
         </div>
-        <div class="card-body px-0 pb-2">
-          <!-- SEARCH -->
-          <div class="px-3 pb-3">
-            <%= render "admin/shared/search", url: admin_orders_path,placeholder: "Search orders..." do %>
-              <!-- FILTER: MAIN / BRANCH -->
-              <div class="w-11">
-                <%= select_tag :status,
+      </div>
+      <div class="card-body px-0 pb-2">
+        <!-- SEARCH -->
+        <div class="px-3 pb-3">
+          <%= render "admin/shared/search", url: admin_orders_path,placeholder: "Search orders..." do %>
+            <!-- FILTER: MAIN / BRANCH -->
+            <div class="w-11">
+              <%= select_tag :status,
                       options_for_select(
                         [["All", ""]] +
                         Order.statuses.keys.map { |s| [s.humanize, s] },
@@ -21,77 +21,82 @@
                       ),
                       class: "form-select",
                       onchange: "this.form.submit();" %>
-              </div>
-            <% end %>
-          </div>
-          <!-- Table -->
-          <div class="table-responsive p-0">
-            <table class="table align-items-center mb-0">
-              <thead>
-                <tr>
-                  <th class="text-uppercase text-dark text-xxs font-weight-bold">ID</th>
-                  <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Order No</th>
-                  <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Customer</th>
-                  <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Store</th>
-                  <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Status</th>
-                  <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Total</th>
-                  <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <%if @orders.any?%>
-                  <% @orders.each_with_index do |order, index| %>
-                    <tr>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0 px-3">
-                          <%= (@orders.current_page - 1) * @orders.limit_value + index + 1 %>
-                        </p>
-                      </td>
-                      <td>
-                        <h6 class="mb-0 text-sm"><%= order.order_number %></h6>
-                      </td>
-                      <td>
-                        <p class="text-sm text-secondary mb-0 font-weight-bold">
-                          <%= order.customer&.name || "-" %>
-                        </p>
-                      </td>
-                      <td>
-                        <p class="text-sm text-secondary mb-0 font-weight-bold">
-                          <%= order.store&.name || "-" %>
-                        </p>
-                      </td>
-                      <td>
-                        <%= order_status_badge(order.status) %>
-                      </td>
-                      <td>
-                        <p class="text-sm font-weight-bold mb-0">
-                          ₹ <%= order.total_bill_amount %>
-                        </p>
-                      </td>
-                      <td class="align-middle text-center">
-                        <%= link_to admin_order_path(order,page:params[:page]),
+            </div>
+          <% end %>
+        </div>
+        <!-- Table -->
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">ID</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Order No</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Customer</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Store</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Status</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Total</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if @orders.any?%>
+                <% @orders.each_with_index do |order, index| %>
+                  <tr>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0 px-3">
+                        <%= (@orders.current_page - 1) * @orders.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <td>
+                      <h6 class="mb-0 text-sm"><%= order.order_number %></h6>
+                    </td>
+                    <td>
+                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                        <%= order.customer&.name || "-" %>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                        <%= order.store&.name || "-" %>
+                      </p>
+                    </td>
+                    <td>
+                      <%= order_status_badge(order.status) %>
+                    </td>
+                    <td>
+                      <p class="text-sm font-weight-bold mb-0">
+                        ₹ <%= order.total_bill_amount %>
+                      </p>
+                    </td>
+                    <td class="align-middle text-center">
+                      <%= link_to admin_order_path(order,page:params[:page]),
                             class: "btn btn-xs rounded btn-secondary",
                             title: "Show" do %>
-                          <i class="fas fa-eye"></i>
-                        <% end %>
-                      </td>
-                    </tr>
-                  <% end %>
-                <%else%>
-                  <tr>
-                    <td colspan="12" class="text-center">
-                      <p class="no-content-text">No records found.</p>
+                        <i class="fas fa-eye"></i>
+                      <% end %>
+                      <%= link_to history_admin_order_path(order),
+      class: "btn btn-xs rounded btn-secondary",
+      title: "View History" do %>
+                        <i class="fas fa-history"></i>
+                      <% end %>
                     </td>
                   </tr>
-                <%end%>
-              </tbody>
-            </table>
-          </div>
-          <!-- Pagination -->
-          <div class="d-flex justify-content-center px-3 mt-3">
-            <%= paginate @orders %>
-          </div>
+                <% end %>
+              <%else%>
+                <tr>
+                  <td colspan="12" class="text-center">
+                    <p class="no-content-text">No records found.</p>
+                  </td>
+                </tr>
+              <%end%>
+            </tbody>
+          </table>
+        </div>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center px-3 mt-3">
+          <%= paginate @orders %>
         </div>
       </div>
     </div>
   </div>
+</div>

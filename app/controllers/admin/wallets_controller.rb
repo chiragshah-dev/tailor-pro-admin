@@ -1,5 +1,7 @@
 class Admin::WalletsController < ApplicationController
+  include AuditableHistory
   before_action :authenticate_admin_user!
+  before_action :set_wallet, only: [:show, :history]
 
   def index
     @wallets = Wallet.left_joins(:store).includes(:store)
@@ -20,9 +22,18 @@ class Admin::WalletsController < ApplicationController
   end
 
   def show
-    @wallet = Wallet.find(params[:id])
     @wallet_transactions = @wallet&.wallet_transactions
       .order(created_at: :desc)
       .page(params[:transaction_page]).per(5)
+  end
+
+  def history
+    load_audit_history(@wallet)
+  end
+
+  private
+
+  def set_wallet
+    @wallet = Wallet.find(params[:id])
   end
 end

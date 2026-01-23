@@ -1,4 +1,6 @@
 class Order < ApplicationRecord
+  include Auditable
+
   enum :status, {
     pending: 0, in_progress: 1, ready_for_trial: 2, completed: 4, delivered: 5, cancelled: 6,
   }

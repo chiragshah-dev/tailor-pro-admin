@@ -1,4 +1,6 @@
 class RazorpayOrder < ApplicationRecord
+  include Auditable
+
   belongs_to :wallet
 
   validates :razorpay_order_id, presence: true, uniqueness: true
