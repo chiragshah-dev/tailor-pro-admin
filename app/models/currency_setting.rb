@@ -9,6 +9,8 @@ class CurrencySetting < ApplicationRecord
   # }.freeze
 
   # associations
+  include Auditable
+
   belongs_to :currency
 
   validates :amount_limit, presence: true

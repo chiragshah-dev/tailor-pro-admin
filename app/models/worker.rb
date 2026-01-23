@@ -1,4 +1,6 @@
 class Worker < ApplicationRecord
+  include Auditable
+
   has_secure_password :mpin, validations: false
   # Associations
   belongs_to :job_role

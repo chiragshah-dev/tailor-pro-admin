@@ -1,4 +1,6 @@
 class Setting < ApplicationRecord
+  include Auditable
+
   enum :measurement_unit, { cms: 0, inch: 1 }
   enum :order_number_format, { random: 0, serial: 1, custom: 2 }
 

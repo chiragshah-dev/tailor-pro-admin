@@ -1,4 +1,6 @@
 class Media < ApplicationRecord
+  include Auditable
+
   # Associations
   belongs_to :folder
   has_one_attached :file

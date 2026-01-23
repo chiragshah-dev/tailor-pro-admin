@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include Auditable
+
   include Devise::JWT::RevocationStrategies::JTIMatcher
 
   # Include default devise modules. Others available are:

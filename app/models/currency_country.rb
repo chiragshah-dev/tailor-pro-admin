@@ -1,4 +1,6 @@
 class CurrencyCountry < ApplicationRecord
+  include Auditable
+
   belongs_to :currency
 
   validates :country_code, presence: true, uniqueness: true

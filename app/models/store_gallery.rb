@@ -1,4 +1,6 @@
 class StoreGallery < ApplicationRecord
+  include Auditable
+
   belongs_to :store
   belongs_to :gallery_category
   has_many_attached :files # can be photo or video

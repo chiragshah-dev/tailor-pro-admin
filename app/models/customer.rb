@@ -1,4 +1,6 @@
 class Customer < ApplicationRecord
+  include Auditable
+
   enum :customer_reached_via, { social_media: 0, privilege_card: 1, online_search: 2,
                                 news: 3, just_dial: 4, google_search: 5, friend_referral: 6,
                                 other: 7 }
@@ -18,9 +20,9 @@ class Customer < ApplicationRecord
   # validates :name, :contact_number, :gender, presence: true
   validates :contact_number, numericality: { only_integer: true }, length: { is: 10 }
   validates :email, format: {
-    with: URI::MailTo::EMAIL_REGEXP, 
-    message: "must be a valid email address (e.g., example@example.com)" 
-  }, allow_blank: true
+            with: URI::MailTo::EMAIL_REGEXP,
+            message: "must be a valid email address (e.g., example@example.com)",
+          }, allow_blank: true
 
   validate :dob_validation, :storewise_unique_customers
 

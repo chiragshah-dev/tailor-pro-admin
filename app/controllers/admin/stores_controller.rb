@@ -3,7 +3,7 @@ class Admin::StoresController < ApplicationController
   before_action :set_store, only: %i[show edit update destroy]
 
   def index
-    @stores = Store.includes(:user)
+    @stores = Store.includes(:user, :wallet)
 
     if params[:search].present?
       q = "%#{params[:search].strip}%"
@@ -48,7 +48,7 @@ class Admin::StoresController < ApplicationController
 
   def update
     if @store.update(store_params)
-      redirect_to admin_store_path(@store,page: params[:page]), notice: "Store was successfully updated."
+      redirect_to admin_store_path(@store, page: params[:page]), notice: "Store was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end

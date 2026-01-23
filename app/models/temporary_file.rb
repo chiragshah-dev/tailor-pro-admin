@@ -1,4 +1,6 @@
 class TemporaryFile < ApplicationRecord
+  include Auditable
+
   has_many_attached :files
 
   after_commit :store_primary_file_url, on: :create
@@ -15,7 +17,7 @@ class TemporaryFile < ApplicationRecord
       expires_in: 24.hour,
       filename: ActiveStorage::Filename.new(blob.filename.to_s),
       disposition: "inline",
-      content_type: blob.content_type
+      content_type: blob.content_type,
     )
   end
 
@@ -26,7 +28,7 @@ class TemporaryFile < ApplicationRecord
 
     update_columns(
       image_url: raw_s3_url(blob),
-      file_type: blob.content_type.split('/').first
+      file_type: blob.content_type.split("/").first,
     )
   end
 end
