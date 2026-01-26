@@ -7,6 +7,9 @@ class Worker < ApplicationRecord
   belongs_to :store
   has_many :order_items, dependent: :nullify
   has_many :orders, dependent: :nullify
+  has_many :notifications,
+           as: :recipient,
+           dependent: :destroy
   # Validations
   validates :name, presence: true
   validates :contact_number, presence: true, uniqueness: { scope: :store_id },
