@@ -34,8 +34,9 @@ class User < ApplicationRecord
   has_many :stitch_features, dependent: :destroy
   has_many :dresses, dependent: :destroy
   has_many :folders, dependent: :destroy
-  has_many :notifications, dependent: :destroy
-
+  has_many :notifications,
+           as: :recipient,
+           dependent: :destroy
   has_many :tailor_subscriptions, dependent: :destroy
   has_one :active_subscription, -> { where(active: true) }, class_name: "TailorSubscription"
 
