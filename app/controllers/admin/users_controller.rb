@@ -1,8 +1,8 @@
 class Admin::UsersController < ApplicationController
   include AuditableHistory
 
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :history]
   before_action :authenticate_admin_user!
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :history]
 
   def index
     @users = User.includes(:active_store).order(created_at: :desc)
@@ -49,10 +49,6 @@ class Admin::UsersController < ApplicationController
   def destroy
     @user.destroy
     redirect_to admin_users_path(page: params[:page]), notice: "User was successfully deleted."
-  end
-
-  def history
-    load_audit_history(@user)
   end
 
   private

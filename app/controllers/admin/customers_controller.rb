@@ -42,11 +42,6 @@ class Admin::CustomersController < ApplicationController
                        .per(5)
   end
 
-  def history
-    @customer = Customer.find(params[:id])
-    load_audit_history(@customer)
-  end
-
   private
 
   def set_customer

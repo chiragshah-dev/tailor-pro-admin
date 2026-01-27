@@ -16,22 +16,16 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root to: "admin/dashboard#index"
   namespace :admin do
-    resources :users do
+    concern :historyable do
       member do
         get :history
       end
     end
+
+    resources :users, concerns: :historyable
     resources :currency_settings
-    resources :stores do
-      member do
-        get :history
-      end
-    end
-    resources :workers do
-      member do
-        get :history
-      end
-    end
+    resources :stores, concerns: :historyable
+    resources :workers, concerns: :historyable
     resources :garment_types
     resources :measurement_fields
     resources :currencies
@@ -39,28 +33,13 @@ Rails.application.routes.draw do
     resources :currencies do
       resources :currency_countries, only: %i[new create destroy]
     end
-    resources :orders, only: [:index, :show] do
-      member do
-        get :history
-      end
+    resources :orders, only: [:index, :show], concerns: :historyable do
       resources :order_payments, only: [:index], as: :payments
     end
-    resources :order_items, only: [:show] do
-      member do
-        get :history
-      end
-    end
-    resources :customers, only: [:index, :show] do
-      member do
-        get :history
-      end
-    end
+    resources :order_items, only: [:show], concerns: :historyable
+    resources :customers, only: [:index, :show], concerns: :historyable
     resources :job_roles
-    resources :wallets, only: [:index, :show] do
-      member do
-        get :history
-      end
-    end
+    resources :wallets, only: [:index, :show], concerns: :historyable
     get "stores/:id/stitches_for", to: "orders#store_stitches_for"
     get "garment_types/by_gender/:gender", to: "orders#garment_types_by_gender"
     get "garment_types/:id/measurement_fields", to: "orders#measurement_fields"

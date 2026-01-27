@@ -42,10 +42,6 @@ class Admin::OrdersController < ApplicationController
                          .per(10)
   end
 
-  def history
-    load_audit_history(@order)
-  end
-
   private
 
   def set_order
