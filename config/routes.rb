@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     resources :job_roles, concerns: :historyable
     resources :wallets, only: [:index, :show], concerns: :historyable
     resources :wallet_transactions, concerns: :historyable
+    resources :notification_templates, concerns: :historyable
     get "stores/:id/stitches_for", to: "orders#store_stitches_for"
     get "garment_types/by_gender/:gender", to: "orders#garment_types_by_gender"
     get "garment_types/:id/measurement_fields", to: "orders#measurement_fields"
