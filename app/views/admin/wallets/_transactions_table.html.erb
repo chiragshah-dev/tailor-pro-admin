@@ -25,6 +25,7 @@
           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
             Date
           </th>
+          <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -67,6 +68,15 @@
               <!-- DATE -->
               <td class="text-center text-sm">
                 <%= txn.created_at.strftime("%d %b %Y, %I:%M %p") %>
+              </td>
+              <td class="align-middle text-center">
+                <div class="d-flex justify-content-center gap-1">
+                  <%= link_to history_admin_wallet_transaction_path(txn),
+      class: "btn btn-xs rounded btn-secondary",
+      title: "View History", data: { turbo_frame: "_top" } do %>
+                    <i class="fas fa-history"></i>
+                  <% end %>
+                </div>
               </td>
             </tr>
           <% end %>

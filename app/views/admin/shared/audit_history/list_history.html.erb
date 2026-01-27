@@ -44,7 +44,7 @@
                 <td class="text-end pe-3">
                   <% if v.changeset.present? && v.changeset.any? %>
                     <!-- Button triggers modal -->
-                    <button type="button" class="btn btn-link text-primary text-xs fw-bold p-0"
+                    <button type="button" class="btn btn-link text-info text-xs fw-bold p-0"
                             data-bs-toggle="modal"
                             data-bs-target="#auditModal_<%= v.id %>">
                       <%= v.changeset.size %> change<%= 's' if v.changeset.size != 1 %>

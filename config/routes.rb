@@ -33,13 +33,14 @@ Rails.application.routes.draw do
       resources :currency_countries, only: %i[new create destroy], concerns: :historyable
     end
     resources :orders, only: [:index, :show], concerns: :historyable do
-      resources :order_payments, only: [:index], as: :payments
+      resources :order_payments, only: [:index], as: :payments, concerns: :historyable
     end
     resources :order_items, only: [:show], concerns: :historyable
     resources :order_measurements, only: [:show], concerns: :historyable
     resources :customers, only: [:index, :show], concerns: :historyable
     resources :job_roles, concerns: :historyable
     resources :wallets, only: [:index, :show], concerns: :historyable
+    resources :wallet_transactions, concerns: :historyable
     get "stores/:id/stitches_for", to: "orders#store_stitches_for"
     get "garment_types/by_gender/:gender", to: "orders#garment_types_by_gender"
     get "garment_types/:id/measurement_fields", to: "orders#measurement_fields"

@@ -1,6 +1,9 @@
 class Admin::OrderPaymentsController < ApplicationController
+  include AuditableHistory
+
   before_action :authenticate_admin_user!
   before_action :set_order
+  before_action :set_order_payment, only: [:history]
 
   def index
     @payment_details = @order.order_payments
@@ -29,5 +32,9 @@ class Admin::OrderPaymentsController < ApplicationController
 
   def set_order
     @order = Order.find(params[:order_id])
+  end
+
+  def set_order_payment
+    @order_payment = OrderPayment.find(params[:id])
   end
 end
