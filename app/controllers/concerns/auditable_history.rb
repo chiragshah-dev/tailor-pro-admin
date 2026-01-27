@@ -24,7 +24,7 @@ module AuditableHistory
   end
 
   def load_audit_history(record)
-    @audit_versions = PaperTrail::Version
+    @audit_versions = PaperTrail::Version.includes(:item)
       .where(item_type: record.class.name, item_id: record.id)
       .order(created_at: :desc)
       .page(params[:page])

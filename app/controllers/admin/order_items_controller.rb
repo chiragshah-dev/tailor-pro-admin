@@ -5,13 +5,15 @@ class Admin::OrderItemsController < ApplicationController
   before_action :authenticate_admin_user!
 
   def show
+    @order_measurements = @order_item
+      .order_measurements
+      .includes(:measurement_field, :member)
   end
 
   private
 
   def set_order_item
     @order_item = OrderItem
-      .includes(:order, :worker, :garment_type)
       .find(params[:id])
   end
 end
