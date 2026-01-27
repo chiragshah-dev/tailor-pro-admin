@@ -42,6 +42,7 @@
                 <th class="text-uppercase text-dark text-xxs text-center font-weight-bold ps-2">Payment Method</th>
                 <th class="text-uppercase text-dark text-xxs text-center font-weight-bold ps-2">Transaction ID </th>
                 <th class="text-uppercase text-dark text-xxs text-center font-weight-bold ">Payment Type</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -67,6 +68,15 @@
                     </td>
                     <td>
                       <p class="text-xs text-center font-weight-bold mb-0"><%= payment.payment_type&.humanize || 'NA' %></p>
+                    </td>
+                    <td class="align-middle text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <%= link_to history_admin_order_payment_path(payment, order_id: @order.id),
+                              class: "btn btn-xs rounded btn-secondary",
+                              title: "view history" do %>
+                          <i class="fas fa-history"></i>
+                        <% end %>
+                      </div>
                     </td>
                   </tr>
                 <% end %>

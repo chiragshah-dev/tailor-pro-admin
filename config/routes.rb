@@ -33,7 +33,7 @@ Rails.application.routes.draw do
       resources :currency_countries, only: %i[new create destroy], concerns: :historyable
     end
     resources :orders, only: [:index, :show], concerns: :historyable do
-      resources :order_payments, only: [:index], as: :payments
+      resources :order_payments, only: [:index], as: :payments, concerns: :historyable
     end
     resources :order_items, only: [:show], concerns: :historyable
     resources :order_measurements, only: [:show], concerns: :historyable
