@@ -1,6 +1,7 @@
 class Admin::GarmentTypesController < ApplicationController
+  include AuditableHistory
   before_action :authenticate_admin_user!
-  before_action :set_garment_type, only: %i[show edit update destroy]
+  before_action :set_garment_type, only: %i[show edit update destroy history]
   before_action :load_measurements, only: %i[new edit create update]
 
   def index

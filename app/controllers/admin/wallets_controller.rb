@@ -27,10 +27,6 @@ class Admin::WalletsController < ApplicationController
       .page(params[:transaction_page]).per(5)
   end
 
-  def history
-    load_audit_history(@wallet)
-  end
-
   private
 
   def set_wallet

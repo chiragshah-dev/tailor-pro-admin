@@ -1,6 +1,8 @@
 class Admin::CurrenciesController < ApplicationController
+  include AuditableHistory
+
   before_action :authenticate_admin_user!
-  before_action :set_currency, only: %i[show edit update destroy]
+  before_action :set_currency, only: %i[show edit update destroy history]
 
   def index
     @currencies = Currency.order(created_at: :desc)
@@ -9,7 +11,7 @@ class Admin::CurrenciesController < ApplicationController
       q = "%#{params[:search]}%"
       @currencies = @currencies.where(
         "currencies.name ILIKE :q",
-        q: q
+        q: q,
       )
     end
 

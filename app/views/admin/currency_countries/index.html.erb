@@ -65,6 +65,11 @@
                                   title: "Delete" do %>
                           <i class="fas fa-trash"></i>
                         <% end %>
+                        <%= link_to history_admin_currency_country_path(currency_country),
+      class: "btn btn-xs rounded btn-secondary",
+      title: "View History" do %>
+                          <i class="fas fa-history"></i>
+                        <% end %>
                       </div>
                     </td>
                   </tr>

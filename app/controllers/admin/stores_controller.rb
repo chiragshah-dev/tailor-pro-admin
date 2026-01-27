@@ -61,10 +61,6 @@ class Admin::StoresController < ApplicationController
     redirect_to admin_stores_path(page: params[:page]), notice: "Store was successfully deleted."
   end
 
-  def history
-    load_audit_history(@store)
-  end
-
   private
 
   def set_store

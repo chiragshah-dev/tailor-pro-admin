@@ -1,10 +1,11 @@
 class Admin::MeasurementFieldsController < ApplicationController
+  include AuditableHistory
   before_action :authenticate_admin_user!
-  before_action :set_measurement_field, only: [:show, :edit, :update, :destroy]
+  before_action :set_measurement_field, only: [:show, :edit, :update, :destroy, :history]
 
   def index
     @measurement_fields = MeasurementField.includes(:garment_type)
-    
+
     if params[:search].present?
       search = "%#{params[:search].strip}%"
       @measurement_fields = @measurement_fields.where(
@@ -67,6 +68,4 @@ class Admin::MeasurementFieldsController < ApplicationController
   def measurement_field_params
     params.require(:measurement_field).permit(:label, :active, :measurement_image, :garment_type_id)
   end
-
-
 end

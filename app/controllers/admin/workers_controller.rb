@@ -63,10 +63,6 @@ class Admin::WorkersController < ApplicationController
     end
   end
 
-  def history
-    load_audit_history(@worker)
-  end
-
   private
 
   def set_worker
