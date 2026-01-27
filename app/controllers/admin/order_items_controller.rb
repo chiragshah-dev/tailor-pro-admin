@@ -11,7 +11,6 @@ class Admin::OrderItemsController < ApplicationController
 
   def set_order_item
     @order_item = OrderItem
-      .includes(:order, :worker, :garment_type)
       .find(params[:id])
   end
 end
