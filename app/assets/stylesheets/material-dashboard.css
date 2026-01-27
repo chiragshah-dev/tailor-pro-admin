@@ -3125,6 +3125,21 @@ textarea.form-control-lg {
   transition: background-color 0.25s ease, border-color 0.25s ease, background-position 0.15s ease-in-out, opacity 0.15s ease-out, box-shadow 0.15s ease-in-out;
 }
 
+
+  input[readonly],
+  textarea[readonly] {
+    background-color: #f5f5f5 !important;
+    cursor: not-allowed;
+    color: #6c757d;
+  }
+
+  input[readonly]:focus,
+  textarea[readonly]:focus {
+    box-shadow: none;
+    border-color: #ced4da;
+  }
+
+
 @media (prefers-reduced-motion: reduce) {
   .form-check-input {
     transition: none;
