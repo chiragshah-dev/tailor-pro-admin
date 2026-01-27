@@ -1,6 +1,8 @@
 class Admin::CurrencyCountriesController < ApplicationController
+  include AuditableHistory
+
   before_action :authenticate_admin_user!
-  before_action :set_currency_country, only: %i[show edit update destroy]
+  before_action :set_currency_country, only: %i[show edit update destroy history]
 
   def index
     @currency_countries =

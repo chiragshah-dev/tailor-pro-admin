@@ -1,6 +1,7 @@
 class Admin::JobRolesController < ApplicationController
+  include AuditableHistory
   before_action :authenticate_admin_user!
-  before_action :set_job_role, only: [:show, :edit, :update, :destroy]
+  before_action :set_job_role, only: [:show, :edit, :update, :destroy, :history]
 
   def index
     @job_roles = JobRole.all
@@ -62,6 +63,4 @@ class Admin::JobRolesController < ApplicationController
   def job_role_params
     params.require(:job_role).permit(:name)
   end
-
-  
 end

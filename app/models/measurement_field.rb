@@ -1,4 +1,5 @@
 class MeasurementField < ApplicationRecord
+  include Auditable
   has_one_attached :measurement_image
   belongs_to :garment_type, optional: true
   has_many :store_measurement_fields, dependent: :destroy

@@ -1,8 +1,10 @@
 # app/controllers/admin/currency_settings_controller.rb
 module Admin
   class CurrencySettingsController < ApplicationController
+    include AuditableHistory
+
     before_action :authenticate_admin_user!
-    before_action :set_currency_setting, only: %i[edit update destroy]
+    before_action :set_currency_setting, only: %i[edit update destroy history]
 
     def index
       @currency_settings = CurrencySetting.includes(:currency).order(:created_at).page(params[:page]).per(10)
