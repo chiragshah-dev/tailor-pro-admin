@@ -5,6 +5,9 @@ class Admin::OrderItemsController < ApplicationController
   before_action :authenticate_admin_user!
 
   def show
+    @order_measurements = @order_item
+      .order_measurements
+      .includes(:measurement_field, :member)
   end
 
   private

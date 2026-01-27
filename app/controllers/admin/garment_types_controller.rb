@@ -5,7 +5,7 @@ class Admin::GarmentTypesController < ApplicationController
   before_action :load_measurements, only: %i[new edit create update]
 
   def index
-    @garment_types = GarmentType.all
+    @garment_types = GarmentType.includes([:image_attachment])
 
     if params[:search].present?
       q = params[:search].strip
