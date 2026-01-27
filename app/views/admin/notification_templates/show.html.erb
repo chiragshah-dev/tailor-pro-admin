@@ -8,14 +8,14 @@
             Notification Template Details
           </h6>
           <div class="me-3 d-flex gap-2">
-            <%= link_to edit_admin_notification_template_path(@template, page: params[:page]),
+            <%= link_to edit_admin_notification_template_path(@notification_template, page: params[:page]),
                   class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
               Edit
             <% end %>
-            <%= button_to admin_notification_template_path(@template, page: params[:page]),
+            <%= button_to admin_notification_template_path(@notification_template, page: params[:page]),
                   method: :delete,
                   class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold",
-                  data: { turbo_confirm: "Are you sure you want to delete #{@template.key}?" } do %>
+                  data: { turbo_confirm: "Are you sure you want to delete #{@notification_template.key}?" } do %>
               Delete
             <% end %>
           </div>
@@ -28,19 +28,19 @@
             <p class="text-sm mb-2">
               <span class="fw-bold text-dark">Key:</span>
               <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
-                <%= @template.key %>
+                <%= @notification_template.key %>
               </span>
             </p>
             <p class="text-sm mb-2">
               <span class="fw-bold text-dark">Title:</span>
               <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
-                <%= @template.title %>
+                <%= @notification_template.title %>
               </span>
             </p>
             <p class="text-sm mb-2">
               <span class="fw-bold text-dark">Active:</span>
               <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
-                <%= @template.active? ? "Yes" : "No" %>
+                <%= @notification_template.active? ? "Yes" : "No" %>
               </span>
             </p>
           </div>
@@ -48,7 +48,7 @@
             <p class="text-sm mb-2">
               <span class="fw-bold text-dark">Body:</span>
               <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
-                <%= @template.body %>
+                <%= @notification_template.body %>
               </span>
             </p>
           </div>

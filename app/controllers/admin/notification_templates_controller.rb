@@ -1,6 +1,8 @@
 class Admin::NotificationTemplatesController < ApplicationController
+  include AuditableHistory
+
   before_action :authenticate_admin_user!
-  before_action :set_template, only: [:show, :edit, :update, :destroy]
+  before_action :set_notification_template, only: [:show, :edit, :update, :destroy, :history]
 
   def index
     @templates = NotificationTemplate.all
@@ -22,13 +24,13 @@ class Admin::NotificationTemplatesController < ApplicationController
   end
 
   def new
-    @template = NotificationTemplate.new
+    @notification_template = NotificationTemplate.new
   end
 
   def create
-    @template = NotificationTemplate.new(template_params)
+    @notification_template = NotificationTemplate.new(template_params)
 
-    if @template.save
+    if @notification_template.save
       redirect_to admin_notification_templates_path(
                     page: params[:page],
                     search: params[:search],
@@ -44,7 +46,7 @@ class Admin::NotificationTemplatesController < ApplicationController
   end
 
   def update
-    if @template.update(template_params)
+    if @notification_template.update(template_params)
       redirect_to admin_notification_templates_path(
                     page: params[:page],
                     search: params[:search],
@@ -57,7 +59,7 @@ class Admin::NotificationTemplatesController < ApplicationController
   end
 
   def destroy
-    if @template.destroy
+    if @notification_template.destroy
       redirect_to admin_notification_templates_path(
                     page: params[:page],
                     search: params[:search],
@@ -65,7 +67,7 @@ class Admin::NotificationTemplatesController < ApplicationController
                   notice: "Notification template deleted successfully."
     else
       redirect_to admin_notification_template_path(
-                    @template,
+                    @notification_template,
                     page: params[:page],
                     search: params[:search],
                   ),
@@ -75,8 +77,8 @@ class Admin::NotificationTemplatesController < ApplicationController
 
   private
 
-  def set_template
-    @template = NotificationTemplate.find(params[:id])
+  def set_notification_template
+    @notification_template = NotificationTemplate.find(params[:id])
   end
 
   def template_params

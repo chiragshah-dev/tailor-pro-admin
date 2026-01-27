@@ -5,13 +5,13 @@
       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
         <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
           <h6 class="text-white text-capitalize ps-3 mb-0">
-            <%= @template.new_record? ? "Add Notification Template" : "Edit Notification Template" %>
+            <%= @notification_template.new_record? ? "Add Notification Template" : "Edit Notification Template" %>
           </h6>
         </div>
       </div>
       <!-- BODY -->
       <div class="card-body px-4 pb-4">
-        <%= form_with model: [:admin, @template], local: true do |f| %>
+        <%= form_with model: [:admin, @notification_template], local: true do |f| %>
           <%= hidden_field_tag :page, params[:page] %>
           <div class="row g-4">
             <!-- KEY -->
@@ -22,10 +22,10 @@
               <div class="input-group input-group-outline">
                 <%= f.text_field :key,
       class: "form-control",
-      readonly: @template.persisted? %>
+      readonly: @notification_template.persisted? %>
               </div>
               <div id="key_err" class="text-danger mt-2 text-xs">
-                <%= @template.errors.full_messages_for(:key).first %>
+                <%= @notification_template.errors.full_messages_for(:key).first %>
               </div>
             </div>
             <!-- STATUS -->
@@ -49,7 +49,7 @@
                 <%= f.text_field :title, class: "form-control" %>
               </div>
               <div id="title_err" class="text-danger mt-2 text-xs">
-                <%= @template.errors.full_messages_for(:title).first %>
+                <%= @notification_template.errors.full_messages_for(:title).first %>
               </div>
             </div>
             <!-- BODY -->
@@ -61,7 +61,7 @@
                 <%= f.text_area :body, rows: 4, class: "form-control" %>
               </div>
               <div id="body_err" class="text-danger mt-2 text-xs">
-                <%= @template.errors.full_messages_for(:body).first %>
+                <%= @notification_template.errors.full_messages_for(:body).first %>
               </div>
             </div>
           </div>
@@ -70,7 +70,7 @@
             <%= link_to "Back",
                   admin_notification_templates_path,
                   class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
-            <%= f.submit (@template.new_record? ? "Create" : "Update"),
+            <%= f.submit (@notification_template.new_record? ? "Create" : "Update"),
                   class: "btn btn-info text-white text-uppercase font-weight-bold" %>
           </div>
         <% end %>
