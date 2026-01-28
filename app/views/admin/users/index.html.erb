@@ -22,6 +22,7 @@
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Email</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Contact Number</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Active Store</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Deleted</th>
                 <%# <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th> %>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
               </tr>
@@ -62,6 +63,11 @@
                       <% else %>
                         <span class="text-dark">-</span>
                       <% end %>
+                    </td>
+                    <td>
+                      <p class="text-sm text-secondary mb-0 text-dark">
+                        <%= user.deleted.to_s.capitalize%>
+                      </p>
                     </td>
                     <!-- Actions -->
                     <td class="align-middle text-center">

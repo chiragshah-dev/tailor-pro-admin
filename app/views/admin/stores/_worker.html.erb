@@ -25,6 +25,9 @@
                 Status
               </th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold ">
+                Deleted
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold ">
                 Action
               </th>
             </tr>
@@ -48,6 +51,9 @@
                     <% else %>
                       <span class="badge badge-sm bg-gradient-secondary">Inactive</span>
                     <% end %>
+                  </td>
+                  <td class="text-center  text-dark text-sm">
+                    <%= worker.deleted.to_s&.capitalize || "-" %>
                   </td>
                   <td class="align-middle text-center">
                     <%= link_to admin_worker_path(worker),

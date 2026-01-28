@@ -30,6 +30,7 @@
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Owner</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Contact</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Wallet Balance</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Deleted</th>
                 <%# <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Location</th> %>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
               </tr>
@@ -81,6 +82,11 @@
           admin_wallet_path(store.wallet),
           class: "text-xs text-info fw-bold" %>
                       </div>
+                    </td>
+                    <td>
+                      <p class="text-sm text-secondary mb-0 text-dark">
+                        <%= store.deleted.to_s.capitalize%>
+                      </p>
                     </td>
                     <!-- ACTIONS -->
                     <td class="align-middle text-center">
