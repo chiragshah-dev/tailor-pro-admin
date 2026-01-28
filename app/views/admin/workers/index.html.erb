@@ -24,6 +24,7 @@
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Contact</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Store</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Role</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Deleted</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
               </tr>
             </thead>
@@ -63,6 +64,11 @@
                     <td>
                       <p class="text-sm text-secondary mb-0 text-capitalize ">
                         <%= worker.job_role&.name || "-" %>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="text-sm text-secondary mb-0 text-dark">
+                        <%= worker.deleted.to_s.capitalize%>
                       </p>
                     </td>
                     <!-- Actions -->

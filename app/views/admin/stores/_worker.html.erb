@@ -1,8 +1,8 @@
 <turbo-frame id="workers_frame">
   <hr class="horizontal dark my-3">
   <h6 class="text-uppercase text-dark mb-3">Workers</h6>
-  <small class="text-muted text-secondary font-weight-bold text-xs mb-2">
-    Showing <%= @workers.offset_value + 1 %> –
+  <small class=" text-dark font-weight-bold text-xs mb-2">
+    Showing <%= @workers.offset_value + 1 %> -
     <%= @workers.offset_value + @workers.size %>
     of <%= @workers.total_count %> results
   </small>
@@ -25,6 +25,9 @@
                 Status
               </th>
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold ">
+                Deleted
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold ">
                 Action
               </th>
             </tr>
@@ -33,13 +36,13 @@
             <% if @workers.any?%>
               <% @workers.each do |worker| %>
                 <tr>
-                  <td class="text-center text-sm font-weight-bold ">
+                  <td class="text-center text-dark text-sm font-weight-bold ">
                     <%= worker.name %>
                   </td>
-                  <td class=" text-center text-sm">
+                  <td class=" text-center text-dark text-sm">
                     <%= worker.contact_number.presence || "-" %>
                   </td>
-                  <td class="text-center text-sm">
+                  <td class="text-center  text-dark text-sm">
                     <%= worker.job_role&.name&.capitalize || "-" %>
                   </td>
                   <td class=" text-center text-sm">
@@ -48,6 +51,9 @@
                     <% else %>
                       <span class="badge badge-sm bg-gradient-secondary">Inactive</span>
                     <% end %>
+                  </td>
+                  <td class="text-center  text-dark text-sm">
+                    <%= worker.deleted.to_s&.capitalize || "-" %>
                   </td>
                   <td class="align-middle text-center">
                     <%= link_to admin_worker_path(worker),

@@ -30,6 +30,7 @@
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Owner</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Contact</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Wallet Balance</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Deleted</th>
                 <%# <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Location</th> %>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
               </tr>
@@ -46,41 +47,46 @@
                     </td>
                     <!-- STORE NAME -->
                     <td>
-                      <h6 class="mb-0 text-sm">
+                      <p class="mb-0 text-sm text-dark">
                         <%= store.name %>
                         <% if store.is_main_store %>
                           <span class="badge bg-gradient-info ms-1">Main</span>
                         <% end %>
-                      </h6>
+                      </p>
                     </td>
                     <!-- CODE -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 ">
+                      <p class="text-sm text-secondary mb-0 text-dark">
                         <%= store.code.presence || "-" %>
                       </p>
                     </td>
                     <!-- OWNER -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 ">
+                      <p class="text-sm text-secondary mb-0 text-dark">
                         <%= store.user&.name || "-" %>
                       </p>
                     </td>
                     <!-- CONTACT -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 ">
+                      <p class="text-sm text-secondary mb-0 text-dark">
                         <%= store.contact_number.presence || "-" %>
                       </p>
                     </td>
                     <!-- WALLET -->
                     <td>
-                      <div class="d-flex flex-column">
-                        <p class="text-sm text-secondary mb-1">
+                      <div class="d-flex flex-column ">
+                        <p class="text-sm  mb-1 text-dark">
                           <%= number_to_currency(store.wallet&.balance || 0, unit: "₹") %>
                         </p>
                         <%= link_to "View details",
           admin_wallet_path(store.wallet),
           class: "text-xs text-info fw-bold" %>
                       </div>
+                    </td>
+                    <td>
+                      <p class="text-sm text-secondary mb-0 text-dark">
+                        <%= store.deleted.to_s.capitalize%>
+                      </p>
                     </td>
                     <!-- ACTIONS -->
                     <td class="align-middle text-center">
