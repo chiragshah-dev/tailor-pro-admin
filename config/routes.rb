@@ -21,6 +21,11 @@ Rails.application.routes.draw do
         get :history
       end
     end
+    resources :contact_supports, only: [:index, :show, :destroy], concerns: :historyable do
+      member do
+        patch :close
+      end
+    end
 
     resources :users, concerns: :historyable
     resources :currency_settings, concerns: :historyable
