@@ -24,15 +24,15 @@
           <div class="col-md-6">
             <p class="text-sm mb-2 text-dark">
               <strong>Order ID:</strong>
-              <span class="text-secondary ms-2"><%= @order.id %></span>
+              <span class="text-dark ms-2"><%= @order.id %></span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Order Number:</strong>
-              <span class="text-secondary ms-2"><%= @order.order_number %></span>
+              <span class="text-dark ms-2"><%= @order.order_number %></span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Order Date:</strong>
-              <span class="text-secondary ms-2"><%= @order.order_date %></span>
+              <span class="text-dark ms-2"><%= @order.order_date %></span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Status:</strong>
@@ -44,7 +44,7 @@
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Courier To Customer:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order.courier_to_customer ? "Yes" : "No" %>
               </span>
             </p>
@@ -53,37 +53,37 @@
           <div class="col-md-6">
             <p class="text-sm mb-2 text-dark">
               <strong>Customer:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order.customer&.name || "-" %>
               </span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Store:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order.store&.name || "-" %>
               </span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Assigned Worker:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order.worker&.name || "-" %>
               </span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Assigned At:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order.assigned_at || "-" %>
               </span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Delivery Date:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order.delivery_date || "-" %>
               </span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Transaction ID:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order.transaction_id || "-" %>
               </span>
             </p>
@@ -96,33 +96,33 @@
           <div class="col-md-6">
             <p class="text-sm mb-2 text-dark">
               <strong>Total Bill Amount:</strong>
-              <span class="text-secondary ms-2">₹ <%= @order.total_bill_amount %></span>
+              <span class="text-dark ms-2">₹ <%= @order.total_bill_amount %></span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Advance Paid:</strong>
-              <span class="text-secondary ms-2">₹ <%= @order.advance_payment %></span>
+              <span class="text-dark ms-2">₹ <%= @order.advance_payment %></span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Payment Received:</strong>
-              <span class="text-secondary ms-2">₹ <%= @order.payment_received %></span>
+              <span class="text-dark ms-2">₹ <%= @order.payment_received %></span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Additional Price:</strong>
-              <span class="text-secondary ms-2">₹ <%= @order.additional_price %></span>
+              <span class="text-dark ms-2">₹ <%= @order.additional_price %></span>
             </p>
           </div>
           <div class="col-md-6">
             <p class="text-sm mb-2 text-dark">
               <strong>Discount:</strong>
-              <span class="text-secondary ms-2">₹ <%= @order.discount %></span>
+              <span class="text-dark ms-2">₹ <%= @order.discount %></span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Balance Due:</strong>
-              <span class="text-secondary ms-2">₹ <%= @order.balance_due %></span>
+              <span class="text-dark ms-2">₹ <%= @order.balance_due %></span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Payment Type:</strong>
-              <span class="text-secondary ms-2 text-capitalize">
+              <span class="text-dark ms-2 text-capitalize">
                 <%= @order.payment_type %>
               </span>
             </p>
