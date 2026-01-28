@@ -38,16 +38,16 @@
                     <!-- Name -->
                     <td>
                       <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm"><%= user.name.titleize %></h6>
+                        <p class="mb-0 text-sm text-dark"><%= user.name.titleize %></p>
                       </div>
                     </td>
                     <!-- Email -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold"><%= user.email || "-" %></p>
+                      <p class="text-sm text-secondary mb-0 text-dark"><%= user.email || "-" %></p>
                     </td>
                     <!-- Contact Number -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                      <p class="text-sm text-secondary mb-0 text-dark">
                         <%= user.contact_number.presence || "-" %>
                       </p>
                     </td>
@@ -55,12 +55,12 @@
                     <td>
                       <% if user.active_store.present? %>
                         <%= link_to admin_store_path(user.active_store),
-                              class: "font-weight-bold",
+                              class: "text-info",
                               title: "Show Store" do %>
                           <%= user.active_store.name %>
                         <% end %>
                       <% else %>
-                        <span class="text-muted">-</span>
+                        <span class="text-dark">-</span>
                       <% end %>
                     </td>
                     <!-- Actions -->

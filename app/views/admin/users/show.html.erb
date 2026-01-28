@@ -36,20 +36,16 @@
             <!-- LEFT COLUMN -->
             <div class="col-md-6">
               <p class="text-sm mb-2">
-                <span class="fw-bold text-dark">ID:</span>
-                <span class="text-sm text-secondary mb-0 font-weight-bold ms-2"><%= @user.id %></span>
-              </p>
-              <p class="text-sm mb-2">
                 <span class="fw-bold text-dark">Name:</span>
-                <span class="text-sm text-secondary mb-0 font-weight-bold ms-2"><%= @user.name.titleize %></span>
+                <span class="text-sm text-dark mb-0  ms-2"><%= @user.name.titleize %></span>
               </p>
               <p class="text-sm mb-2">
                 <span class="fw-bold text-dark">Email:</span>
-                <span class="text-sm text-secondary mb-0 font-weight-bold ms-2"><%= @user.email || "-" %></span>
+                <span class="text-sm text-dark mb-0  ms-2"><%= @user.email || "-" %></span>
               </p>
               <p class="text-sm mb-2">
                 <span class="fw-bold text-dark">Country Code:</span>
-                <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
+                <span class="text-sm text-dark mb-0  ms-2">
                   <%= @user.country_code.presence || "-" %>
                 </span>
               </p>
@@ -58,19 +54,25 @@
             <div class="col-md-6">
               <p class="text-sm mb-2">
                 <span class="fw-bold text-dark">Active Store:</span>
-                <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
-                  <%= @user.active_store_id || "-" %>
+                <span class="text-sm text-dark mb-0 ms-2">
+                  <% if @user.active_store_id.present? %>
+                    <%= link_to @user.active_store_id,
+                  admin_store_path(@user.active_store_id),
+                  class: "text-decoration-none" %>
+                  <% else %>
+                    -
+                  <% end %>
                 </span>
               </p>
               <p class="text-sm mb-2">
                 <span class="fw-bold text-dark">Contact Number:</span>
-                <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
+                <span class="text-sm text-dark mb-0  ms-2">
                   <%= @user.contact_number.presence || "-" %>
                 </span>
               </p>
               <p class="text-sm mb-2">
                 <span class="fw-bold text-dark">FCM Token:</span>
-                <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
+                <span class="text-sm text-dark mb-0  ms-2">
                   <%= @user.fcm_token.presence || "-" %>
                 </span>
               </p>
