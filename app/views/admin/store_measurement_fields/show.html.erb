@@ -1,0 +1,85 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- PAGE HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3
+                    d-flex justify-content-between align-items-center">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            Store Measurement Field Details
+          </h6>
+          <div class="me-3">
+            <%#= button_to admin_store_measurement_field_path(
+                  @store_measurement_field,
+                  page: params[:page]
+                ),
+                method: :delete,
+                class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold",
+                data: { turbo_confirm: "Are you sure you want to delete #{@store_measurement_field.name}?" } do %>
+              <%# Delete %>
+              <%# end %>
+            </div>
+          </div>
+        </div>
+        <!-- BODY -->
+        <div class="card-body px-4 pt-4 pb-2">
+          <div class="row">
+            <!-- LEFT COLUMN -->
+            <div class="col-md-6">
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Name:</span>
+                <span class="ms-2 text-dark">
+                  <%= @store_measurement_field.name %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Label:</span>
+                <span class="ms-2 text-dark">
+                  <%= @store_measurement_field.label %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Active:</span>
+                <span class="ms-2 text-dark">
+                  <%= @store_measurement_field.active ? "Yes" : "No" %>
+                </span>
+              </p>
+            </div>
+            <!-- RIGHT COLUMN -->
+            <div class="col-md-6">
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Store:</span>
+                <span class="ms-2 text-dark">
+                  <%= link_to @store_measurement_field.store.name,
+                      admin_store_path(@store_measurement_field.store),
+                      class: "text-decoration-none text-info" %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Garment Type:</span>
+                <span class="ms-2 text-dark">
+                  <%= @store_measurement_field
+                      .garment_type
+                      &.garment_name || "-" %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Custom:</span>
+                <span class="ms-2 text-dark">
+                  <%= @store_measurement_field.custom ? "Yes" : "No" %>
+                </span>
+              </p>
+            </div>
+          </div>
+          <!-- BACK BUTTON (BOTTOM RIGHT) -->
+          <%= link_to admin_store_measurement_fields_path(
+              store_id: @store_measurement_field.store_id,
+              page: params[:page]
+            ),
+            class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end mt-3" do %>
+            Back
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -8,6 +8,10 @@
             Store Details
           </h6>
           <div class="me-3 d-flex gap-2">
+            <%= link_to admin_store_measurement_fields_path(store_id: @store.id),
+      class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
+              Store Measurements
+            <% end %>
             <%= link_to edit_admin_store_path(@store,page: params[:page]),
                   class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
               Edit
