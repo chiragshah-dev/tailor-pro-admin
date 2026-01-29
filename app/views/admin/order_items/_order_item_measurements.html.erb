@@ -9,6 +9,9 @@
             Measurement Field
           </th>
           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
+            Store Measurement Field (store custom)
+          </th>
+          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
             Member
           </th>
           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
@@ -32,6 +35,18 @@
         title: "View Measurement Field",
         data: { turbo_frame: "_top" } do %>
                     <%= m.measurement_field.name.titleize %>
+                  <% end %>
+                <% else %>
+                  N/A
+                <% end %>
+              </td>
+              <td class="text-center text-sm">
+                <% if m.store_measurement_field_id.present? %>
+                  <%= link_to '#',
+        class: "text-decoration-none text-info",
+        title: "View Measurement Field",
+        data: { turbo_frame: "_top" } do %>
+                    <%= m.store_measurement_field.name.titleize %>
                   <% end %>
                 <% else %>
                   N/A
