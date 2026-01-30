@@ -107,6 +107,14 @@
           <span class="nav-link-text ms-1">Contact Supports</span>
         <% end %>
       </li>
+      <!-- tailor enquiries -->
+      <li class="nav-item">
+        <%= link_to admin_tailor_enquiries_path,
+    class: "nav-link #{controller_name == 'tailor_enquiries' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
+          <i class="material-symbols-rounded opacity-5">mail</i>
+          <span class="nav-link-text ms-1">Tailor Enquiries</span>
+        <% end %>
+      </li>
       <!-- Settings Header -->
       <li class="nav-item mt-3">
         <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">
