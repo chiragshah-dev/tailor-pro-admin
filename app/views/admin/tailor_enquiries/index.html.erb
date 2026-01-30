@@ -1,0 +1,91 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">Tailor Enquiries</h6>
+        </div>
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-0 pb-2">
+        <!-- SEARCH -->
+        <div class="px-3 pb-3">
+          <%= render "admin/shared/search",
+            url: admin_tailor_enquiries_path,
+            placeholder: "Search enquiries..." %>
+        </div>
+        <!-- TABLE -->
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Name</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Email</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Created At</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @tailor_enquiries.present? %>
+                <% @tailor_enquiries.each_with_index do |enquiry, index| %>
+                  <tr>
+                    <!-- ID -->
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                        <%= (@tailor_enquiries.current_page - 1) *
+                            @tailor_enquiries.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <!-- NAME -->
+                    <td>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">
+                          <%= enquiry.name || "-" %>
+                        </h6>
+                      </div>
+                    </td>
+                    <!-- EMAIL -->
+                    <td>
+                      <p class="text-sm text-dark mb-0">
+                        <%= enquiry.email %>
+                      </p>
+                    </td>
+                    <!-- CREATED AT -->
+                    <td>
+                      <p class="text-sm text-dark mb-0">
+                        <%= enquiry.created_at.strftime("%d %b %Y") %>
+                      </p>
+                    </td>
+                    <!-- ACTIONS -->
+                    <td class="align-middle text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <%= button_to admin_tailor_enquiry_path(enquiry),
+                          method: :delete,
+                          class: "btn btn-xs rounded btn-secondary",
+                          data: { turbo_confirm: "Are you sure you want to delete #{enquiry&.name}'s enquiry?" } do %>
+                          <i class="fas fa-trash"></i>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr>
+                  <td colspan="12" class="text-center">
+                    <p class="no-content-text">No records found.</p>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- PAGINATION -->
+        <div class="d-flex justify-content-center px-3 mt-3">
+          <%= paginate @tailor_enquiries %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
