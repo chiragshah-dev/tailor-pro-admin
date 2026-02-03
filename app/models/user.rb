@@ -39,6 +39,7 @@ class User < ApplicationRecord
            dependent: :destroy
   has_many :tailor_subscriptions, dependent: :destroy
   has_one :active_subscription, -> { where(active: true) }, class_name: "TailorSubscription"
+  has_many :contact_supports, dependent: :destroy
 
   # Callbacks
   after_create :setup_default_records
