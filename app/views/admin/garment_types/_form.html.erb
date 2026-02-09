@@ -1,4 +1,3 @@
-  
 <div class="row">
   <div class="col-12">
     <div class="card my-4">
@@ -10,10 +9,12 @@
           </h6>
         </div>
       </div>
+
       <!-- BODY -->
       <div class="card-body px-4 pb-4">
         <%= form_with model: [:admin, @garment_type], local: true do |f| %>
           <%= hidden_field_tag :page, params[:page] %>
+
           <div class="row g-4">
             <!-- GARMENT NAME -->
             <div class="form-group col-md-6">
@@ -22,13 +23,14 @@
               </label>
               <div class="input-group input-group-outline">
                 <%= f.text_field :garment_name,
-                        class: "form-control",
-                        placeholder: "Enter garment name" %>
+                      class: "form-control",
+                      placeholder: "Enter garment name" %>
               </div>
               <div id="name_err" class="text-danger mt-2 text-xs">
                 <%= @garment_type.errors.full_messages_for(:garment_name).first %>
               </div>
             </div>
+
             <!-- GENDER -->
             <div class="form-group col-md-6">
               <label class="form-label font-weight-bold text-dark">
@@ -36,11 +38,12 @@
               </label>
               <div class="input-group input-group-outline">
                 <%= f.select :gender,
-                        GarmentType.genders.keys.map { |g| [g.titleize, g] },
-                        { prompt: "Select Gender" },
-                        class: "form-control" %>
+                      GarmentType.genders.keys.map { |g| [g.titleize, g] },
+                      { prompt: "Select Gender" },
+                      class: "form-control" %>
               </div>
             </div>
+
             <!-- ACTIVE -->
             <div class="form-group col-md-6">
               <label class="form-label font-weight-bold text-dark">
@@ -48,34 +51,55 @@
               </label>
               <div class="input-group input-group-outline">
                 <%= f.select :active,
-                        [["Yes", true], ["No", false]],
-                        {},
-                        class: "form-control" %>
+                      [["Yes", true], ["No", false]],
+                      {},
+                      class: "form-control" %>
               </div>
             </div>
           </div>
+
           <hr class="my-4">
+
           <!-- MEASUREMENT FIELDS -->
           <h6 class="text-uppercase text-dark mb-3">
             Measurement Fields
           </h6>
+
+          <% max_seq = @measurement_fields.size %>
+
           <div class="row">
             <% @measurement_fields.each do |field| %>
-              <div class="col-md-3 mb-2">
+              <div class="col-md-4 mb-3 d-flex align-items-center gap-2">
                 <div class="form-check">
+                <!-- Checkbox -->
                   <%= check_box_tag "measurement_field_ids[]",
-                          field.id,
-                          @garment_type.measurement_field_ids.include?(field.id),
-                          id: "mf_#{field.id}",
-                          class: "form-check-input" %>
+                      field.id,
+                      @garment_type.measurement_field_ids.include?(field.id),
+                      id: "mf_#{field.id}",
+                      class: "form-check-input measurement-checkbox",
+                      data: { field_id: field.id } %>
                   <%= label_tag "mf_#{field.id}",
-                          field.label,
-                          class: "form-check-label" %>
+                      field.label,
+                      class: "form-check-label me-2" %>
                 </div>
+
+                <!-- Sequence dropdown -->
+                <%= select_tag "measurement_sequences[#{field.id}]",
+                      options_for_select((1..max_seq).to_a,
+                        @garment_type.garment_type_measurements
+                          .find { |gtm| gtm.measurement_field_id == field.id }
+                          &.sequence
+                      ),
+                      include_blank: "Seq",
+                      class: "form-select form-select-sm sequence-select",
+                      data: { field_id: field.id },
+                      disabled: !@garment_type.measurement_field_ids.include?(field.id) %>
               </div>
             <% end %>
           </div>
+
           <hr class="my-4">
+
           <!-- IMAGE -->
           <div class="form-group col-md-6">
             <label class="form-label font-weight-bold text-dark">
@@ -84,34 +108,36 @@
             <% if f.object.image.attached? %>
               <div class="mb-2">
                 <%= image_tag f.object.image,
-                        class: "img-thumbnail",
-                        style: "max-width: 150px;" %>
+                      class: "img-thumbnail",
+                      style: "max-width: 150px;" %>
               </div>
             <% end %>
             <div class="d-flex align-items-center gap-2">
               <label class="btn bg-gradient-info text-white mb-0">
                 Choose Image
                 <%= f.file_field :image,
-                        class: "d-none",
-                        accept: "image/png,image/jpeg",
-                        onchange: "this.closest('.d-flex').querySelector('.file-name').innerText = this.files[0]?.name || 'No file chosen'" %>
+                      class: "d-none",
+                      accept: "image/png,image/jpeg",
+                      onchange: "this.closest('.d-flex').querySelector('.file-name').innerText = this.files[0]?.name || 'No file chosen'" %>
               </label>
               <span class="file-name text-muted">No file chosen</span>
             </div>
           </div>
+
           <!-- ACTIONS -->
           <div class="d-flex justify-content-end mt-4">
             <%= link_to "Back",
-                    admin_garment_types_path(page: params[:page]),
-                    class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+                  admin_garment_types_path(page: params[:page]),
+                  class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
             <%= f.submit @garment_type.persisted? ? "Update" : "Create",
-                    class: "btn btn-info text-white text-uppercase font-weight-bold" %>
+                  class: "btn btn-info text-white text-uppercase font-weight-bold" %>
           </div>
         <% end %>
       </div>
     </div>
   </div>
 </div>
+
 <script>
   document.addEventListener("turbo:load", () => {
     const form = document.querySelector("form");
@@ -120,9 +146,45 @@
     const nameInput = document.getElementById("garment_type_garment_name");
     const nameErr   = document.getElementById("name_err");
 
+    const checkboxes = document.querySelectorAll(".measurement-checkbox");
+    const selects    = document.querySelectorAll(".sequence-select");
+
+    function updateSequences() {
+      const used = Array.from(selects)
+        .filter(s => !s.disabled && s.value)
+        .map(s => s.value);
+
+      selects.forEach(select => {
+        const current = select.value;
+        Array.from(select.options).forEach(opt => {
+          if (!opt.value) return;
+          opt.disabled = used.includes(opt.value) && opt.value !== current;
+        });
+      });
+    }
+
+    checkboxes.forEach(cb => {
+      cb.addEventListener("change", () => {
+        const fieldId = cb.dataset.fieldId;
+        const select  = document.querySelector(`.sequence-select[data-field-id='${fieldId}']`);
+
+        if (cb.checked) {
+          select.disabled = false;
+        } else {
+          select.value = "";
+          select.disabled = true;
+        }
+        updateSequences();
+      });
+    });
+
+    selects.forEach(select => {
+      select.addEventListener("change", updateSequences);
+    });
+
+    // Existing name validation (unchanged)
     form.addEventListener("submit", (e) => {
       let valid = true;
-
       nameErr.innerHTML = "";
       nameInput.classList.remove("is-invalid");
 
@@ -141,5 +203,7 @@
         nameInput.classList.remove("is-invalid");
       }
     });
+
+    updateSequences();
   });
 </script>
