@@ -19,4 +19,36 @@ module ApplicationHelper
   def dynamic_page_title
     action_name == "index" ? controller_name.titleize : action_name.titleize
   end
+
+  # def sortable_header(column, label)
+  #   direction =
+  #     (params[:sort] == column && params[:direction] == "asc") ? "desc" : "asc"
+
+  #   link_to label,
+  #     params.permit(:search, :page).merge(sort: column, direction: direction),
+  #     class: "text-dark text-decoration-none"
+  # end
+
+  def sortable_header(column, label)
+    current_sort = params[:sort]
+    current_dir  = params[:direction]
+
+    icon =
+      if current_sort == column
+        current_dir == "asc" ? "↑" : "↓"
+      else
+        "⇅"
+      end
+
+    next_dir =
+      (current_sort == column && current_dir == "asc") ? "desc" : "asc"
+
+    link_to params.permit(:search, :page).merge(sort: column, direction: next_dir),
+            class: "sortable-header text-dark text-decoration-none d-inline-flex align-items-center gap-1" do
+      safe_join([
+        label,
+        content_tag(:span, icon, class: "sort-icon")
+      ])
+    end
+  end
 end
