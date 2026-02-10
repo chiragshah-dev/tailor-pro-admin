@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     resources :wallets, only: [:index, :show], concerns: :historyable
     resources :wallet_transactions, concerns: :historyable
     resources :notification_templates, concerns: :historyable
+    resources :system_notifications, concerns: :historyable
     resources :tailor_enquiries, only: [:index, :show, :destroy]
     resources :store_measurement_fields, only: [:index, :show, :destroy], concerns: :historyable
     get "stores/:id/stitches_for", to: "orders#store_stitches_for"

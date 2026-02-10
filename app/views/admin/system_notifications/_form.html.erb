@@ -1,0 +1,112 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            <%= @system_notification.new_record? ? "Add System Notification" : "Edit System Notification" %>
+          </h6>
+        </div>
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-4 pb-4">
+        <%= form_with model: [:admin, @system_notification], local: true do |f| %>
+          <%= hidden_field_tag :page, params[:page] %>
+          <div class="row g-4">
+            <!-- KEY -->
+            <!-- STATUS -->
+            <div class="form-group col-md-6">
+              <label class="form-label font-weight-bold text-dark">
+                Active
+              </label>
+              <div class="input-group input-group-outline">
+                <%= f.select :active,
+                      [["Yes", true], ["No", false]],
+                      {},
+                      class: "form-control" %>
+              </div>
+            </div>
+            <!-- TITLE -->
+            <div class="form-group col-md-12">
+              <label class="form-label font-weight-bold text-dark">
+                Title
+              </label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :title, class: "form-control" %>
+              </div>
+              <div id="title_err" class="text-danger mt-2 text-xs">
+                <%= @system_notification.errors.full_messages_for(:title).first %>
+              </div>
+            </div>
+            <!-- BODY -->
+            <div class="form-group col-md-12">
+              <label class="form-label font-weight-bold text-dark">
+                Message
+              </label>
+              <div class="input-group input-group-outline">
+                <%= f.text_area :message, rows: 4, class: "form-control" %>
+              </div>
+              <div id="message_err" class="text-danger mt-2 text-xs">
+                <%= @system_notification.errors.full_messages_for(:message).first %>
+              </div>
+            </div>
+          </div>
+          <!-- ACTIONS -->
+          <div class="d-flex justify-content-end mt-4">
+            <%= link_to "Back",
+                  admin_system_notifications_path,
+                  class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+            <%= f.submit (@system_notification.new_record? ? "Create" : "Update"),
+                  class: "btn btn-info text-white text-uppercase font-weight-bold" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("turbo:load", () => {
+
+    const form = document.querySelector("form[action*='system_notifications']");
+    if (!form) return;
+
+    const titleInput   = document.getElementById("system_notification_title");
+    const messageInput = document.getElementById("system_notification_message");
+
+    const titleErr   = document.getElementById("title_err");
+    const messageErr = document.getElementById("message_err");
+
+    form.addEventListener("submit", function(e){
+      let valid = true;
+
+      titleErr.textContent = "";
+      messageErr.textContent = "";
+
+      if(!titleInput.value.trim()){
+        titleErr.textContent = "Title can't be blank";
+        titleInput.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if(!messageInput.value.trim()){
+        messageErr.textContent = "Message can't be blank";
+        messageInput.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if(!valid) e.preventDefault();
+    });
+
+    titleInput?.addEventListener("input", () => {
+      titleErr.textContent = "";
+      titleInput.classList.remove("is-invalid");
+    });
+
+    messageInput?.addEventListener("input", () => {
+      messageErr.textContent = "";
+      messageInput.classList.remove("is-invalid");
+    });
+
+  });
+</script>

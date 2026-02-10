@@ -54,11 +54,10 @@
                     </td>
                     <!-- Active Store -->
                     <td>
-                      <% if user.active_store.present? %>
-                        <%= link_to admin_store_path(user.active_store),
-                              class: "text-info",
-                              title: "Show Store" do %>
-                          <%= user.active_store.name %>
+                      <% store = user.active_store || user.stores.first %>
+                      <% if store.present? %>
+                        <%= link_to admin_store_path(store), class: "text-info", title: "Show Store" do %>
+                          <%= store.name %>
                         <% end %>
                       <% else %>
                         <span class="text-dark">-</span>
