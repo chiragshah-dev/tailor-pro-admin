@@ -69,31 +69,38 @@
 
           <div class="row">
             <% @measurement_fields.each do |field| %>
-              <div class="col-md-4 mb-3 d-flex align-items-center gap-2">
-                <div class="form-check">
-                <!-- Checkbox -->
-                  <%= check_box_tag "measurement_field_ids[]",
-                      field.id,
-                      @garment_type.measurement_field_ids.include?(field.id),
-                      id: "mf_#{field.id}",
-                      class: "form-check-input measurement-checkbox",
-                      data: { field_id: field.id } %>
-                  <%= label_tag "mf_#{field.id}",
-                      field.label,
-                      class: "form-check-label me-2" %>
+              <div class="col-md-4 mb-3">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="form-check">
+                    <%= check_box_tag "measurement_field_ids[]",
+                          field.id,
+                          @garment_type.measurement_field_ids.include?(field.id),
+                          id: "mf_#{field.id}",
+                          class: "form-check-input measurement-checkbox",
+                          data: { field_id: field.id } %>
+
+                    <%= label_tag "mf_#{field.id}",
+                          field.label,
+                          class: "form-check-label me-2" %>
+                  </div>
+
+                  <%= select_tag "measurement_sequences[#{field.id}]",
+                        options_for_select((1..max_seq).to_a,
+                          @garment_type.garment_type_measurements
+                            .find { |gtm| gtm.measurement_field_id == field.id }
+                            &.sequence
+                        ),
+                        include_blank: "Seq",
+                        class: "form-select form-select-sm sequence-select w-auto",
+                        data: { field_id: field.id },
+                        disabled: !@garment_type.measurement_field_ids.include?(field.id) %>
                 </div>
 
-                <!-- Sequence dropdown -->
-                <%= select_tag "measurement_sequences[#{field.id}]",
-                      options_for_select((1..max_seq).to_a,
-                        @garment_type.garment_type_measurements
-                          .find { |gtm| gtm.measurement_field_id == field.id }
-                          &.sequence
-                      ),
-                      include_blank: "Seq",
-                      class: "form-select form-select-sm sequence-select",
-                      data: { field_id: field.id },
-                      disabled: !@garment_type.measurement_field_ids.include?(field.id) %>
+                <!-- Error message INSIDE column -->
+                <div class="sequence-error text-end text-danger text-xs mt-1 invisible"
+                    data-error-for="<%= field.id %>">
+                  Please select a sequence
+                </div>
               </div>
             <% end %>
           </div>
@@ -138,6 +145,24 @@
   </div>
 </div>
 
+<style>
+  .sequence-option-used {
+    opacity: 0.4;
+    font-style: italic;
+    background-color: #D3D3D3;
+  }
+
+  .sequence-error {
+    min-height: 14px; /* reserves space */
+    line-height: 1.2;
+  }
+
+  .sequence-select.sequence-error-border {
+    border-color: #f44336;
+    box-shadow: 0 0 0 1px rgba(244, 67, 54, 0.4);
+  }
+</style>
+
 <script>
   document.addEventListener("turbo:load", () => {
     const form = document.querySelector("form");
@@ -156,9 +181,21 @@
 
       selects.forEach(select => {
         const current = select.value;
+
         Array.from(select.options).forEach(opt => {
           if (!opt.value) return;
-          opt.disabled = used.includes(opt.value) && opt.value !== current;
+
+          const isUsedElsewhere = used.includes(opt.value) && opt.value !== current;
+
+          // Disable used options
+          opt.disabled = isUsedElsewhere;
+
+          // Visual cue (blur/fade)
+          if (isUsedElsewhere) {
+            opt.classList.add("sequence-option-used");
+          } else {
+            opt.classList.remove("sequence-option-used");
+          }
         });
       });
     }
@@ -173,13 +210,32 @@
         } else {
           select.value = "";
           select.disabled = true;
+
+          const errorEl = document.querySelector(
+            `.sequence-error[data-error-for='${fieldId}']`
+          );
+          errorEl.classList.add("invisible");
+          select.classList.remove("sequence-error-border");
         }
+
         updateSequences();
       });
     });
 
     selects.forEach(select => {
-      select.addEventListener("change", updateSequences);
+      select.addEventListener("change", () => {
+        const fieldId = select.dataset.fieldId;
+        const errorEl = document.querySelector(
+          `.sequence-error[data-error-for='${fieldId}']`
+        );
+
+        if (select.value) {
+          errorEl.classList.add("invisible");
+          select.classList.remove("sequence-error-border");
+        }
+
+        updateSequences();
+      });
     });
 
     // Existing name validation (unchanged)
@@ -193,6 +249,21 @@
         nameInput.classList.add("is-invalid");
         valid = false;
       }
+
+      checkboxes.forEach(cb => {
+        const fieldId = cb.dataset.fieldId;
+        const select  = document.querySelector(`.sequence-select[data-field-id='${fieldId}']`);
+        const errorEl = document.querySelector(`.sequence-error[data-error-for='${fieldId}']`);
+
+        if (cb.checked && !select.value) {
+          errorEl.classList.remove("invisible");
+          select.classList.add("sequence-error-border");
+          valid = false;
+        } else {
+          errorEl.classList.add("invisible");
+          select.classList.remove("sequence-error-border");
+        }
+      });
 
       if (!valid) e.preventDefault();
     });
