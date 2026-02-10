@@ -99,6 +99,14 @@
           <span class="nav-link-text ms-1">Notification Templates</span>
         <% end %>
       </li>
+      <!-- System Notiications -->
+      <li class="nav-item">
+        <%= link_to admin_system_notifications_path,
+    class: "nav-link #{controller_name == 'system_notifications' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
+          <i class="material-symbols-rounded opacity-5">notifications</i>
+          <span class="nav-link-text ms-1">System Notifications</span>
+        <% end %>
+      </li>
       <!-- contact supports -->
       <li class="nav-item">
         <%= link_to admin_contact_supports_path,

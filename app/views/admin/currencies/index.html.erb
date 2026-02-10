@@ -41,7 +41,9 @@
                     <td>
                       <div class="d-flex align-items-center gap-2">
                         <span style="font-size: 20px;">
-                          <%= currency.flag_emoji || "🏳️" %>
+                          <% if currency.flag_url %>
+                            <img src="<%= currency.flag_url %>" loading="lazy" style="border-radius:3px;">
+                          <% end %>
                         </span>
                         <div>
                           <span class="mb-0 text-sm"><%= currency.name %></span>
