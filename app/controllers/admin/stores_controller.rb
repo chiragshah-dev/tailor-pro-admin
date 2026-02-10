@@ -4,22 +4,61 @@ class Admin::StoresController < ApplicationController
   before_action :authenticate_admin_user!
   before_action :set_store, only: %i[show edit update destroy history]
 
+  # def index
+  #   @stores = Store.includes(:user, :wallet)
+
+  #   if params[:search].present?
+  #     q = "%#{params[:search].strip}%"
+  #     @stores = @stores.where(
+  #       "stores.name ILIKE :q OR stores.code ILIKE :q OR stores.contact_number ILIKE :q",
+  #       q: q,
+  #     )
+  #   end
+
+  #   if params[:main_store].present? && params[:main_store] == "true"
+  #     @stores = @stores.where(is_main_store: true)
+  #   end
+
+  #   @stores = @stores.order(created_at: :desc).page(params[:page]).per(10)
+  # end
+
   def index
+    params.permit(:search, :page, :sort, :direction, :main_store)
+
     @stores = Store.includes(:user, :wallet)
 
     if params[:search].present?
       q = "%#{params[:search].strip}%"
       @stores = @stores.where(
         "stores.name ILIKE :q OR stores.code ILIKE :q OR stores.contact_number ILIKE :q",
-        q: q,
+        q: q
       )
     end
 
-    if params[:main_store].present? && params[:main_store] == "true"
+    if params[:main_store] == "true"
       @stores = @stores.where(is_main_store: true)
     end
 
-    @stores = @stores.order(created_at: :desc).page(params[:page]).per(10)
+    sortable_columns = {
+      "name"           => "stores.name",
+      "code"           => "stores.code",
+      "owner"          => "users.name",
+      "contact"        => "stores.contact_number",
+      "wallet_balance" => "wallets.balance",
+      "deleted"        => "stores.deleted"
+    }
+
+    sort_column =
+      sortable_columns[params[:sort]] || "stores.created_at"
+
+    sort_direction =
+      params[:direction] == "asc" ? "asc" : "desc"
+
+    @stores = @stores
+                .references(:user, :wallet)
+                .order("#{sort_column} #{sort_direction}")
+                .page(params[:page])
+                .per(10)
   end
 
   def new

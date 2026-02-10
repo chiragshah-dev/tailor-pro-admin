@@ -25,12 +25,31 @@
             <thead>
               <tr>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Store Name</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Code</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Owner</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Contact</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Wallet Balance</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Deleted</th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("name", "Store Name") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("code", "Code") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("owner", "Owner") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("contact", "Contact") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("wallet_balance", "Wallet Balance") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("deleted", "Deleted") %>
+                </th>
+
                 <%# <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Location</th> %>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
               </tr>
@@ -74,13 +93,17 @@
                     </td>
                     <!-- WALLET -->
                     <td>
-                      <div class="d-flex flex-column ">
-                        <p class="text-sm  mb-1 text-dark">
+                      <div class="d-flex flex-column">
+                        <p class="text-sm mb-1 text-dark">
                           <%= number_to_currency(store.wallet&.balance || 0, unit: "₹") %>
                         </p>
-                        <%= link_to "View details",
-          admin_wallet_path(store.wallet),
-          class: "text-xs text-info fw-bold" %>
+                        <% if store.wallet.present? %>
+                          <%= link_to "View details",
+                                      admin_wallet_path(store.wallet),
+                                      class: "text-xs text-info fw-bold" %>
+                        <% else %>
+                          <span class="text-xs text-muted">No wallet</span>
+                        <% end %>
                       </div>
                     </td>
                     <td>
@@ -134,3 +157,18 @@
     </div>
   </div>
 </div>
+
+<style>
+  .sortable-header {
+    cursor: pointer;
+  }
+
+  .sort-icon {
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  .sortable-header:hover .sort-icon {
+    opacity: 1;
+  }
+</style>
