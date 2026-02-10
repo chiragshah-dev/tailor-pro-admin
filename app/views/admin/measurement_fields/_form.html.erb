@@ -23,21 +23,6 @@
               <div id="label_err" class="text-danger mt-2 text-xs"><%= @measurement_field.errors.full_messages_for(:label).first %></div>
             </div>
             <!-- Name -->
-            <!-- Garment Type -->
-            <div class="form-group col-md-6">
-              <label class="form-label font-weight-bold text-dark">Garment Type</label>
-              <div class="input-group input-group-outline">
-                <%= f.collection_select :garment_type_id,
-                    GarmentType.all,
-                    :id,
-                    :garment_name,
-                    { prompt: "Select Garment Type" },
-                    class: "form-control" %>
-              </div>
-              <div id="garment_err" class="text-danger mt-2 text-xs">
-                <%= @measurement_field.errors.full_messages_for(:garment_type_id).first %>
-              </div>
-            </div>
             <!-- Active -->
             <div class="form-group col-md-6">
               <label class="form-label font-weight-bold text-dark">Active</label>
@@ -89,33 +74,20 @@
     const form = document.querySelector("form");
     if (!form) return;
 
-    const labelInput   = document.getElementById("measurement_field_label");
-    const garmentInput = document.getElementById("measurement_field_garment_type_id");
-
+    const labelInput = document.getElementById("measurement_field_label");
     const labelErr   = document.getElementById("label_err");
-    const garmentErr = document.getElementById("garment_err");
 
     form.addEventListener("submit", function (e) {
       let valid = true;
 
       // reset errors
       labelErr.innerHTML = "";
-      garmentErr.innerHTML = "";
-
       labelInput.classList.remove("is-invalid");
-      garmentInput.classList.remove("is-invalid");
 
       // LABEL validation
       if (!labelInput.value.trim()) {
         labelErr.innerHTML = "Label can't be blank";
         labelInput.classList.add("is-invalid");
-        valid = false;
-      }
-
-      // GARMENT TYPE validation
-      if (!garmentInput.value) {
-        garmentErr.innerHTML = "Garment type is required";
-        garmentInput.classList.add("is-invalid");
         valid = false;
       }
 
@@ -127,14 +99,6 @@
       if (labelInput.value.trim()) {
         labelErr.innerHTML = "";
         labelInput.classList.remove("is-invalid");
-      }
-    });
-
-    // Clear garment error on change
-    garmentInput.addEventListener("change", () => {
-      if (garmentInput.value) {
-        garmentErr.innerHTML = "";
-        garmentInput.classList.remove("is-invalid");
       }
     });
 
