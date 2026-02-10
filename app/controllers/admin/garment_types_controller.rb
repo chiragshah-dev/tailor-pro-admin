@@ -90,14 +90,29 @@ class Admin::GarmentTypesController < ApplicationController
       .order("label, id ASC")
   end
 
+  # def update_measurements
+  #   return unless params[:measurement_field_ids]
+
+  #   @garment_type.garment_type_measurements.destroy_all
+
+  #   params[:measurement_field_ids].each do |mid|
+  #     @garment_type.garment_type_measurements.create(
+  #       measurement_field_id: mid,
+  #     )
+  #   end
+  # end
+
   def update_measurements
     return unless params[:measurement_field_ids]
+
+    sequences = params[:measurement_sequences] || {}
 
     @garment_type.garment_type_measurements.destroy_all
 
     params[:measurement_field_ids].each do |mid|
       @garment_type.garment_type_measurements.create(
         measurement_field_id: mid,
+        sequence: sequences[mid].presence
       )
     end
   end
