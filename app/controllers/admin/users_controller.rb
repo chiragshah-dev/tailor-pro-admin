@@ -4,18 +4,39 @@ class Admin::UsersController < ApplicationController
   before_action :authenticate_admin_user!
   before_action :set_user, only: [:show, :edit, :update, :destroy, :history]
 
+  # def index
+  #   @users = User.includes(:active_store).order(created_at: :desc)
+
+  #   if params[:search].present?
+  #     search = "%#{params[:search].strip}%"
+  #     @users = @users.where(
+  #       "name ILIKE :search OR email ILIKE :search OR contact_number ILIKE :search",
+  #       search: search,
+  #     )
+  #   end
+
+  #   @users = @users.order(:id).page(params[:page]).per(10)
+  # end
+
   def index
-    @users = User.includes(:active_store).order(created_at: :desc)
+    @users = User.includes(:active_store)
 
     if params[:search].present?
       search = "%#{params[:search].strip}%"
       @users = @users.where(
         "name ILIKE :search OR email ILIKE :search OR contact_number ILIKE :search",
-        search: search,
+        search: search
       )
     end
 
-    @users = @users.order(:id).page(params[:page]).per(10)
+    sortable_columns = %w[name email deleted]
+    sort_column = sortable_columns.include?(params[:sort]) ? params[:sort] : "created_at"
+    sort_direction = params[:direction] == "asc" ? "asc" : "desc"
+
+    @users = @users
+              .order("#{sort_column} #{sort_direction}")
+              .page(params[:page])
+              .per(10)
   end
 
   def show
