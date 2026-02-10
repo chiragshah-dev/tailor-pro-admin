@@ -30,11 +30,27 @@
             <thead>
               <tr>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold">ID</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Order No</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Customer</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Store</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Status</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Total</th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("order_number", "Order No") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("customer", "Customer") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("store", "Store") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("status", "Status") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("total", "Total") %>
+                </th>
+
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Action</th>
               </tr>
             </thead>
@@ -100,3 +116,18 @@
     </div>
   </div>
 </div>
+
+<style>
+  .sortable-header {
+    cursor: pointer;
+  }
+
+  .sort-icon {
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  .sortable-header:hover .sort-icon {
+    opacity: 1;
+  }
+</style>
