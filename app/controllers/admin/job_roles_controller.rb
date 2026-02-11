@@ -3,15 +3,45 @@ class Admin::JobRolesController < ApplicationController
   before_action :authenticate_admin_user!
   before_action :set_job_role, only: [:show, :edit, :update, :destroy, :history]
 
+  # def index
+  #   @job_roles = JobRole.all
+
+  #   if params[:search].present?
+  #     search = "%#{params[:search].strip}%"
+  #     @job_roles = @job_roles.where("job_roles.name ILIKE :search", search: search)
+  #   end
+
+  #   @job_roles = @job_roles.order(created_at: :desc).page(params[:page]).per(10)
+  # end
+
   def index
+    params.permit(:search, :page, :sort, :direction)
+
     @job_roles = JobRole.all
 
     if params[:search].present?
       search = "%#{params[:search].strip}%"
-      @job_roles = @job_roles.where("job_roles.name ILIKE :search", search: search)
+      @job_roles = @job_roles.where(
+        "job_roles.name ILIKE :search",
+        search: search
+      )
     end
 
-    @job_roles = @job_roles.order(created_at: :desc).page(params[:page]).per(10)
+    sortable_columns = {
+      "name"       => "job_roles.name",
+      "created_at" => "job_roles.created_at"
+    }
+
+    sort_column =
+      sortable_columns[params[:sort]] || "job_roles.created_at"
+
+    sort_direction =
+      params[:direction] == "asc" ? "asc" : "desc"
+
+    @job_roles = @job_roles
+                  .order("#{sort_column} #{sort_direction}")
+                  .page(params[:page])
+                  .per(10)
   end
 
   def show; end

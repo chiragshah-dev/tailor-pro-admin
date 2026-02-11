@@ -4,8 +4,29 @@ class Admin::GarmentTypesController < ApplicationController
   before_action :set_garment_type, only: %i[show edit update destroy history]
   before_action :load_measurements, only: %i[new edit create update]
 
+  # def index
+  #   @garment_types = GarmentType.includes([:image_attachment])
+
+  #   if params[:search].present?
+  #     q = params[:search].strip
+
+  #     @garment_types = @garment_types.where(
+  #       "garment_name ILIKE :q OR gender = :gender",
+  #       q: "%#{q}%",
+  #       gender: GarmentType.genders[q.downcase],
+  #     )
+  #   end
+
+  #   @garment_types = @garment_types
+  #     .order(created_at: :desc)
+  #     .page(params[:page])
+  #     .per(10)
+  # end
+
   def index
-    @garment_types = GarmentType.includes([:image_attachment])
+    params.permit(:search, :page, :sort, :direction)
+
+    @garment_types = GarmentType.includes(:image_attachment)
 
     if params[:search].present?
       q = params[:search].strip
@@ -13,14 +34,27 @@ class Admin::GarmentTypesController < ApplicationController
       @garment_types = @garment_types.where(
         "garment_name ILIKE :q OR gender = :gender",
         q: "%#{q}%",
-        gender: GarmentType.genders[q.downcase],
+        gender: GarmentType.genders[q.downcase]
       )
     end
 
+    sortable_columns = {
+      "garment_name" => "garment_name",
+      "gender"       => "gender",
+      "active"       => "active",
+      "created_at"   => "created_at"
+    }
+
+    sort_column =
+      sortable_columns[params[:sort]] || "created_at"
+
+    sort_direction =
+      params[:direction] == "asc" ? "asc" : "desc"
+
     @garment_types = @garment_types
-      .order(created_at: :desc)
-      .page(params[:page])
-      .per(10)
+                      .order("#{sort_column} #{sort_direction}")
+                      .page(params[:page])
+                      .per(10)
   end
 
   def show

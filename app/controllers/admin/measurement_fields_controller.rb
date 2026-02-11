@@ -3,18 +3,53 @@ class Admin::MeasurementFieldsController < ApplicationController
   before_action :authenticate_admin_user!
   before_action :set_measurement_field, only: [:show, :edit, :update, :destroy, :history]
 
+  # def index
+  #   @measurement_fields = MeasurementField.includes(:garment_type)
+
+  #   if params[:search].present?
+  #     search = "%#{params[:search].strip}%"
+  #     @measurement_fields = @measurement_fields.where(
+  #       "label ILIKE :search OR name ILIKE :search",
+  #       search: search,
+  #     )
+  #   end
+
+  #   @measurement_fields = @measurement_fields.order(created_at: :desc).page(params[:page]).per(10)
+  # end
+
   def index
-    @measurement_fields = MeasurementField.includes(:garment_type)
+    params.permit(:search, :page, :sort, :direction)
+
+    @measurement_fields = MeasurementField
+                            .left_joins(:garment_type)
+                            .includes(:garment_type)
 
     if params[:search].present?
       search = "%#{params[:search].strip}%"
       @measurement_fields = @measurement_fields.where(
-        "label ILIKE :search OR name ILIKE :search",
-        search: search,
+        "measurement_fields.label ILIKE :search OR measurement_fields.name ILIKE :search",
+        search: search
       )
     end
 
-    @measurement_fields = @measurement_fields.order(created_at: :desc).page(params[:page]).per(10)
+    sortable_columns = {
+      "label"         => "measurement_fields.label",
+      "garment_type"  => "garment_types.garment_name",
+      "active"        => "measurement_fields.active",
+      "created_at"    => "measurement_fields.created_at"
+    }
+
+    sort_column =
+      sortable_columns[params[:sort]] || "measurement_fields.created_at"
+
+    sort_direction =
+      params[:direction] == "asc" ? "asc" : "desc"
+
+    @measurement_fields = @measurement_fields
+                            .references(:garment_type)
+                            .order("#{sort_column} #{sort_direction}")
+                            .page(params[:page])
+                            .per(10)
   end
 
   def show
