@@ -3,8 +3,30 @@ class Admin::WalletsController < ApplicationController
   before_action :authenticate_admin_user!
   before_action :set_wallet, only: [:show, :history]
 
+  # def index
+  #   @wallets = Wallet.left_joins(:store).includes(:store)
+
+  #   if params[:search].present?
+  #     search = "%#{params[:search].strip}%"
+  #     @wallets = @wallets.where(
+  #       "CAST(wallets.id AS TEXT) ILIKE :search
+  #       OR CAST(wallets.balance AS TEXT) ILIKE :search
+  #       OR wallets.currency ILIKE :search
+  #       OR stores.name ILIKE :search
+  #       OR stores.code ILIKE :search",
+  #       search: search,
+  #     )
+  #   end
+
+  #   @wallets = @wallets.order(balance: :desc).page(params[:page]).per(10)
+  # end
+
   def index
-    @wallets = Wallet.left_joins(:store).includes(:store)
+    params.permit(:search, :page, :sort, :direction)
+
+    @wallets = Wallet
+                .left_joins(:store)
+                .includes(:store)
 
     if params[:search].present?
       search = "%#{params[:search].strip}%"
@@ -14,11 +36,28 @@ class Admin::WalletsController < ApplicationController
         OR wallets.currency ILIKE :search
         OR stores.name ILIKE :search
         OR stores.code ILIKE :search",
-        search: search,
+        search: search
       )
     end
 
-    @wallets = @wallets.order(balance: :desc).page(params[:page]).per(10)
+    sortable_columns = {
+      "store"      => "stores.name",
+      "balance"    => "wallets.balance",
+      "currency"   => "wallets.currency",
+      "created_at" => "wallets.created_at"
+    }
+
+    sort_column =
+      sortable_columns[params[:sort]] || "wallets.balance"
+
+    sort_direction =
+      params[:direction] == "asc" ? "asc" : "desc"
+
+    @wallets = @wallets
+                .references(:store)
+                .order("#{sort_column} #{sort_direction}")
+                .page(params[:page])
+                .per(10)
   end
 
   def show

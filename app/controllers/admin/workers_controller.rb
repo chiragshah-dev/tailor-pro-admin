@@ -3,22 +3,62 @@ class Admin::WorkersController < ApplicationController
   before_action :authenticate_admin_user!
   before_action :set_worker, only: [:show, :edit, :update, :destroy, :history]
 
+  # def index
+  #   @workers = Worker.left_joins(:store, :job_role)
+  #     .includes(:store, :job_role)
+
+  #   if params[:search].present?
+  #     search = "%#{params[:search].strip}%"
+  #     @workers = @workers.where(
+  #       "workers.name ILIKE :search
+  #      OR workers.contact_number ILIKE :search
+  #      OR stores.name ILIKE :search
+  #      OR job_roles.name ILIKE :search",
+  #       search: search,
+  #     )
+  #   end
+
+  #   @workers = @workers.order(:id).page(params[:page]).per(10)
+  # end
+
   def index
-    @workers = Worker.left_joins(:store, :job_role)
-      .includes(:store, :job_role)
+    params.permit(:search, :page, :sort, :direction)
+
+    @workers = Worker
+                .left_joins(:store, :job_role)
+                .includes(:store, :job_role)
 
     if params[:search].present?
       search = "%#{params[:search].strip}%"
       @workers = @workers.where(
         "workers.name ILIKE :search
-       OR workers.contact_number ILIKE :search
-       OR stores.name ILIKE :search
-       OR job_roles.name ILIKE :search",
-        search: search,
+        OR workers.contact_number ILIKE :search
+        OR stores.name ILIKE :search
+        OR job_roles.name ILIKE :search",
+        search: search
       )
     end
 
-    @workers = @workers.order(:id).page(params[:page]).per(10)
+    sortable_columns = {
+      "name"       => "workers.name",
+      "contact"    => "workers.contact_number",
+      "store"      => "stores.name",
+      "role"       => "job_roles.name",
+      "deleted"    => "workers.deleted",
+      "created_at" => "workers.created_at"
+    }
+
+    sort_column =
+      sortable_columns[params[:sort]] || "workers.created_at"
+
+    sort_direction =
+      params[:direction] == "asc" ? "asc" : "desc"
+
+    @workers = @workers
+                .references(:store, :job_role)
+                .order("#{sort_column} #{sort_direction}")
+                .page(params[:page])
+                .per(10)
   end
 
   def show
