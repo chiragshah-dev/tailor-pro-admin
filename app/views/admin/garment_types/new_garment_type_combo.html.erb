@@ -60,7 +60,7 @@
             Select Garments for Combo
           </h6>
           <div class="row">
-            <% GarmentType.where(garment_type: :single, parent_id: nil).each do |garment| %>
+            <% GarmentType.where(garment_type: :single).each do |garment| %>
               <!-- ✅ Added gender data -->
               <div class="col-md-4 mb-2 garment-option"
                    data-gender="<%= garment.gender %>">
@@ -69,7 +69,7 @@
                         garment.id,
                         false,
                         id: "child_#{garment.id}",
-                        class: "form-check-input" %>
+                        class: "form-check-input garment-checkbox" %>
                   <%= label_tag "child_#{garment.id}",
                         garment.garment_name,
                         class: "form-check-label" %>
@@ -77,6 +77,7 @@
               </div>
             <% end %>
           </div>
+          <div id="garment_err" class="text-danger mt-2 text-xs"></div>
           <hr class="my-4">
           <!-- IMAGE -->
           <div class="form-group col-md-6">
@@ -113,20 +114,19 @@
 <script>
   document.addEventListener("turbo:load", function () {
 
-
-
     const form = document.querySelector("form");
     if (!form) return;
 
-
-    const nameInput = document.getElementById("garment_type_garment_name");
-    const nameErr   = document.getElementById("name_err");
+    const nameInput    = document.getElementById("garment_type_garment_name");
+    const nameErr      = document.getElementById("name_err");
+    const garmentErr   = document.getElementById("garment_err");
 
     const genderSelect = document.getElementById("combo_gender");
-    const garments = document.querySelectorAll(".garment-option");
+    const garments     = document.querySelectorAll(".garment-option");
+    const checkboxes   = document.querySelectorAll(".garment-checkbox");
 
 
-
+    // ✅ Gender Filter
     function filterGarments() {
 
       const selectedGender = genderSelect.value;
@@ -136,14 +136,12 @@
         const garmentGender = item.dataset.gender;
         const checkbox = item.querySelector("input");
 
-        // hide everything if no gender
         if (!selectedGender) {
           item.style.display = "none";
           checkbox.checked = false;
           return;
         }
 
-        // show matching gender OR both
         if (
           garmentGender === selectedGender ||
           garmentGender === "both"
@@ -156,9 +154,14 @@
 
       });
 
+      // ✅ remove error if visible garments contain checked one
+      if (document.querySelectorAll(".garment-checkbox:checked").length > 0) {
+        garmentErr.innerHTML = "";
+      }
     }
 
 
+    // ✅ Remove name error while typing
     nameInput?.addEventListener("input", function () {
 
       if (nameInput.value.trim()) {
@@ -169,41 +172,54 @@
     });
 
 
+    // ✅ Remove garment error instantly on selection
+    checkboxes.forEach(box => {
+      box.addEventListener("change", function () {
 
+        if (document.querySelectorAll(".garment-checkbox:checked").length > 0) {
+          garmentErr.innerHTML = "";
+        }
+
+      });
+    });
+
+
+
+    // ✅ Form Validation
     form.addEventListener("submit", function (e) {
 
       let valid = true;
 
       nameErr.innerHTML = "";
+      garmentErr.innerHTML = "";
       nameInput.classList.remove("is-invalid");
 
+      // Name validation
       if (!nameInput.value.trim()) {
 
         nameErr.innerHTML = "Combo name can't be blank";
         nameInput.classList.add("is-invalid");
-
         valid = false;
       }
 
-
-
+      // Garment validation
       const checkedGarments =
-        document.querySelectorAll(".garment-option input:checked");
+        document.querySelectorAll(".garment-checkbox:checked");
 
       if (checkedGarments.length === 0) {
 
-
+        garmentErr.innerHTML = "Please select at least one garment";
         valid = false;
       }
-
-
 
       if (!valid) e.preventDefault();
 
     });
 
+
     genderSelect?.addEventListener("change", filterGarments);
 
+    // initial hide
     filterGarments();
 
   });
