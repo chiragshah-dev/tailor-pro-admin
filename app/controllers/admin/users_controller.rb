@@ -34,6 +34,9 @@ class Admin::UsersController < ApplicationController
     sort_direction = params[:direction] == "asc" ? "asc" : "desc"
 
     @users = @users
+      .order("#{sort_column} #{sort_direction}")
+      .page(params[:page])
+      .per(10)
   end
 
   def show
