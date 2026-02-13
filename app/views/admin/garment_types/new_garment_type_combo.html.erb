@@ -60,7 +60,7 @@
             Select Garments for Combo
           </h6>
           <div class="row">
-            <% GarmentType.where(garment_type: :single).each do |garment| %>
+            <% GarmentType.single.each do |garment| %>
               <!-- ✅ Added gender data -->
               <div class="col-md-4 mb-2 garment-option"
                    data-gender="<%= garment.gender %>">
