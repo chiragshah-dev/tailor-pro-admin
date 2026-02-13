@@ -98,6 +98,13 @@ class User < ApplicationRecord
     nil
   end
 
+  def soft_delete!
+    transaction do
+      update!(deleted: true)
+      stores.find_each(&:soft_delete!)
+    end
+  end
+
   # OTP methods
   def generate_and_send_otp
     otp_code = SecureRandom.random_number(1000..9999).to_s

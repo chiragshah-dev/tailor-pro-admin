@@ -34,9 +34,9 @@ class Admin::UsersController < ApplicationController
     sort_direction = params[:direction] == "asc" ? "asc" : "desc"
 
     @users = @users
-              .order("#{sort_column} #{sort_direction}")
-              .page(params[:page])
-              .per(10)
+      .order("#{sort_column} #{sort_direction}")
+      .page(params[:page])
+      .per(10)
   end
 
   def show
@@ -68,7 +68,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def destroy
-    @user.destroy
+    @user.soft_delete!
     redirect_to admin_users_path(page: params[:page]), notice: "User was successfully deleted."
   end
 
