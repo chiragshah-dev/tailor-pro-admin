@@ -31,7 +31,15 @@ Rails.application.routes.draw do
     resources :currency_settings, concerns: :historyable
     resources :stores, concerns: :historyable
     resources :workers, concerns: :historyable
-    resources :garment_types, concerns: :historyable
+    resources :garment_types, concerns: :historyable do
+      member do
+        get :edit_combo
+        patch :update_combo
+      end
+      collection do
+        get :new_garment_type_combo
+      end
+    end
     resources :measurement_fields, concerns: :historyable
     resources :currency_countries, concerns: :historyable
     resources :currencies, concerns: :historyable do

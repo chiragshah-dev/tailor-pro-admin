@@ -1,4 +1,3 @@
-  
 <div class="row">
   <div class="col-12">
     <div class="card my-4">
@@ -47,6 +46,12 @@
               </span>
             </p>
             <p class="text-sm mb-2">
+              <strong>Garment Type:</strong>
+              <span class="badge bg-gradient-info text-white ms-2 text-capitalize">
+                <%= @garment_type.garment_type %>
+              </span>
+            </p>
+            <p class="text-sm mb-2">
               <strong>Active:</strong>
               <span class="text-secondary fw-bold ms-2">
                 <%= @garment_type.active? ? "Yes" : "No" %>
@@ -66,27 +71,59 @@
           </div>
         </div>
         <!-- MEASUREMENTS -->
-        <div class="collapse show mt-4" id="garmentMeasurements">
+        <% if @garment_type.combo? %>
           <hr class="horizontal dark mb-3">
           <h6 class="text-uppercase text-dark mb-3">
-            Measurement Fields
+            Combo Measurements
           </h6>
-          <% if @measurement_fields.any? %>
-            <div class="row">
-              <% @measurement_fields.each do |field| %>
-                <div class="col-md-3 mb-2">
-                  <span class="badge bg-light text-dark border w-100 text-start py-2">
-                    <%= field.label %>
-                  </span>
+          <% @combo_items.each do |garment| %>
+            <div class="mb-4">
+              <!-- Garment Name -->
+              <h6 class="fw-bold text-info">
+                <%= garment.garment_name %>
+              </h6>
+              <% fields = garment.measurement_fields.where(active: true) %>
+              <% if fields.any? %>
+                <div class="row">
+                  <% fields.each do |field| %>
+                    <div class="col-md-3 mb-2">
+                      <span class="badge bg-light text-dark border w-100 text-start py-2">
+                        <%= field.label %>
+                      </span>
+                    </div>
+                  <% end %>
                 </div>
+              <% else %>
+                <p class="text-sm text-secondary">
+                  No measurements assigned.
+                </p>
               <% end %>
             </div>
-          <% else %>
-            <p class="text-sm text-secondary mb-0">
-              No measurement fields assigned.
-            </p>
           <% end %>
-        </div>
+        <% else %>
+          <!-- NORMAL GARMENT -->
+          <div class="collapse show mt-4" id="garmentMeasurements">
+            <hr class="horizontal dark mb-3">
+            <h6 class="text-uppercase text-dark mb-3">
+              Measurement Fields
+            </h6>
+            <% if @measurement_fields.any? %>
+              <div class="row">
+                <% @measurement_fields.each do |field| %>
+                  <div class="col-md-3 mb-2">
+                    <span class="badge bg-light text-dark border w-100 text-start py-2">
+                      <%= field.label %>
+                    </span>
+                  </div>
+                <% end %>
+              </div>
+            <% else %>
+              <p class="text-sm text-secondary mb-0">
+                No measurement fields assigned.
+              </p>
+            <% end %>
+          </div>
+        <% end %>
         <!-- BACK -->
         <div class="mt-4 text-end">
           <%= link_to admin_garment_types_path(page: params[:page]),
