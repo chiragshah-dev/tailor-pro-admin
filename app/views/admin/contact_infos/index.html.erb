@@ -1,0 +1,110 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            Contact Infos
+          </h6>
+          <% unless ContactInfo.exists? %>
+            <%= link_to "Add Contact Info",
+      new_admin_contact_info_path(page: params[:page]),
+      class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold me-3" %>
+          <% end %>
+        </div>
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-0 pb-2">
+        <!-- SEARCH -->
+        <div class="px-3 pb-3">
+          <%= render "admin/shared/search",
+              url: admin_contact_infos_path,
+              placeholder: "Search contact infos..." %>
+        </div>
+        <!-- TABLE -->
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Contact Number</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Email</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Website URL</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @contact_infos.any? %>
+                <% @contact_infos.each_with_index do |contact_info, index| %>
+                  <tr>
+                    <!-- SERIAL -->
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0 px-3">
+                        <%= (@contact_infos.current_page - 1) * @contact_infos.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <!-- KEY -->
+                    <td>
+                      <p class="text-sm text-secondary mb-0">
+                        <%= contact_info.contact_number %>
+                      </p>
+                    </td>
+                    <!-- TITLE -->
+                    <td>
+                      <p class="text-sm text-secondary mb-0">
+                        <%= contact_info.email %>
+                      </p>
+                    </td>
+                    <!-- STATUS -->
+                    <td>
+                      <p class="text-sm text-secondary mb-0">
+                        <%= contact_info.website_url %>
+                      </p>
+                    </td>
+                    <!-- ACTIONS -->
+                    <td class="text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <!-- Show -->
+                        <%= link_to admin_contact_info_path(contact_info,page: params[:page]), class: "btn btn-xs rounded btn-secondary", title: "Show" do %>
+                          <i class="fas fa-eye"></i>
+                        <% end %>
+                        <%= link_to edit_admin_contact_info_path(contact_info,page: params[:page]),
+                            class: "btn btn-xs rounded btn-secondary" do %>
+                          <i class="fas fa-edit"></i>
+                        <% end %>
+                        <%= button_to admin_contact_info_path(contact_info,page: params[:page]),
+                            method: :delete,
+                            class: "btn btn-xs rounded btn-secondary",
+                            data: { turbo_confirm: "Are you sure you want to delete #{contact_info.contact_number} ?" } do %>
+                          <i class="fas fa-trash"></i>
+                        <% end %>
+                        <%= link_to history_admin_contact_info_path(contact_info),
+      class: "btn btn-xs rounded btn-secondary",
+      title: "View History" do %>
+                          <i class="fas fa-history"></i>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr>
+                  <td colspan="12" class="text-center">
+                    <p class="no-content-text">No records found.</p>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- PAGINATION -->
+        <div class="d-flex justify-content-center mt-3">
+          <%= paginate @contact_infos %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

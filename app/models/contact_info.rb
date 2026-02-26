@@ -2,11 +2,13 @@ class ContactInfo < ApplicationRecord
   include Auditable
 
   # validations
-  validates :contact_number, numericality: { only_integer: true }, length: { is: 10 }, allow_blank: true
+  validates :contact_number,
+            presence: true,
+            format: { with: /\A\d{10}\z/, message: "must be exactly 10 digits" }
   validates :email, format: {
-            with: URI::MailTo::EMAIL_REGEXP,
-            message: "must be a valid email address (e.g., example@example.com)",
-          }, allow_blank: true
+                      with: URI::MailTo::EMAIL_REGEXP,
+                      message: "must be a valid email address (e.g., example@example.com)",
+                    }, allow_blank: true
 
   validate :website_url_format, if: -> { website_url.present? }
 
