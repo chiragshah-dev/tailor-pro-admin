@@ -9,12 +9,10 @@
           </h6>
         </div>
       </div>
-
       <!-- BODY -->
       <div class="card-body px-4 pb-4">
         <%= form_with model: [:admin, @garment_type], local: true do |f| %>
           <%= hidden_field_tag :page, params[:page] %>
-
           <div class="row g-4">
             <!-- GARMENT NAME -->
             <div class="form-group col-md-6">
@@ -30,7 +28,6 @@
                 <%= @garment_type.errors.full_messages_for(:garment_name).first %>
               </div>
             </div>
-
             <!-- GENDER -->
             <div class="form-group col-md-6">
               <label class="form-label font-weight-bold text-dark">
@@ -43,7 +40,6 @@
                       class: "form-control" %>
               </div>
             </div>
-
             <!-- ACTIVE -->
             <div class="form-group col-md-6">
               <label class="form-label font-weight-bold text-dark">
@@ -57,16 +53,12 @@
               </div>
             </div>
           </div>
-
           <hr class="my-4">
-
           <!-- MEASUREMENT FIELDS -->
           <h6 class="text-uppercase text-dark mb-3">
             Measurement Fields
           </h6>
-
           <% max_seq = @measurement_fields.size %>
-
           <div class="row">
             <% @measurement_fields.each do |field| %>
               <div class="col-md-4 mb-3">
@@ -78,12 +70,10 @@
                           id: "mf_#{field.id}",
                           class: "form-check-input measurement-checkbox",
                           data: { field_id: field.id } %>
-
                     <%= label_tag "mf_#{field.id}",
                           field.label,
                           class: "form-check-label me-2" %>
                   </div>
-
                   <%= select_tag "measurement_sequences[#{field.id}]",
                         options_for_select((1..max_seq).to_a,
                           @garment_type.garment_type_measurements
@@ -95,7 +85,6 @@
                         data: { field_id: field.id },
                         disabled: !@garment_type.measurement_field_ids.include?(field.id) %>
                 </div>
-
                 <!-- Error message INSIDE column -->
                 <div class="sequence-error text-end text-danger text-xs mt-1 invisible"
                     data-error-for="<%= field.id %>">
@@ -104,9 +93,7 @@
               </div>
             <% end %>
           </div>
-
           <hr class="my-4">
-
           <!-- IMAGE -->
           <div class="form-group col-md-6">
             <label class="form-label font-weight-bold text-dark">
@@ -130,7 +117,6 @@
               <span class="file-name text-muted">No file chosen</span>
             </div>
           </div>
-
           <!-- ACTIONS -->
           <div class="d-flex justify-content-end mt-4">
             <%= link_to "Back",
@@ -144,7 +130,6 @@
     </div>
   </div>
 </div>
-
 <style>
   .sequence-option-used {
     opacity: 0.4;
@@ -162,7 +147,6 @@
     box-shadow: 0 0 0 1px rgba(244, 67, 54, 0.4);
   }
 </style>
-
 <script>
   document.addEventListener("turbo:load", () => {
     const form = document.querySelector("form");

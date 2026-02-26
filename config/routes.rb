@@ -27,6 +27,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :contact_infos, concerns: :historyable
+
     resources :users, concerns: :historyable
     resources :currency_settings, concerns: :historyable
     resources :stores, concerns: :historyable
