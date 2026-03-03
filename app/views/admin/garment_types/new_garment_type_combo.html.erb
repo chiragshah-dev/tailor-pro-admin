@@ -1,0 +1,226 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            New Garment Combo
+          </h6>
+        </div>
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-4 pb-4">
+        <%= form_with model: [:admin, @garment_type], local: true do |f| %>
+          <%= f.hidden_field :garment_type, value: "combo" %>
+          <div class="row g-4">
+            <!-- NAME -->
+            <div class="form-group col-md-6">
+              <label class="form-label font-weight-bold text-dark">
+                Combo Name
+              </label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :garment_name,
+                      class: "form-control",
+                      placeholder: "Enter combo name" %>
+              </div>
+              <div id="name_err" class="text-danger mt-2 text-xs">
+                <%= @garment_type.errors.full_messages_for(:garment_name).first %>
+              </div>
+            </div>
+            <!-- GENDER -->
+            <div class="form-group col-md-6">
+              <label class="form-label font-weight-bold text-dark">
+                Gender
+              </label>
+              <div class="input-group input-group-outline">
+                <%= f.select :gender,
+                GarmentType.genders.except(:both).keys.map { |g| [g.titleize, g] },
+                { prompt: "Select Gender" },
+                class: "form-control",
+                id: "combo_gender" %>
+              </div>
+            </div>
+            <!-- STATUS -->
+            <div class="form-group col-md-6">
+              <label class="form-label font-weight-bold text-dark">
+                Active
+              </label>
+              <div class="input-group input-group-outline">
+                <%= f.select :active,
+                      [["Yes", true], ["No", false]],
+                      {},
+                      class: "form-control" %>
+              </div>
+            </div>
+          </div>
+          <hr class="my-4">
+          <!-- COMBO GARMENTS -->
+          <h6 class="text-uppercase text-dark mb-3">
+            Select Garments for Combo
+          </h6>
+          <div class="row">
+            <% GarmentType.single.each do |garment| %>
+              <!-- ✅ Added gender data -->
+              <div class="col-md-4 mb-2 garment-option"
+                   data-gender="<%= garment.gender %>">
+                <div class="form-check">
+                  <%= check_box_tag "child_ids[]",
+                        garment.id,
+                        false,
+                        id: "child_#{garment.id}",
+                        class: "form-check-input garment-checkbox" %>
+                  <%= label_tag "child_#{garment.id}",
+                        garment.garment_name,
+                        class: "form-check-label" %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <div id="garment_err" class="text-danger mt-2 text-xs"></div>
+          <hr class="my-4">
+          <!-- IMAGE -->
+          <div class="form-group col-md-6">
+            <label class="form-label font-weight-bold text-dark">
+              Combo Image
+            </label>
+            <div class="d-flex align-items-center gap-2">
+              <label class="btn bg-gradient-info text-white mb-0">
+                Choose Image
+                <%= f.file_field :image,
+                      class: "d-none",
+                      accept: "image/png,image/jpeg",
+                      onchange: "this.closest('.d-flex').querySelector('.file-name').innerText = this.files[0]?.name || 'No file chosen'" %>
+              </label>
+              <span class="file-name text-muted">
+                No file chosen
+              </span>
+            </div>
+          </div>
+          <!-- ACTIONS -->
+          <div class="d-flex justify-content-end mt-4">
+            <%= link_to "Back",
+                  admin_garment_types_path,
+                  class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+            <%= f.submit "Create Combo",
+                  class: "btn btn-info text-white text-uppercase font-weight-bold" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ✅ Gender Filter Script -->
+<script>
+  document.addEventListener("turbo:load", function () {
+
+    const form = document.querySelector("form");
+    if (!form) return;
+
+    const nameInput    = document.getElementById("garment_type_garment_name");
+    const nameErr      = document.getElementById("name_err");
+    const garmentErr   = document.getElementById("garment_err");
+
+    const genderSelect = document.getElementById("combo_gender");
+    const garments     = document.querySelectorAll(".garment-option");
+    const checkboxes   = document.querySelectorAll(".garment-checkbox");
+
+
+    // ✅ Gender Filter
+    function filterGarments() {
+
+      const selectedGender = genderSelect.value;
+
+      garments.forEach(item => {
+
+        const garmentGender = item.dataset.gender;
+        const checkbox = item.querySelector("input");
+
+        if (!selectedGender) {
+          item.style.display = "none";
+          checkbox.checked = false;
+          return;
+        }
+
+        if (
+          garmentGender === selectedGender ||
+          garmentGender === "both"
+        ) {
+          item.style.display = "block";
+        } else {
+          item.style.display = "none";
+          checkbox.checked = false;
+        }
+
+      });
+
+      // ✅ remove error if visible garments contain checked one
+      if (document.querySelectorAll(".garment-checkbox:checked").length > 0) {
+        garmentErr.innerHTML = "";
+      }
+    }
+
+
+    // ✅ Remove name error while typing
+    nameInput?.addEventListener("input", function () {
+
+      if (nameInput.value.trim()) {
+        nameErr.innerHTML = "";
+        nameInput.classList.remove("is-invalid");
+      }
+
+    });
+
+
+    // ✅ Remove garment error instantly on selection
+    checkboxes.forEach(box => {
+      box.addEventListener("change", function () {
+
+        if (document.querySelectorAll(".garment-checkbox:checked").length > 0) {
+          garmentErr.innerHTML = "";
+        }
+
+      });
+    });
+
+
+
+    // ✅ Form Validation
+    form.addEventListener("submit", function (e) {
+
+      let valid = true;
+
+      nameErr.innerHTML = "";
+      garmentErr.innerHTML = "";
+      nameInput.classList.remove("is-invalid");
+
+      // Name validation
+      if (!nameInput.value.trim()) {
+
+        nameErr.innerHTML = "Combo name can't be blank";
+        nameInput.classList.add("is-invalid");
+        valid = false;
+      }
+
+      // Garment validation
+      const checkedGarments =
+        document.querySelectorAll(".garment-checkbox:checked");
+
+      if (checkedGarments.length === 0) {
+
+        garmentErr.innerHTML = "Please select at least one garment";
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+
+    });
+
+
+    genderSelect?.addEventListener("change", filterGarments);
+
+    // initial hide
+    filterGarments();
+
+  });
+</script>

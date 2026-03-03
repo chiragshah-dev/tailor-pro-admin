@@ -1,0 +1,98 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            Wallet Details
+          </h6>
+        </div>
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-4 pt-4 pb-2">
+        <!-- SIDE BY SIDE CARDS -->
+        <div class="row">
+          <!-- WALLET CARD -->
+          <div class="col-md-6 mb-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h6 class="text-uppercase text-dark text-xs font-weight-bold mb-3">
+                  Wallet Information
+                </h6>
+                <p class="text-sm mb-2">
+                  <span class="fw-bold text-dark">Wallet ID:</span>
+                  <span class="text-secondary font-weight-bold ms-2">
+                    <%= @wallet.id %>
+                  </span>
+                </p>
+                <p class="text-sm mb-2">
+                  <span class="fw-bold text-dark">Balance:</span>
+                  <span class="text-secondary font-weight-bold ms-2">
+                    <%= number_to_currency(@wallet.balance || 0, unit: "₹") %>
+                  </span>
+                </p>
+                <p class="text-sm mb-2">
+                  <span class="fw-bold text-dark">Locked Balance:</span>
+                  <span class="text-secondary font-weight-bold ms-2">
+                    <%= number_to_currency(@wallet.locked_balance || 0, unit: "₹") %>
+                  </span>
+                </p>
+                <p class="text-sm mb-2">
+                  <span class="fw-bold text-dark">Currency:</span>
+                  <span class="text-secondary font-weight-bold ms-2">
+                    <%= @wallet.currency || "-" %>
+                  </span>
+                </p>
+                <p class="text-sm mb-0">
+                  <span class="fw-bold text-dark">Status:</span>
+                  <span class="badge bg-<%= @wallet.active? ? "success" : "secondary" %> ms-2">
+                    <%= @wallet.wallet_status.titleize %>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- STORE CARD -->
+          <div class="col-md-6 mb-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h6 class="text-uppercase text-dark text-xs font-weight-bold mb-3">
+                  Store Information
+                </h6>
+                <p class="text-sm mb-2">
+                  <span class="fw-bold text-dark">Store Name:</span>
+                  <span class="text-secondary font-weight-bold ms-2">
+                    <%= @wallet.store&.name || "-" %>
+                  </span>
+                </p>
+                <p class="text-sm mb-2">
+                  <span class="fw-bold text-dark">Store Code:</span>
+                  <span class="text-secondary font-weight-bold ms-2">
+                    <%= @wallet.store&.code || "-" %>
+                  </span>
+                </p>
+                <p class="text-sm mb-2">
+                  <span class="fw-bold text-dark">Contact:</span>
+                  <span class="text-secondary font-weight-bold ms-2">
+                    <%= @wallet.store&.contact_number || "-" %>
+                  </span>
+                </p>
+                <% if @wallet.store.present? %>
+                  <%= link_to "View more details",
+                        admin_store_path(@wallet.store),
+                        class: "btn btn-outline-info btn-sm text-uppercase font-weight-bold mt-2" %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="horizontal dark">
+        <div>
+            <%= render "transactions_table" %>
+        </div>
+        <%= link_to admin_wallets_path(page: params[:page]), class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end" do %>Back<% end %>
+      </div>
+    </div>
+  </div>
+</div>

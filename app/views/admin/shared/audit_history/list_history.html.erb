@@ -1,0 +1,140 @@
+<!-- ================= AUDIT HISTORY CARD ================= -->
+<div class="card my-4">
+  <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+    <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+      <h6 class="text-white text-capitalize ps-3">
+        Audit History
+      </h6>
+    </div>
+  </div>
+  <div class="card-body px-0 pb-2">
+    <div class="table-responsive p-0">
+      <table class="table align-items-center mb-0 ">
+        <thead>
+          <tr>
+            <th class="text-uppercase text-dark text-xxs font-weight-bold ps-3">Date</th>
+            <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Action</th>
+            <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Actor</th>
+            <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Path</th>
+            <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2 text-end">Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if audit_versions.present? %>
+            <% audit_versions.each do |v| %>
+              <tr>
+                <td>
+                  <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                    <%= l(v.created_at, format: :short) %>
+                  </p>
+                </td>
+                <td>
+                  <span class="badge bg-secondary text-xs"><%= v.event %></span>
+                </td>
+                <td>
+                  <p class="text-sm text-secondary mb-0 font-weight-bold">
+                    <%= v.actor || "system" %>
+                  </p>
+                </td>
+                <td>
+                  <p class="text-xs text-secondary mb-0 font-weight-bold">
+                    <%= v.path || "-" %>
+                  </p>
+                </td>
+                <td class="text-end pe-3">
+                  <% if v.changeset.present? && v.changeset.any? %>
+                    <!-- Button triggers modal -->
+                    <button type="button" class="btn btn-link text-info text-xs fw-bold p-0"
+                            data-bs-toggle="modal"
+                            data-bs-target="#auditModal_<%= v.id %>">
+                      <%= v.changeset.size %> change<%= 's' if v.changeset.size != 1 %>
+                      <i class="fas fa-external-link-alt ms-1"></i>
+                    </button>
+                  <% else %>
+                    <span class="text-muted text-xs">—</span>
+                  <% end %>
+                </td>
+              </tr>
+              <!-- ================= MODAL PER ROW ================= -->
+              <% if v.changeset.present? && v.changeset.any? %>
+                <div class="modal fade" id="auditModal_<%= v.id %>" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h6 class="modal-title">
+                          Audit Details for <%= v.item_type %>
+                          (Item ID: <%= v.item.id %>, Paper Trial ID: <%= v.id %>)
+                        </h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <div class="card shadow-sm">
+                            <div class="card-body small">
+                              <div class="row g-2">
+                                <div class="col-md-4">
+                                  <strong>Module:</strong> <%= v.item_type %>
+                                </div>
+                                <div class="col-md-4">
+                                  <strong>Action:</strong> <%= v.event %>
+                                </div>
+                                <div class="col-md-4">
+                                  <strong>Actor:</strong> <%= v.actor || "system" %>
+                                </div>
+                                <div class="col-md-4">
+                                  <strong>Date:</strong> <%= l(v.created_at, format: :long) %>
+                                </div>
+                                <div class="col-md-4">
+                                  <strong>Request id:</strong> <%= v.request_id || "-" %>
+                                </div>
+                                <div class="col-md-4">
+                                  <strong>Path:</strong> <%= "#{v.path} (#{v.http_method})" || "-" %>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row row-cols-1 row-cols-md-2 g-3 small">
+                          <% v.changeset.each do |attr, values| %>
+                            <div class="col">
+                              <div class="border rounded p-2 h-100">
+                                <strong class="text-muted"><%= attr.to_s.humanize %></strong>
+                                <div>
+                                  <span class="text-danger text-decoration-line-through">
+                                    <%= values[0].presence || "nil" %>
+                                  </span>
+                                  →
+                                  <span class="text-success fw-bold">
+                                    <%= values[1].presence || "nil" %>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          <% end %>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary text-uppercase font-weight-bold btn-sm" data-bs-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="12" class="text-center">
+                <p class="no-content-text">No audit history available.</p>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center px-3 mt-4">
+      <%= paginate audit_versions %>
+    </div>
+  </div>
+</div>

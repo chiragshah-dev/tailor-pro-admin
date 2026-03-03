@@ -1,0 +1,305 @@
+  
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            Edit Store
+          </h6>
+        </div>
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-4 pb-4">
+        <%= form_with model: [:admin, @store], local: true do |f| %>
+          <%= hidden_field_tag :page, params[:page] %>
+          <div class="row g-4">
+            <!-- Store Name -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Store Name</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :name, class: "form-control" %>
+              </div>
+              <div id="name_err" class="text-danger mt-2 text-xs">
+                <%= @store.errors.full_messages_for(:name).first %>
+              </div>
+            </div>
+            <!-- Store Code -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Store Code</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :code, class: "form-control" %>
+              </div>
+              <div id="code_err" class="text-danger mt-2 text-xs">
+                <%= @store.errors.full_messages_for(:code).first %>
+              </div>
+            </div>
+            <!-- Stitched For -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Stitched For</label>
+              <div class="input-group input-group-outline">
+                <%= f.select :stitches_for,
+                        [["Male", "male"], ["Female", "female"], ["Both", "both"]],
+                        {},
+                        class: "form-control" %>
+              </div>
+            </div>
+            <!-- Contact -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Contact Number</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :contact_number, class: "form-control" %>
+              </div>
+              <div id="phone_err" class="text-danger mt-2 text-xs">
+                <%= @store.errors.full_messages_for(:contact_number).first %>
+              </div>
+            </div>
+            <!-- Email -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Email</label>
+              <div class="input-group input-group-outline">
+                <%= f.email_field :email, class: "form-control" %>
+              </div>
+              <div id="email_err" class="text-danger mt-2 text-xs">
+                <%= @store.errors.full_messages_for(:email).first %>
+              </div>
+            </div>
+            <!-- Location Name -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Location Name</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :location_name, class: "form-control" %>
+              </div>
+            </div>
+            <!-- Address -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Address</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :address, class: "form-control" %>
+              </div>
+              <div id="address_err" class="text-danger mt-2 text-xs">
+                <%= @store.errors.full_messages_for(:address).first %>
+              </div>
+            </div>
+            <!-- City -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">City</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :city, class: "form-control" %>
+              </div>
+              <div id="city_err" class="text-danger mt-2 text-xs">
+                <%= @store.errors.full_messages_for(:city).first %>
+              </div>
+            </div>
+            <!-- State -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">State</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :state, class: "form-control" %>
+              </div>
+              <div id="state_err" class="text-danger mt-2 text-xs">
+                <%= @store.errors.full_messages_for(:state).first %>
+              </div>
+            </div>
+            <!-- Country -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Country</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :country, class: "form-control" %>
+              </div>
+              <div id="country_err" class="text-danger mt-2 text-xs">
+                <%= @store.errors.full_messages_for(:country).first %>
+              </div>
+            </div>
+            <!-- Postal Code -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Postal Code</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :postal_code, class: "form-control" %>
+              </div>
+              <div id="postal_err" class="text-danger mt-2 text-xs">
+                <%= @store.errors.full_messages_for(:postal_code).first %>
+              </div>
+            </div>
+            <hr class="horizontal dark my-4">
+            <h6 class="text-uppercase text-dark mb-3">
+              GST Information
+            </h6>
+            <div class="row g-4">
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">GST Number</label>
+                <div class="input-group input-group-outline">
+                  <%= f.text_field :gst_number, class: "form-control" %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">GST Name</label>
+                <div class="input-group input-group-outline">
+                  <%= f.text_field :gst_name, class: "form-control" %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">GST Percentage</label>
+                <div class="input-group input-group-outline">
+                  <%= f.number_field :gst_percentage,
+            step: 0.01,
+            class: "form-control",
+            placeholder: "e.g. 18" %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label font-weight-bold text-dark">GST Included on Bill</label>
+                <div class="form-check mt-2">
+                  <%= f.check_box :gst_included_on_bill, class: "form-check-input" %>
+                  <label class="form-check-label">Yes</label>
+                </div>
+              </div>
+            </div>
+            <hr class="horizontal dark my-4">
+            <h6 class="text-uppercase text-dark mb-3">
+              Bank Details
+            </h6>
+            <%= f.fields_for :store_bank_detail do |b| %>
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <label class="form-label font-weight-bold text-dark">Account Holder Name</label>
+                  <div class="input-group input-group-outline">
+                    <%= b.text_field :account_holder_name, class: "form-control" %>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label font-weight-bold text-dark">Bank Name</label>
+                  <div class="input-group input-group-outline">
+                    <%= b.text_field :bank_name, class: "form-control" %>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label font-weight-bold text-dark">Account Number</label>
+                  <div class="input-group input-group-outline">
+                    <%= b.text_field :account_number, class: "form-control" %>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label font-weight-bold text-dark">IFSC Code</label>
+                  <div class="input-group input-group-outline">
+                    <%= b.text_field :ifsc_code, class: "form-control" %>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label font-weight-bold text-dark">UPI ID</label>
+                  <div class="input-group input-group-outline">
+                    <%= b.text_field :upi_id, class: "form-control" %>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label font-weight-bold text-dark">
+                    UPI QR Code
+                  </label>
+                  <% if b.object.qr_code.attached? %>
+                    <div class="mb-2">
+                      <%= image_tag b.object.qr_code,
+            class: "img-thumbnail",
+            style: "max-width: 120px;" %>
+                    </div>
+                  <% end %>
+                  <div class="input-group input-group-outline">
+                    <%= b.file_field :qr_code, class: "form-control" %>
+                  </div>
+                  <small class="text-muted">
+                    Upload PNG or JPG QR code
+                  </small>
+                </div>
+              </div>
+            <% end %>
+            <!-- ACTIONS -->
+            <div class="d-flex justify-content-end mt-4">
+              <%= link_to "Back",
+                    admin_stores_path(page: params[:page]),
+                    class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+              <%= f.submit "Update",
+                    class: "btn btn-info text-white text-uppercase font-weight-bold" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("turbo:load", () => {
+    const form = document.querySelector("form");
+    if (!form) return;
+
+    const fields = {
+      name: document.getElementById("store_name"),
+      code: document.getElementById("store_code"),
+      phone: document.getElementById("store_contact_number"),
+      address: document.getElementById("store_address"),
+      city: document.getElementById("store_city"),
+      state: document.getElementById("store_state"),
+      country: document.getElementById("store_country"),
+      postal: document.getElementById("store_postal_code"),
+    };
+
+    const err = {
+      name: document.getElementById("name_err"),
+      code: document.getElementById("code_err"),
+      phone: document.getElementById("phone_err"),
+      address: document.getElementById("address_err"),
+      city: document.getElementById("city_err"),
+      state: document.getElementById("state_err"),
+      country: document.getElementById("country_err"),
+      postal: document.getElementById("postal_err"),
+    };
+
+    const labels = {
+      name: "Store name",
+      code: "Store code",
+      phone: "Contact number",
+      address: "Address",
+      city: "City",
+      state: "State",
+      country: "Country",
+      postal: "Postal code"
+    };
+
+    form.addEventListener("submit", (e) => {
+      let valid = true;
+
+      Object.values(err).forEach(e => e.innerHTML = "");
+
+      const phoneRegex  = /^[6-9]\d{9}$/;
+      const postalRegex = /^\d{6}$/;
+
+      const required = ["name","code","phone","address","city","state","country","postal"];
+
+      required.forEach(key => {
+        if (!fields[key].value.trim()) {
+          err[key].innerHTML = `${labels[key]} can't be empty`;
+          fields[key].classList.add("is-invalid");
+          valid = false;
+        }
+      });
+
+      if (fields.phone.value && !phoneRegex.test(fields.phone.value.trim())) {
+        err.phone.innerHTML = "Enter valid 10 digit mobile number";
+        valid = false;
+      }
+
+      if (fields.postal.value && !postalRegex.test(fields.postal.value.trim())) {
+        err.postal.innerHTML = "Enter valid 6 digit postal code";
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+
+    Object.keys(fields).forEach(key => {
+      fields[key]?.addEventListener("input", () => {
+        err[key].innerHTML = "";
+        fields[key].classList.remove("is-invalid");
+      });
+    });
+  });
+</script>

@@ -1,0 +1,152 @@
+<!-- Dashboard Header -->
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body py-3 px-4">
+        <h4 class="mb-1 fw-bold">Dashboard</h4>
+        <p class="text-muted mb-0">System Overview</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="row g-4">
+
+  <!-- Stores -->
+  <div class="col-xl-3 col-md-6">
+    <%= link_to admin_stores_path, class: "text-decoration-none" do %>
+      <div class="card stat-card border-0 h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="stat-icon bg-primary">
+            <i class="material-symbols-rounded">store</i>
+          </div>
+          <div class="ms-3">
+            <p class="text-uppercase text-muted text-xs mb-1">Stores</p>
+            <h3 class="fw-bold mb-0"><%= @stores %></h3>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Stores Near Limit -->
+  <div class="col-xl-3 col-md-6">
+    <%= link_to admin_stores_path(filter: "near_limit"), class: "text-decoration-none" do %>
+      <div class="card stat-card border-0 h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="stat-icon bg-danger">
+            <i class="material-symbols-rounded">monitoring</i>
+          </div>
+          <div class="ms-3">
+            <p class="text-uppercase text-muted text-xs mb-1">Stores Near Limit</p>
+            <h3 class="fw-bold mb-0"><%= @stores_limit_reached_count %></h3>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Customers -->
+  <div class="col-xl-3 col-md-6">
+    <%= link_to admin_customers_path, class: "text-decoration-none" do %>
+      <div class="card stat-card border-0 h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="stat-icon bg-dark-blue">
+            <i class="material-symbols-rounded">person</i>
+          </div>
+          <div class="ms-3">
+            <p class="text-uppercase text-muted text-xs mb-1">Customers</p>
+            <h3 class="fw-bold mb-0"><%= @customers_count %></h3>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Orders -->
+  <div class="col-xl-3 col-md-6">
+    <%= link_to admin_orders_path, class: "text-decoration-none" do %>
+      <div class="card stat-card border-0 h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="stat-icon bg-success">
+            <i class="material-symbols-rounded">receipt_long</i>
+          </div>
+          <div class="ms-3">
+            <p class="text-uppercase text-muted text-xs mb-1">Orders</p>
+            <h3 class="fw-bold mb-0"><%= @orders_count %></h3>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Workers -->
+  <div class="col-xl-3 col-md-6">
+    <%= link_to admin_workers_path, class: "text-decoration-none" do %>
+      <div class="card stat-card border-0 h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="stat-icon bg-warning">
+            <i class="material-symbols-rounded">groups</i>
+          </div>
+          <div class="ms-3">
+            <p class="text-uppercase text-muted text-xs mb-1">Workers</p>
+            <h3 class="fw-bold mb-0"><%= @workers_count %></h3>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Job Roles -->
+  <div class="col-xl-3 col-md-6">
+    <%= link_to admin_job_roles_path, class: "text-decoration-none" do %>
+      <div class="card stat-card border-0 h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="stat-icon bg-dark">
+            <i class="material-symbols-rounded">badge</i>
+          </div>
+          <div class="ms-3">
+            <p class="text-uppercase text-muted text-xs mb-1">Job Roles</p>
+            <h3 class="fw-bold mb-0"><%= @job_roles_count %></h3>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Garment Types -->
+  <div class="col-xl-3 col-md-6">
+    <%= link_to admin_garment_types_path, class: "text-decoration-none" do %>
+      <div class="card stat-card border-0 h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="stat-icon bg-secondary">
+            <i class="material-symbols-rounded">checkroom</i>
+          </div>
+          <div class="ms-3">
+            <p class="text-uppercase text-muted text-xs mb-1">Garment Types</p>
+            <h3 class="fw-bold mb-0"><%= @garment_types %></h3>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Currencies -->
+  <div class="col-xl-3 col-md-6">
+    <%= link_to admin_currencies_path, class: "text-decoration-none" do %>
+      <div class="card stat-card border-0 h-100">
+        <div class="card-body d-flex align-items-center">
+          <div class="stat-icon bg-secondary">
+            <i class="material-symbols-rounded">payments</i>
+          </div>
+          <div class="ms-3">
+            <p class="text-uppercase text-muted text-xs mb-1">Currencies</p>
+            <h3 class="fw-bold mb-0"><%= @currencies %></h3>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+</div>

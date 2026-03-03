@@ -1,0 +1,118 @@
+<!-- app/views/admin/customers/index.html.erb -->
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- Header -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">Customers</h6>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <!-- Search -->
+        <div class="px-3 pb-3"> 
+          <%= render "admin/shared/search",
+                    url: admin_customers_path,
+                    placeholder: "Search customers..." %>
+        </div>
+        <!-- Table -->
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">
+                  <%= sortable_header("name", "Customer") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("store", "Store") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("members", "Members") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("orders", "Orders") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @customers.any? %>
+                <% @customers.each_with_index do |customer, index| %>
+                  <tr>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                        <%= (@customers.current_page - 1) * @customers.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <td>
+                      <div class="d-flex px-3 py-1">
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm"><%= customer.name %></h6>
+                          <p class="text-xs text-secondary mb-0"><%= customer.contact_number %></p>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0"><%= customer.store&.name || '—' %></p>
+                    </td>
+                    <td>
+                      <%= link_to admin_customer_path(customer,page: params[:page], view: 'members'),
+            class: "btn btn-xs btn-info text-uppercase font-weight-bold #{'disabled' if customer.members_count.zero?}" do %>
+                        <i class="fas fa-users me-1"></i>
+                        <%= customer.members_count %> Members
+                      <% end %>
+                    </td>
+                    <td>
+                      <%= link_to admin_customer_path(customer, page: params[:page], view: 'orders'), 
+                          class: "btn btn-xs text-white btn-success text-uppercase font-weight-bold #{'disabled' if customer.orders_count.zero?}" do %>
+                        <i class="fas fa-receipt me-1"></i> <%= customer.orders_count %> Orders
+                      <% end %>
+                    </td>
+                    <td class="align-middle text-center">
+                      <%= link_to admin_customer_path(customer,page: params[:page]), class: "btn btn-xs rounded btn-secondary", title: "Show" do %>
+                        <i class="fas fa-eye"></i>
+                      <% end %>
+                      <%= link_to history_admin_customer_path(customer),
+      class: "btn btn-xs rounded btn-secondary",
+      title: "View History" do %>
+                        <i class="fas fa-history"></i>
+                      <% end %>                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr>
+                  <td colspan="6" class="text-center py-4">
+                    <p class="text-sm text-secondary mb-0">No records found.</p>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center px-3 mt-3">
+          <%= paginate @customers %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sortable-header {
+    cursor: pointer;
+  }
+
+  .sort-icon {
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  .sortable-header:hover .sort-icon {
+    opacity: 1;
+  }
+</style>

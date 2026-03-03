@@ -1,0 +1,92 @@
+<turbo-frame id="workers_frame">
+  <hr class="horizontal dark my-3">
+  <h6 class="text-uppercase text-dark mb-3">Workers</h6>
+  <small class=" text-dark font-weight-bold text-xs mb-2">
+    Showing <%= @workers.offset_value + 1 %> -
+    <%= @workers.offset_value + @workers.size %>
+    of <%= @workers.total_count %> results
+  </small>
+  <div class="card my-2">
+    <div class="card-body px-0 pb-2">
+      <div class="table-responsive p-0">
+        <table class="table align-items-center mb-0">
+          <thead>
+            <tr>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold ">
+                Name
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold ">
+                Contact
+              </th>
+              <th class=" text-center text-uppercase text-secondary text-xxs font-weight-bold ">
+                Job Role
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold ">
+                Status
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold ">
+                Deleted
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold ">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @workers.any?%>
+              <% @workers.each do |worker| %>
+                <tr>
+                  <td class="text-center text-dark text-sm font-weight-bold ">
+                    <%= worker.name %>
+                  </td>
+                  <td class=" text-center text-dark text-sm">
+                    <%= worker.contact_number.presence || "-" %>
+                  </td>
+                  <td class="text-center  text-dark text-sm">
+                    <%= worker.job_role&.name&.capitalize || "-" %>
+                  </td>
+                  <td class=" text-center text-sm">
+                    <% if worker.active %>
+                      <span class="badge badge-sm bg-gradient-success">Active</span>
+                    <% else %>
+                      <span class="badge badge-sm bg-gradient-secondary">Inactive</span>
+                    <% end %>
+                  </td>
+                  <td class="text-center  text-dark text-sm">
+                    <%= worker.deleted.to_s&.capitalize || "-" %>
+                  </td>
+                  <td class="align-middle text-center">
+                    <%= link_to admin_worker_path(worker),
+                        class: "btn btn-xs rounded btn-secondary",
+                        title: "Show",
+                        data: { turbo_frame: "_top" } do %>
+                      <i class="fas fa-eye"></i>
+                    <% end %>
+                  </tr>
+                <% end %>
+              <%else%>
+                <tr>
+                  <td colspan="12" class="text-center">
+                    <p class="no-content-text">No workers found for this store.</p>
+                  </td>
+                </tr>
+              <%end%>
+              <!-- Pagination -->
+              <tr>
+                <td colspan="5" class="text-center py-3">
+                  <%= paginate @workers,param_name: :workers_page,
+                  params: { worker_search: params[:worker_search] },
+                  link_options: {
+                    data: {
+                      turbo_frame: "workers_frame",
+                      turbo_prefetch: "false"
+                    }
+                  } %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </turbo-frame>

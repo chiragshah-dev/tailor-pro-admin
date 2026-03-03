@@ -1,0 +1,139 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+          <h6 class="text-white text-capitalize ps-3 mb-0">Garment Types</h6>
+          <div class="d-flex gap-2 me-3">
+            <%= link_to "Add Garment Type",
+                  new_admin_garment_type_path,
+                  class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" %>
+            <%= link_to "Add Garment Type Combo",
+                  new_garment_type_combo_admin_garment_types_path,
+                  class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <!-- SEARCH -->
+        <div class="px-3 pb-3">
+          <%= render "admin/shared/search", url: admin_garment_types_path, placeholder: "Search garment type..." do %>
+          <% end %>
+        </div>
+        <!-- TABLE -->
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ">ID</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Garment Image</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("garment_name", "Garment Name") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("gender", "Gender") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("garment_type", "Garment Type") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("active", "Active") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if @garment_types.any?%>
+                <% @garment_types.each_with_index do |garment, index| %>
+                  <tr>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0 px-3">
+                        <%= (@garment_types.current_page - 1) * @garment_types.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <td>
+                      <% if garment.image.attached? %>
+                        <%= image_tag garment.image,
+                            class: "avatar avatar-sm border-radius-lg",
+                            alt: garment.garment_name %>
+                      <% else %>
+                        <span class="text-secondary text-xs"> NA </span>
+                      <% end %>
+                    </td>
+                    <td>
+                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                        <%= garment.garment_name || "-" %>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                        <%= garment.gender.titleize || "-" %>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                        <%= garment.garment_type.titleize || "-" %>
+                      </p>
+                    </td>
+                    <td >
+                      <span class="badge bg-<%= garment.active? ? 'success' : 'secondary' %>">  <%= garment.active? ? "Yes" : "No" %></span>
+                    </td>
+                    <td class="align-middle text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <%= link_to admin_garment_type_path(garment,page: params[:page]),
+                                    class: "btn btn-xs btn-secondary" do %>
+                          <i class="fas fa-eye"></i>
+                        <% end %>
+                        <%= link_to(
+  garment.combo? ? edit_combo_admin_garment_type_path(garment) : edit_admin_garment_type_path(garment),
+  class: "btn btn-xs btn-secondary"
+) do %>
+                          <i class="fas fa-edit"></i>
+                        <% end %>
+                        <%= button_to admin_garment_type_path(garment,page: params[:page]),
+                      method: :delete,
+                      class: "btn btn-xs rounded btn-secondary",
+                      data: { turbo_confirm: "Are you sure you want to delete #{garment&.garment_name}?" } do %>
+                          <i class="fas fa-trash"></i>
+                        <% end %>
+                        <%= link_to history_admin_garment_type_path(garment),
+      class: "btn btn-xs rounded btn-secondary",
+      title: "View History" do %>
+                          <i class="fas fa-history"></i>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <%else%>
+                <tr>
+                  <td colspan="12" class="text-center">
+                    <p class="no-content-text">No records found.</p>
+                  </td>
+                </tr>
+              <%end%>
+            </tbody>
+          </table>
+        </div>
+        <!-- PAGINATION -->
+        <div class="d-flex justify-content-center mt-3">
+          <%= paginate @garment_types %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .sortable-header {
+    cursor: pointer;
+  }
+
+  .sort-icon {
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  .sortable-header:hover .sort-icon {
+    opacity: 1;
+  }
+</style>

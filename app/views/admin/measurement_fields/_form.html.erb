@@ -1,0 +1,106 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            <%= @measurement_field.persisted? ? "Edit Measurement Field" : "New Measurement Field" %>
+          </h6>
+        </div>
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-4 pb-4">
+        <%= form_with model: [:admin, @measurement_field], local: true do |f| %>
+          <%= hidden_field_tag :page, params[:page] %>
+          <div class="row g-4">
+            <!-- Label -->
+            <div class="form-group col-md-6">
+              <label class="form-label font-weight-bold text-dark">Label</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :label, class: "form-control" %>
+              </div>
+              <div id="label_err" class="text-danger mt-2 text-xs"><%= @measurement_field.errors.full_messages_for(:label).first %></div>
+            </div>
+            <!-- Name -->
+            <!-- Active -->
+            <div class="form-group col-md-6">
+              <label class="form-label font-weight-bold text-dark">Active</label>
+              <div class="input-group input-group-outline">
+                <%= f.select :active,
+                    [["Yes", true], ["No", false]],
+                    {},
+                    class: "form-control" %>
+              </div>
+            </div>
+            <!-- Measurement Image -->
+            <div class="form-group col-md-6">
+              <label class="form-label font-weight-bold text-dark">
+                Measurement Image
+              </label>
+              <% if @measurement_field.measurement_image.attached? %>
+                <div class="mb-2">
+                  <%= image_tag @measurement_field.measurement_image,
+            class: "img-thumbnail",
+            style: "max-width: 120px;" %>
+                </div>
+              <% end %>
+              <div class="input-group input-group-outline">
+                <%= f.file_field :measurement_image,
+          class: "form-control",
+          accept: "image/png,image/jpeg" %>
+              </div>
+              <small class="text-muted">
+                Upload PNG or JPG image
+              </small>
+            </div>
+          </div>
+          <!-- ACTIONS -->
+          <div class="d-flex justify-content-end mt-4">
+            <%= link_to "Back",
+                admin_measurement_fields_path(page: params[:page]),
+                class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+            <%= f.submit @measurement_field.persisted? ? "Update" : "Create",
+                class: "btn btn-info text-white text-uppercase font-weight-bold" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("turbo:load", () => {
+
+    const form = document.querySelector("form");
+    if (!form) return;
+
+    const labelInput = document.getElementById("measurement_field_label");
+    const labelErr   = document.getElementById("label_err");
+
+    form.addEventListener("submit", function (e) {
+      let valid = true;
+
+      // reset errors
+      labelErr.innerHTML = "";
+      labelInput.classList.remove("is-invalid");
+
+      // LABEL validation
+      if (!labelInput.value.trim()) {
+        labelErr.innerHTML = "Label can't be blank";
+        labelInput.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+
+    // Clear label error on typing
+    labelInput.addEventListener("input", () => {
+      if (labelInput.value.trim()) {
+        labelErr.innerHTML = "";
+        labelInput.classList.remove("is-invalid");
+      }
+    });
+
+  });
+</script>

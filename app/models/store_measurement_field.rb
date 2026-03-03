@@ -1,4 +1,6 @@
 class StoreMeasurementField < ApplicationRecord
+  include Auditable
+
   belongs_to :store
   belongs_to :garment_type
   belongs_to :measurement_field, optional: true

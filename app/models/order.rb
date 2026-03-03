@@ -1,27 +1,34 @@
 class Order < ApplicationRecord
+  include Auditable
+
   enum :status, {
-    accepted: 0, in_progress: 1, pending_assign: 2, pending: 3, completed: 4, ready_for_trial: 5, delivered: 6, cancelled: 7
+    pending: 0, in_progress: 1, ready_for_trial: 2, completed: 4, delivered: 5, cancelled: 6,
   }
+
+  enum :payment_status, { unpaid: 0, paid: 1 }
 
   # Associations
   belongs_to :customer
   belongs_to :store
-  belongs_to :worker, optional: true, dependent: :destroy
+  belongs_to :worker, optional: true
   has_many :order_items, dependent: :destroy
   has_many :order_measurements, dependent: :destroy
   accepts_nested_attributes_for :order_measurements, allow_destroy: true
   accepts_nested_attributes_for :order_items, allow_destroy: true
   has_many_attached :images
   has_one_attached :voice_note
+  has_many :order_payments, dependent: :destroy
+  has_many :wallet_transactions, foreign_key: :reference_id, dependent: :destroy
 
   # Validations
   validates :order_number, uniqueness: { scope: :store_id }
   validates :status, :order_date, presence: true, on: :update
   validates :courier_to_customer, inclusion: {
-    in: [true, false], message: "must be true or false"
-  }, on: :update
+                                    in: [true, false], message: "must be true or false",
+                                  }, on: :update
   validate :order_date_validation
-  validate :custom_order_number_validation, on: :update, if: -> { order_number_format == 'custom' && order_number_changed? }
+  validate :custom_order_number_validation, on: :update, if: -> { order_number_format == "custom" && order_number_changed? }
+  has_one_attached :invoice_pdf
 
   # Callbacks
   before_create :set_order_details
@@ -34,11 +41,38 @@ class Order < ApplicationRecord
     ["customer", "order_items", "order_measurements", "store", "worker"]
   end
 
+  #scopes
+
+  scope :active_orders, -> { where.not(status: [:cancelled, :delivered, :completed]) }
+
+  scope :due_today, -> { where(delivery_date: Date.current) }
+
+  scope :upcoming_due, -> { where(delivery_date: Date.today..7.days.from_now.to_date) }
+
   def update_total
     # Update the order's total bill amount
     total = calculate_total
-    balance_due = total - payment_received - discount
+    final_total = total - discount.to_f
+    paid_amount = payment_received.to_f + advance_payment.to_f
+    balance_due = final_total - paid_amount
+
     update(total_bill_amount: total, balance_due: balance_due)
+  end
+
+  def recalculate_order_totals
+    total = calculate_total
+    final_total = total - discount.to_f
+    paid_amount = advance_payment.to_f
+
+    self.total_bill_amount = total
+    self.balance_due = final_total - paid_amount
+    self.payment_status = balance_due <= 0 ? :paid : :unpaid
+  end
+
+  def add_payment!(amount)
+    self.advance_payment = advance_payment.to_f + amount.to_f
+    recalculate_order_totals
+    save!
   end
 
   def user
@@ -46,9 +80,9 @@ class Order < ApplicationRecord
   end
 
   def order_status
-    return 'pending_assign' if status == 'accepted' && worker.nil?
-    return 'pending' if status == 'accepted' && worker.present?
-    status
+    return status unless pending?
+
+    worker.nil? ? "pending" : "pending"
   end
 
   private
@@ -62,15 +96,17 @@ class Order < ApplicationRecord
   def set_order_details
     self.order_number = generate_order_number
     self.order_date = Date.today
-    self.status = :accepted
+    self.status = :pending
     self.total_bill_amount = calculate_total
-    self.payment_received = 0
-    self.discount = 0
+    self.payment_received = advance_payment || 0
+    self.discount = 0 if discount.nil?
     self.balance_due = total_bill_amount - payment_received - discount
+    self.additional_price = 0 if additional_price.nil?
+    self.payment_status = balance_due <= 0 ? :paid : :unpaid
   end
 
   def generate_order_number
-    if order_number_format == 'serial'
+    if order_number_format == "serial"
       last_number = store.orders.where("order_number ~ '^[0-9]+$'")
                          .pluck(:order_number)
                          .map(&:to_i)
@@ -86,11 +122,12 @@ class Order < ApplicationRecord
   end
 
   def calculate_total
-    order_items.sum { |item| (item.price || 0) * (item.quantity || 1) }
+    items_total = order_items.sum { |item| (item.price || 0) * (item.quantity || 1) }
+    items_total + (additional_price || 0)
   end
 
   def order_number_format
-    user&.setting&.order_number_format || 'random'
+    user.setting.order_number_format
   end
 
   def custom_order_number_validation

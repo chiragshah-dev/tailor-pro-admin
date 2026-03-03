@@ -1,11 +1,9 @@
 class Notification < ApplicationRecord
-  # Associations
-  belongs_to :user
+  include Auditable
+  belongs_to :recipient, polymorphic: true
+  belongs_to :sender, polymorphic: true, optional: true
+  has_many :push_notifications, dependent: :destroy
 
   # Validations
   validates :title, :body, presence: true
-
-  def self.ransackable_attributes(auth_object = nil)
-    ["body", "created_at", "id", "read", "title", "updated_at", "user_id"]
-  end
 end

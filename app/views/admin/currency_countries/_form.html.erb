@@ -1,0 +1,156 @@
+  
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            <%= @currency_country.persisted? ? "Edit Country Code" : "New Country Code" %>
+          </h6>
+        </div>
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-4 pb-4">
+        <%= form_with model: @currency_country,
+                        url: @currency_country.persisted? ?
+                             admin_currency_country_path(@currency_country,page: params[:page]) :
+                             admin_currency_countries_path,
+                        local: true,
+                        html: { id: "currency-country-form" } do |f| %>
+          <div class="row g-4">
+            <!-- Country Name -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Country Name</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :country_name,
+                        class: "form-control",
+                        placeholder: "Enter Country Name" %>
+              </div>
+              <div id="country_name_err" class="text-danger mt-2 text-xs">
+                <%= @currency_country.errors.full_messages_for(:country_name).first %>
+              </div>
+            </div>
+            <!-- Dialing Code -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Dialing Code</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :country_code,
+                        class: "form-control",
+                        placeholder: "+91" %>
+              </div>
+              <div id="country_code_err" class="text-danger mt-2 text-xs">
+                <%= @currency_country.errors.full_messages_for(:country_code).first %>
+              </div>
+            </div>
+            <!-- Currency -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Currency</label>
+              <div class="input-group input-group-outline">
+                <%= f.select :currency_id,
+                        options_from_collection_for_select(
+                          Currency.order(:name),
+                          :id,
+                          :name,
+                          @currency_country.currency_id
+                        ),
+                        { prompt: "Select Currency" },
+                        class: "form-control #{'is-invalid' if @currency_country.errors[:currency_id].any?}" %>
+              </div>
+              <div id="currency_err" class="text-danger mt-2 text-xs">
+                <%= @currency_country.errors.full_messages_for(:currency_id).first %>
+              </div>
+            </div>
+          </div>
+          <!-- ACTIONS -->
+          <div class="d-flex justify-content-end mt-4">
+            <%= link_to "Back",
+                    admin_currency_countries_path(page: params[:page]),
+                    class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+            <%= f.submit @currency_country.persisted? ? "Update" : "Save",
+                    class: "btn btn-info text-white text-uppercase font-weight-bold" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("turbo:render", () => {
+
+    const form = document.getElementById("currency-country-form");
+    if (!form) return;
+
+    const countryName   = document.getElementById("currency_country_country_name");
+    const countryCode   = document.getElementById("currency_country_country_code");
+    const currencyId    = document.getElementById("currency_country_currency_id");
+
+    const countryNameErr = document.getElementById("country_name_err");
+    const countryCodeErr = document.getElementById("country_code_err");
+    const currencyErr    = document.getElementById("currency_err");
+
+    const nameRegex = /^[A-Za-z\s]+$/;
+    const codeRegex = /^\+\d{1,5}$/;
+
+    form.addEventListener("submit", (e) => {
+      let valid = true;
+
+      // Reset errors
+      countryNameErr.innerHTML = "";
+      countryCodeErr.innerHTML = "";
+      currencyErr.innerHTML    = "";
+
+      countryName.classList.remove("is-invalid");
+      countryCode.classList.remove("is-invalid");
+      currencyId.classList.remove("is-invalid");
+
+      // Country Name Validation
+      if (!countryName.value.trim()) {
+        countryNameErr.innerHTML = "Country name is required";
+        countryName.classList.add("is-invalid");
+        valid = false;
+      } else if (!nameRegex.test(countryName.value.trim())) {
+        countryNameErr.innerHTML = "Country name must contain only letters";
+        countryName.classList.add("is-invalid");
+        valid = false;
+      }
+
+      // Dialing Code Validation
+      if (!countryCode.value.trim()) {
+        countryCodeErr.innerHTML = "Dialing code is required";
+        countryCode.classList.add("is-invalid");
+        valid = false;
+      } else if (!codeRegex.test(countryCode.value.trim())) {
+        countryCodeErr.innerHTML = "Enter valid dialing code (e.g. +91)";
+        countryCode.classList.add("is-invalid");
+        valid = false;
+      }
+
+      // Currency Validation
+      if (!currencyId.value) {
+        currencyErr.innerHTML = "Currency is required";
+        currencyId.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+
+    // Clear errors on input/change
+    countryName.addEventListener("input", () => {
+      countryNameErr.innerHTML = "";
+      countryName.classList.remove("is-invalid");
+    });
+
+    countryCode.addEventListener("input", () => {
+      countryCodeErr.innerHTML = "";
+      countryCode.classList.remove("is-invalid");
+    });
+
+    currencyId.addEventListener("change", () => {
+      currencyErr.innerHTML = "";
+      currencyId.classList.remove("is-invalid");
+    });
+
+  });
+</script>

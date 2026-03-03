@@ -1,6 +1,8 @@
 class Store < ApplicationRecord
+  include Auditable
+
   enum :store_type, { outlet: 0, workshop: 1, both: 2 }, prefix: true
-  enum :stitches_for, { male: 0, female: 1, both: 2 }
+  enum :stitches_for, { male: 0, female: 1, both: 2 }, default: nil
 
   # validations
   # validates :name, :store_type, :stitches_for, :contact_number, :location_name,
@@ -17,7 +19,7 @@ class Store < ApplicationRecord
   validates :is_main_store, inclusion: { in: [true, false], message: "must be true or false" }
 
   validate :website_url_format, if: :website_url_present?
-
+  validates :name, presence: true
   # associations
   has_one_attached :logo
   has_many_attached :photos
@@ -42,6 +44,7 @@ class Store < ApplicationRecord
   has_many :services, -> { distinct }, through: :store_service_expertises
   has_one :store_bank_detail, dependent: :destroy
   has_many :store_measurement_fields, dependent: :destroy
+  has_one :wallet, dependent: :destroy
   before_create :set_main_store
 
   accepts_nested_attributes_for :store_bank_detail
@@ -52,6 +55,24 @@ class Store < ApplicationRecord
 
   def full_address
     [address, location_name, city, state, country, postal_code].compact.reject(&:blank?).join(", ")
+  end
+
+  def total_billing_amount
+    orders.sum(:total_bill_amount)
+  end
+
+  def billing_limit
+    currency = Currency.from_country_code(user.country_code)
+    return 0 unless currency
+
+    CurrencySetting.find_by(currency_id: currency.id)&.amount_limit.to_f || 0
+  end
+
+  def order_limit_reached?
+    limit = billing_limit
+    return false if limit.zero?
+
+    total_billing_amount >= limit
   end
 
   private

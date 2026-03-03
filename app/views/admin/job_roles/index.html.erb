@@ -1,0 +1,106 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- Header -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            Job Roles
+          </h6>
+          <div class="me-3 d-flex gap-2">
+            <%= link_to new_admin_job_role_path,
+                  class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
+              Add Job Role
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <!-- Search -->
+        <div class="px-3 pb-3">
+          <%= render "admin/shared/search",
+                    url: admin_job_roles_path,
+                    placeholder: "Search job roles..." %>
+        </div>
+        <!-- Table -->
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("name", "Name") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @job_roles.present? %>
+                <% @job_roles.each_with_index do |role, index| %>
+                  <tr>
+                    <!-- Index -->
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                        <%= (@job_roles.current_page - 1) * @job_roles.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <!-- Name -->
+                    <td>
+                      <span class="mb-0 text-sm"><%= role.name %></span>
+                    </td>
+                    <!-- Actions -->
+                    <td class="align-middle text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <%= link_to edit_admin_job_role_path(role,page: params[:page]),
+                                  class: "btn btn-xs rounded btn-secondary",
+                                  title: "Edit" do %>
+                          <i class="fas fa-edit"></i>
+                        <% end %>
+                        <%= button_to admin_job_role_path(role, page: params[:page]),
+              method: :delete,
+              class: "btn btn-xs rounded btn-secondary",
+              data: { turbo_confirm: "Are you sure you want to delete #{role.name}?" } do %>
+                          <i class="fas fa-trash"></i>
+                        <% end %>
+                        <%= link_to history_admin_job_role_path(role),
+      class: "btn btn-xs rounded btn-secondary",
+      title: "View History" do %>
+                          <i class="fas fa-history"></i>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr>
+                  <td colspan="12" class="text-center">
+                    <p class="no-content-text">No records found.</p>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center px-3 mt-3">
+          <%= paginate @job_roles %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sortable-header {
+    cursor: pointer;
+  }
+
+  .sort-icon {
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  .sortable-header:hover .sort-icon {
+    opacity: 1;
+  }
+</style>

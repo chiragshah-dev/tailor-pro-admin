@@ -15,7 +15,7 @@ gem "puma", ">= 5.0"
 gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ windows jruby ]
+gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
@@ -37,38 +37,53 @@ gem "thruster", require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"
 
-gem 'devise'
-gem 'devise-jwt'
-gem 'active_model_serializers'
+gem "devise"
+gem "devise-jwt"
+gem "active_model_serializers"
 
-gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
-gem 'activeadmin', '~> 3.3'
-gem 'arctic_admin', '~> 4.3.3'
-gem 'sassc-rails' # ensure SCSS support with Rails 8 + Propshaft
-gem 'sprockets-rails'
+gem "wicked_pdf"
+gem "wkhtmltopdf-binary"
+gem "activeadmin", "~> 3.3"
+gem "arctic_admin", "~> 4.3.3"
+gem "sassc-rails" # ensure SCSS support with Rails 8 + Propshaft
+gem "sprockets-rails"
 # Needed for Propshaft or Sprockets (Rails 8)
 # gem 'propshaft' # default for Rails 8
 # Authorization
-gem 'pundit'
+gem "pundit"
+# Pagination
+# gem "kaminari"
 
 # Role Management
 gem "rolify"
-gem 'pry'
+gem "pry"
+gem "aws-sdk-s3"
+gem "dotenv-rails"
+
+# gem "ruby-vips", "~> 2.2"
+gem "countries"
+gem "tzinfo"
+gem "money"
+gem "phony"
+gem "phony_rails"
+gem "mime-types"
+gem "numbers_and_words"
+gem "kaminari"
+gem "importmap-rails"
+gem "streamio-ffmpeg"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-  gem "pry"
+  gem "debug", platforms: %i[ mri mingw mswin x64_mingw ], require: "debug/prelude"
+  # gem "pry"
 
-  gem 'bullet'
-  gem 'rspec-rails'
-  gem 'rswag'
-  gem 'factory_bot_rails'
-  gem 'faker'
-  gem 'streamio-ffmpeg'
-  gem 'city-state'
-  gem 'countries'
+  gem "bullet"
+  # gem 'rspec-rails'
+  # gem 'rswag'
+  # gem 'factory_bot_rails'
+  # gem 'faker'
+  # gem 'city-state'
+  gem "byebug"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
@@ -78,13 +93,16 @@ group :development, :test do
 end
 
 group :production do
-  gem 'rspec-rails'
-  gem 'rswag'
-  gem 'factory_bot_rails'
-  gem 'faker'
-  gem 'streamio-ffmpeg'
-  gem 'city-state'
-  gem 'countries'
+  gem "rspec-rails"
+  gem "rswag"
+  gem "factory_bot_rails"
+  gem "faker"
+  # gem 'streamio-ffmpeg'
+  gem "city-state"
 end
 
 gem "sassc", "~> 2.4"
+
+gem "ruby-vips", "~> 2.2"
+gem "paper_trail"
+gem "paper_trail-association_tracking"

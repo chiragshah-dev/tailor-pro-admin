@@ -1,0 +1,174 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">Stores</h6>
+        </div>
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-0 pb-2">
+        <!-- SEARCH -->
+        <div class="px-3 pb-3">
+          <%= render "admin/shared/search", url: admin_stores_path,placeholder: "Search stores..." do %>
+            <!-- FILTER: MAIN / BRANCH -->
+            <div class="w-11">
+              <%= select_tag :main_store,options_for_select([["All Stores", "false"], ["Main Store", "true"]],
+                  params[:main_store]),class: "form-select",onchange: "this.form.submit();"  %>
+            </div>
+          <% end %>
+        </div>
+        <!-- TABLE -->
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("name", "Store Name") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("code", "Code") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("owner", "Owner") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("contact", "Contact") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("wallet_balance", "Wallet Balance") %>
+                </th>
+
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("deleted", "Deleted") %>
+                </th>
+
+                <%# <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Location</th> %>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @stores.present? %>
+                <% @stores.each_with_index do |store, index| %>
+                  <tr>
+                    <!-- SR NO -->
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                        <%= (@stores.current_page - 1) * @stores.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <!-- STORE NAME -->
+                    <td>
+                      <p class="mb-0 text-sm text-dark">
+                        <%= store.name %>
+                        <% if store.is_main_store %>
+                          <span class="badge bg-gradient-info ms-1">Main</span>
+                        <% end %>
+                      </p>
+                    </td>
+                    <!-- CODE -->
+                    <td>
+                      <p class="text-sm text-secondary mb-0 text-dark">
+                        <%= store.code.presence || "-" %>
+                      </p>
+                    </td>
+                    <!-- OWNER -->
+                    <td>
+                      <p class="text-sm text-secondary mb-0 text-dark">
+                        <%= store.user&.name || "-" %>
+                      </p>
+                    </td>
+                    <!-- CONTACT -->
+                    <td>
+                      <p class="text-sm text-secondary mb-0 text-dark">
+                        <%= store.contact_number.presence || "-" %>
+                      </p>
+                    </td>
+                    <!-- WALLET -->
+                    <td>
+                      <div class="d-flex flex-column">
+                        <p class="text-sm mb-1 text-dark">
+                          <%= number_to_currency(store.wallet&.balance || 0, unit: "₹") %>
+                        </p>
+                        <% if store.wallet.present? %>
+                          <%= link_to "View details",
+                                      admin_wallet_path(store.wallet),
+                                      class: "text-xs text-info fw-bold" %>
+                        <% else %>
+                          <span class="text-xs text-muted">No wallet</span>
+                        <% end %>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="text-sm text-secondary mb-0 text-dark">
+                        <%= store.deleted.to_s.capitalize%>
+                      </p>
+                    </td>
+                    <!-- ACTIONS -->
+                    <td class="align-middle text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <%= link_to admin_store_path(store,page: params[:page]),
+                              class: "btn btn-xs rounded btn-secondary",
+                              title: "Show" do %>
+                          <i class="fas fa-eye"></i>
+                        <% end %>
+                        <%= link_to edit_admin_store_path(store,page: params[:page]),
+                              class: "btn btn-xs rounded btn-secondary",
+                              title: "Edit" do %>
+                          <i class="fas fa-edit"></i>
+                        <% end %>
+                        <%= button_to admin_store_path(store, page: params[:page]),
+              method: :delete,
+              class: "btn btn-xs rounded btn-secondary",
+              data: { turbo_confirm: "Are you sure you want to delete #{store.name}?" } do %>
+                          <i class="fas fa-trash"></i>
+                        <% end %>
+                        <%= link_to history_admin_store_path(store),
+      class: "btn btn-xs rounded btn-secondary",
+      title: "View History" do %>
+                          <i class="fas fa-history"></i>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <%else%>
+                <tr>
+                  <td colspan="12" class="text-center">
+                    <p class="no-content-text">No record found.</p>
+                  </td>
+                </tr>
+              <%end%>
+            </tbody>
+          </table>
+        </div>
+        <!-- PAGINATION -->
+        <div class="d-flex justify-content-center px-3 mt-3">
+          <%= paginate @stores %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sortable-header {
+    cursor: pointer;
+  }
+
+  .sort-icon {
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  .sortable-header:hover .sort-icon {
+    opacity: 1;
+  }
+</style>

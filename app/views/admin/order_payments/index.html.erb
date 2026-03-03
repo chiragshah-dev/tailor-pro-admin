@@ -1,0 +1,100 @@
+<!-- app/views/admin/payment_details/index.html.erb -->
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- Header -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">
+            Payment Details for Order :
+            <%= link_to @order.id,
+      admin_order_path(@order),
+      class: "text-white text-decoration-none " %>
+          </h6>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <!-- Search -->
+        <div class="px-3 pb-3">
+          <%= render "admin/shared/search", url: admin_order_payments_path,placeholder: "Search payment..." do %>
+            <!-- FILTER: Payment method -->
+            <div class="w-11">
+              <%= select_tag :payment_method,options_for_select([["All Payment Method", ""]] + 
+              OrderPayment.payment_methods.keys.map { |s| [s.humanize, s] },
+              params[:payment_method]),class: "form-select",onchange: "this.form.submit();" %>
+            </div>
+            <!-- FILTER: Payment type -->
+            <div class="w-11">
+              <%= select_tag :payment_type,options_for_select([["All Payment Types", ""]] + 
+              OrderPayment.payment_types.keys.map { |s| [s.humanize, s] },
+              params[:payment_type]),class: "form-select",onchange: "this.form.submit();" %>
+            </div>
+          <% end %>
+        </div>
+        <!-- Table -->
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs text-center font-weight-bold">Id</th>
+                <th class="text-uppercase text-dark text-xxs text-center font-weight-bold">Amount</th>
+                <th class="text-uppercase text-dark text-xxs text-center font-weight-bold ps-2">Waived Amount</th>
+                <th class="text-uppercase text-dark text-xxs text-center font-weight-bold ps-2">Payment Method</th>
+                <th class="text-uppercase text-dark text-xxs text-center font-weight-bold ps-2">Transaction ID </th>
+                <th class="text-uppercase text-dark text-xxs text-center font-weight-bold ">Payment Type</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @payment_details.any? %>
+                <% @payment_details.each_with_index do |payment, index| %>
+                  <tr>
+                    <td>
+                      <p class="text-center text-xs font-weight-bold mb-0 px-3 py-1">
+                        <%= (@payment_details.current_page - 1) * @payment_details.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="text-xs text-center text-secondary mb-0"><%= payment.amount.to_s     %></p>
+                    </td>
+                    <td>
+                      <p class="text-xs text-center font-weight-bold mb-0"><%= payment.waived_amount.to_s || 'NA' %></p>
+                    </td>
+                    <td>
+                      <p class="text-xs text-center font-weight-bold mb-0"><%= payment.payment_method || 'NA' %></p>
+                    </td>
+                    <td>
+                      <p class="text-xs text-center font-weight-bold mb-0"><%= payment.transaction_id || 'NA' %></p>
+                    </td>
+                    <td>
+                      <p class="text-xs text-center font-weight-bold mb-0"><%= payment.payment_type&.humanize || 'NA' %></p>
+                    </td>
+                    <td class="align-middle text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <%= link_to history_admin_order_payment_path(payment, order_id: @order.id),
+                              class: "btn btn-xs rounded btn-secondary",
+                              title: "view history" do %>
+                          <i class="fas fa-history"></i>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr>
+                  <td colspan="6" class="text-center py-4">
+                    <p class="text-sm text-secondary mb-0">No records found.</p>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center px-3 mt-3">
+          <%= paginate @payment_details %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

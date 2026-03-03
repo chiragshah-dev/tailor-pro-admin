@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_06_072529) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_19_113955) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -207,10 +207,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_06_072529) do
 
   create_table "job_roles", force: :cascade do |t|
     t.string "name", null: false
-    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_job_roles_on_user_id"
   end
 
   create_table "measurement_fields", force: :cascade do |t|
@@ -373,6 +371,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_06_072529) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "currency_type"
+    t.string "currency_flag"
     t.index ["user_id"], name: "index_settings_on_user_id"
   end
 
@@ -514,6 +513,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_06_072529) do
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
+  create_table "temporary_files", force: :cascade do |t|
+    t.string "image_url"
+    t.string "file_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -547,6 +553,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_06_072529) do
     t.string "mpin_digest"
     t.string "otp_code"
     t.string "jti"
+    t.boolean "active", default: true
     t.index ["job_role_id"], name: "index_workers_on_job_role_id"
     t.index ["store_id"], name: "index_workers_on_store_id"
   end
@@ -569,7 +576,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_06_072529) do
   add_foreign_key "folders", "folders", column: "parent_id"
   add_foreign_key "folders", "stores"
   add_foreign_key "folders", "users"
-  add_foreign_key "job_roles", "users"
   add_foreign_key "measurement_fields", "garment_types"
   add_foreign_key "media", "folders"
   add_foreign_key "members", "customers"

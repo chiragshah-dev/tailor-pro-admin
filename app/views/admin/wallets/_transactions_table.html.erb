@@ -1,0 +1,103 @@
+<turbo-frame id="wallet_transaction_frame">
+  <h6 class="text-uppercase text-dark mb-3">Wallet Transactions</h6>
+  <div class="table-responsive p-0">
+    <table class="table align-items-center mb-0">
+      <thead>
+        <tr>
+          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
+            ID
+          </th>
+          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
+            Type
+          </th>
+          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
+            Amount Processed
+          </th>
+          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
+            Opening Balance
+          </th>
+          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
+            CLOSING Balance
+          </th>
+          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
+            Order / Payment Reference
+          </th>
+          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
+            Date
+          </th>
+          <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @wallet_transactions.any? %>
+          <% @wallet_transactions.each_with_index do |txn, index| %>
+            <tr>
+              <!-- INDEX -->
+              <td class="text-center text-sm">
+                <%= @wallet_transactions.offset_value + index + 1 %>
+              </td>
+              <!-- TYPE -->
+              <td class="text-center text-xs font-weight-bolder">
+                <span class="badge  bg-success">
+                  <%= txn.transaction_type.titleize %>
+                </span>
+              </td>
+              <!-- AMOUNT -->
+              <td class="text-center text-sm">
+                <%= number_to_currency(txn.amount, unit: "") %>
+              </td>
+              <!-- CLOSING BALANCCE -->
+              <td class="text-center text-sm">
+                <%= number_to_currency(txn.opening_balance, unit: "") %>
+              </td>
+              <!-- CLOSING BALANCE -->
+              <td class="text-center text-sm">
+                <%= number_to_currency(txn.closing_balance, unit: "") %>
+              </td>
+              <!-- REFERENCE -->
+              <td class="text-center text-sm">
+                <% if txn.debit? && txn.reference_id.present? %>
+                  <%= link_to "Order ID: #{txn.reference_id}",
+          admin_order_path(txn.reference_id),
+          class: "text-info text-decoration-none",
+          data: { turbo_frame: "_top" } %>
+                <% else %>
+                  <%= txn.reference_id.presence || "Payment" %>
+                <% end %>
+              </td>
+              <!-- DATE -->
+              <td class="text-center text-sm">
+                <%= txn.created_at.strftime("%d %b %Y, %I:%M %p") %>
+              </td>
+              <td class="align-middle text-center">
+                <div class="d-flex justify-content-center gap-1">
+                  <%= link_to history_admin_wallet_transaction_path(txn),
+      class: "btn btn-xs rounded btn-secondary",
+      title: "View History", data: { turbo_frame: "_top" } do %>
+                    <i class="fas fa-history"></i>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="8" class="text-center py-4">
+              <p class="text-sm text-secondary mb-0">No records found.</p>
+            </td>
+          </tr>
+        <% end %>
+        <!-- PAGINATION -->
+        <tr>
+          <td colspan="6" class="text-center py-3">
+            <%= paginate @wallet_transactions,
+              param_name: :transaction_page,
+              link_options: {
+                data: { turbo_frame: "wallet_transaction_frame" }
+              } %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</turbo-frame>

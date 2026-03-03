@@ -1,0 +1,135 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">Store Owners</h6>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <div class="px-3 pb-3">
+          <!-- search partial -->
+          <%= render "admin/shared/search",
+        url: admin_users_path,
+        placeholder: "Search users..." %>
+        </div>
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("name", "Name") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("email", "Email") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Contact Number</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Active Store</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("deleted", "Deleted") %>
+                </th>
+                <%# <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th> %>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @users.present? %>
+                <% @users.each_with_index do |user, index| %>
+                  <tr>
+                    <!-- ID -->
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0 px-3 py-1"><%= (@users.current_page - 1) * @users.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <!-- Name -->
+                    <td>
+                      <div class="d-flex flex-column justify-content-center">
+                        <p class="mb-0 text-sm text-dark"><%= user.name.titleize %></p>
+                      </div>
+                    </td>
+                    <!-- Email -->
+                    <td>
+                      <p class="text-sm text-secondary mb-0 text-dark"><%= user.email || "-" %></p>
+                    </td>
+                    <!-- Contact Number -->
+                    <td>
+                      <p class="text-sm text-secondary mb-0 text-dark">
+                        <%= user.contact_number.presence || "-" %>
+                      </p>
+                    </td>
+                    <!-- Active Store -->
+                    <td>
+                      <% store = user.active_store || user.stores.first %>
+                      <% if store.present? %>
+                        <%= link_to admin_store_path(store), class: "text-info", title: "Show Store" do %>
+                          <%= store.name %>
+                        <% end %>
+                      <% else %>
+                        <span class="text-dark">-</span>
+                      <% end %>
+                    </td>
+                    <td>
+                      <p class="text-sm text-secondary mb-0 text-dark">
+                        <%= user.deleted.to_s.capitalize%>
+                      </p>
+                    </td>
+                    <!-- Actions -->
+                    <td class="align-middle text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <!-- Show -->
+                        <%= link_to admin_user_path(user,page: params[:page]), class: "btn btn-xs rounded btn-secondary", title: "Show" do %>
+                          <i class="fas fa-eye"></i>
+                        <% end %>
+                        <!-- Edit -->
+                        <%= link_to edit_admin_user_path(user,page: params[:page]), class: "btn btn-xs rounded btn-secondary", title: "Edit" do %>
+                          <i class="fas fa-edit"></i>
+                        <% end %>
+                        <!-- Delete -->
+                        <%= button_to admin_user_path(user, page: params[:page]),
+              method: :delete,
+              class: "btn btn-xs rounded btn-secondary",
+              data: { turbo_confirm: "Are you sure you want to delete #{user.name}?" } do %>
+                          <i class="fas fa-trash"></i>
+                        <% end %>
+                        <%= link_to history_admin_user_path(user),
+      class: "btn btn-xs rounded btn-secondary",
+      title: "View History" do %>
+                          <i class="fas fa-history"></i>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <%else%>
+                <tr>
+                  <td colspan="12" class="text-center">
+                    <p class="no-content-text">No records found.</p>
+                  </td>
+                </tr>
+              <%end%>
+            </tbody>
+          </table>
+        </div>
+        <div class="d-flex justify-content-center px-3 mt-3">
+          <%= paginate @users %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sortable-header {
+    cursor: pointer;
+  }
+
+  .sort-icon {
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  .sortable-header:hover .sort-icon {
+    opacity: 1;
+  }
+</style>

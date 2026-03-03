@@ -1,0 +1,146 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            <%= @currency_setting.persisted? ? "Edit Currency Setting" : "New Currency Setting" %>
+          </h6>
+        </div>
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-4 pb-4">
+        <%= form_with model: [:admin, @currency_setting], local: true do |f| %>
+          <%= hidden_field_tag :page, params[:page] %>
+          <div class="row g-4">
+            <!-- Currency -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Currency</label>
+              <div class="input-group input-group-outline">
+                <%= f.collection_select :currency_id,
+                        Currency.order(:name),
+                        :id,
+                        :name,
+                        { prompt: "Select Currency" },
+                        class: "form-control" %>
+              </div>
+              <div id="currency_err" class="text-danger mt-2 text-xs">
+                <%= @currency_setting.errors.full_messages_for(:currency_id).first %>
+              </div>
+            </div>
+            <!-- Amount Limit -->
+            <div class="col-md-3">
+              <label class="form-label font-weight-bold text-dark">Amount Limit</label>
+              <div class="input-group input-group-outline">
+                <%= f.number_field :amount_limit,
+                        step: 0.01,
+                        class: "form-control",
+                        placeholder: "Enter amount limit" %>
+              </div>
+              <div id="amount_err" class="text-danger mt-2 text-xs">
+                <%= @currency_setting.errors.full_messages_for(:amount_limit).first %>
+              </div>
+            </div>
+            <!-- Commission Rate -->
+            <div class="col-md-3">
+              <label class="form-label font-weight-bold text-dark">Commission Rate (%)</label>
+              <div class="input-group input-group-outline">
+                <%= f.number_field :commission_rate,
+          step: 0.01,
+          class: "form-control",
+          placeholder: "Enter commission rate" %>
+              </div>
+              <div id="commission_err" class="text-danger mt-2 text-xs">
+                <%= @currency_setting.errors.full_messages_for(:commission_rate).first %>
+              </div>
+            </div>
+            <!-- Message -->
+            <div class="col-md-12">
+              <label class="form-label font-weight-bold text-dark">Message (Modal Text)</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_area :message,
+          rows: 3,
+          class: "form-control",
+          placeholder: "Enter message to show in modal" %>
+              </div>
+              <div id="message_err" class="text-danger mt-2 text-xs">
+                <%= @currency_setting.errors.full_messages_for(:message).first %>
+              </div>
+            </div>
+          </div>
+          <!-- ACTIONS -->
+          <div class="d-flex justify-content-end mt-4">
+            <%= link_to "Back",
+                    admin_currency_settings_path(page: params[:page]),
+                    class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+            <%= f.submit(
+                    @currency_setting.persisted? ? "Update" : "Create",
+                    class: "btn btn-info text-white text-uppercase font-weight-bold"
+                  ) %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+  document.addEventListener("turbo:load", function () {
+    const form = document.querySelector("form");
+    if (!form) return;
+
+    const currency     = document.getElementById("currency_setting_currency_id");
+    const amount       = document.getElementById("currency_setting_amount_limit");
+    const commission   = document.getElementById("currency_setting_commission_rate");
+    const message      = document.getElementById("currency_setting_message");
+
+    const currencyErr   = document.getElementById("currency_err");
+    const amountErr     = document.getElementById("amount_err");
+    const commissionErr = document.getElementById("commission_err");
+    const messageErr    = document.getElementById("message_err");
+
+    form.addEventListener("submit", function (e) {
+      let valid = true;
+
+      // clear errors
+      [currencyErr, amountErr, commissionErr, messageErr].forEach(el => el.textContent = "");
+      [currency, amount, commission, message].forEach(el => el.classList.remove("is-invalid"));
+
+      if (!currency.value) {
+        currencyErr.textContent = "Currency can't be blank";
+        currency.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if (!amount.value || parseFloat(amount.value) <= 0) {
+        amountErr.textContent = "Amount must be greater than 0";
+        amount.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if (commission.value === "" || parseFloat(commission.value) < 0) {
+        commissionErr.textContent = "Commission rate must be 0 or greater";
+        commission.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if (!message.value || message.value.trim() === "") {
+        messageErr.textContent = "Message can't be blank";
+        message.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+
+    // clear error on input/change
+    [currency, amount, commission, message].forEach(input => {
+      input.addEventListener("input", () => {
+        input.classList.remove("is-invalid");
+        const err = input.closest(".col-md-6")?.querySelector(".text-danger");
+        if (err) err.textContent = "";
+      });
+    });
+  });
+</script>

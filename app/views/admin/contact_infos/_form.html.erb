@@ -1,0 +1,150 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            <%= @contact_info.new_record? ? "Add Contact Info" : "Edit Contact Info" %>
+          </h6>
+        </div>
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-4 pb-4">
+        <%= form_with model: [:admin, @contact_info], local: true do |f| %>
+          <%= hidden_field_tag :page, params[:page] %>
+          <div class="row g-4">
+            <!-- KEY -->
+            <!-- STATUS -->
+            <div class="form-group col-md-6">
+              <label class="form-label font-weight-bold text-dark">
+                Contact Number
+              </label>
+              <div class="input-group input-group-outline">
+                <%= f.number_field :contact_number, class: "form-control" %>
+              </div>
+              <div id="contact_err" class="text-danger mt-2 text-xs">
+                <%= @contact_info.errors.full_messages_for(:contact_number).first %>
+              </div>
+            </div>
+            <!-- TITLE -->
+            <div class="form-group col-md-6">
+              <label class="form-label font-weight-bold text-dark">
+                Email
+              </label>
+              <div class="input-group input-group-outline">
+                <%= f.email_field :email, class: "form-control" %>
+              </div>
+              <div id="email_err" class="text-danger mt-2 text-xs">
+                <%= @contact_info.errors.full_messages_for(:email).first %>
+              </div>
+            </div>
+            <!-- BODY -->
+            <div class="form-group col-md-6">
+              <label class="form-label font-weight-bold text-dark">
+                Website URL
+              </label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :website_url, class: "form-control" %>
+              </div>
+              <div id="website_url_err" class="text-danger mt-2 text-xs">
+                <%= @contact_info.errors.full_messages_for(:website_url).first %>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="form-label font-weight-bold text-dark">
+                Address
+              </label>
+              <div class="input-group input-group-outline">
+                <%= f.text_area :address, class: "form-control" %>
+              </div>
+              <div id="address_err" class="text-danger mt-2 text-xs">
+                <%= @contact_info.errors.full_messages_for(:address).first %>
+              </div>
+            </div>
+          </div>
+          <!-- ACTIONS -->
+          <div class="d-flex justify-content-end mt-4">
+            <%= link_to "Back",
+                  admin_contact_infos_path(page: params[:page]),
+                  class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+            <%= f.submit (@contact_info.new_record? ? "Create" : "Update"),
+                  class: "btn btn-info text-white text-uppercase font-weight-bold" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("turbo:load", () => {
+
+    const form = document.querySelector("form[action*='contact_infos']");
+    if (!form) return;
+
+    const contactNumberInput = document.getElementById("contact_info_contact_number");
+    const emailInput         = document.getElementById("contact_info_email");
+    const websiteInput       = document.getElementById("contact_info_website_url");
+    const addressInput       = document.getElementById("contact_info_address");
+
+    const emailErr    = document.getElementById("email_err");
+    const websiteErr  = document.getElementById("website_url_err");
+    const addressErr  = document.getElementById("address_err");
+    const contactErr  = document.getElementById("contact_err");
+
+    form.addEventListener("submit", function(e){
+      let valid = true;
+
+      emailErr.textContent = "";
+      websiteErr.textContent = "";
+      addressErr.textContent = "";
+      contactErr.textContent = "";
+
+      if(!contactNumberInput.value.trim()){
+        contactErr.textContent = "Contact number can't be blank";
+        contactNumberInput.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if(!emailInput.value.trim()){
+        emailErr.textContent = "Email can't be blank";
+        emailInput.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if(!websiteInput.value.trim()){
+        websiteErr.textContent = "Website URL can't be blank";
+        websiteInput.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if(!addressInput.value.trim()){
+        addressErr.textContent = "Address can't be blank";
+        addressInput.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if(!valid) e.preventDefault();
+    });
+
+    contactNumberInput?.addEventListener("input", () => {
+      contactNumberInput.classList.remove("is-invalid");
+    });
+
+    emailInput?.addEventListener("input", () => {
+      emailErr.textContent = "";
+      emailInput.classList.remove("is-invalid");
+    });
+
+    websiteInput?.addEventListener("input", () => {
+      websiteErr.textContent = "";
+      websiteInput.classList.remove("is-invalid");
+    });
+
+    addressInput?.addEventListener("input", () => {
+      addressErr.textContent = "";
+      addressInput.classList.remove("is-invalid");
+    });
+
+  });
+</script>

@@ -1,0 +1,5 @@
+class AddCurrencyRefToCurrencySettings < ActiveRecord::Migration[8.0]
+  def change
+    add_reference :currency_settings, :currency, null: false, foreign_key: true
+  end
+end
