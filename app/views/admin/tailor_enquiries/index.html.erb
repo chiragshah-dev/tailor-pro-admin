@@ -61,6 +61,9 @@
                     <!-- ACTIONS -->
                     <td class="align-middle text-center">
                       <div class="d-flex justify-content-center gap-1">
+                        <%= link_to admin_tailor_enquiry_path(enquiry), class: "btn btn-xs rounded btn-secondary", title: "Show" do %>
+                          <i class="fas fa-eye"></i>
+                        <% end %>
                         <%= button_to admin_tailor_enquiry_path(enquiry),
                           method: :delete,
                           class: "btn btn-xs rounded btn-secondary",
