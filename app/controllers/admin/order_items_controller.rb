@@ -5,9 +5,11 @@ class Admin::OrderItemsController < ApplicationController
   before_action :authenticate_admin_user!
 
   def show
+    measurements_page = params[:measurements_page]
+
     @order_measurements = @order_item
       .order_measurements
-      .includes(:measurement_field, :member)
+      .includes(:measurement_field, :member).order(created_at: :asc).page(measurements_page)
   end
 
   private
