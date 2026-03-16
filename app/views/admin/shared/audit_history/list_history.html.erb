@@ -72,7 +72,7 @@
                           <div class="mb-3">
                             <div class="card shadow-sm">
                               <div class="card-body small">
-                                <div class="row g-2">
+                                <div class="row g-2 text-dark">
                                   <div class="col-md-4">
                                     <strong>Module:</strong> <%= v.item_type %>
                                   </div>
@@ -98,9 +98,9 @@
                           <hr>
                           <div class="row row-cols-1 row-cols-md-2 g-3 small">
                             <% v.changeset.each do |attr, values| %>
-                              <div class="col">
+                              <div class="col ">
                                 <div class="border rounded p-2 h-100">
-                                  <strong class="text-muted"><%= attr.to_s.humanize %></strong>
+                                  <strong class="text-dark"><%= attr.to_s.humanize %></strong>
                                   <div>
                                     <span class="text-danger text-decoration-line-through">
                                       <%= values[0].presence || "nil" %>
