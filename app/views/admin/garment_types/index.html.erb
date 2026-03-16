@@ -47,7 +47,7 @@
                 <% @garment_types.each_with_index do |garment, index| %>
                   <tr>
                     <td>
-                      <p class="text-xs font-weight-bold mb-0 px-3">
+                      <p class="text-sm text-dark mb-0 px-3">
                         <%= (@garment_types.current_page - 1) * @garment_types.limit_value + index + 1 %>
                       </p>
                     </td>

@@ -53,7 +53,7 @@
                 <% @orders.each_with_index do |order, index| %>
                   <tr>
                     <td>
-                      <p class="text-xs font-weight-bold mb-0 px-3">
+                      <p class="text-sm text-dark mb-0 px-3">
                         <%= (@orders.current_page - 1) * @orders.limit_value + index + 1 %>
                       </p>
                     </td>

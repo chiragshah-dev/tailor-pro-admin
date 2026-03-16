@@ -41,7 +41,7 @@
                 <% @customers.each_with_index do |customer, index| %>
                   <tr>
                     <td>
-                      <p class="text-sm font-weight-bold mb-0 px-3 py-1">
+                      <p class="text-sm text-dark mb-0 px-3 py-1">
                         <%= (@customers.current_page - 1) * @customers.limit_value + index + 1 %>
                       </p>
                     </td>
