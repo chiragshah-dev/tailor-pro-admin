@@ -57,21 +57,21 @@
                             class: "avatar avatar-sm border-radius-lg",
                             alt: garment.garment_name %>
                       <% else %>
-                        <span class="text-secondary text-xs"> NA </span>
+                        <span class="text-dark text-xs"> NA </span>
                       <% end %>
                     </td>
                     <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                      <p class="text-sm text-dark mb-0">
                         <%= garment.garment_name || "-" %>
                       </p>
                     </td>
                     <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                      <p class="text-sm text-dark mb-0 ">
                         <%= garment.gender.titleize || "-" %>
                       </p>
                     </td>
                     <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                      <p class="text-sm text-dark mb-0 ">
                         <%= garment.garment_type.titleize || "-" %>
                       </p>
                     </td>

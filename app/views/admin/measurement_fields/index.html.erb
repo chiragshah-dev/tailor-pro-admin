@@ -49,19 +49,19 @@
                     </td>
                     <!-- LABEL -->
                     <td>
-                      <p class="text-sm text-secondary mb-0">
+                      <p class="text-sm text-dark mb-0">
                         <%= field.label %>
                       </p>
                     </td>
                     <!-- GARMENT TYPE -->
                     <td>
-                      <p class="text-sm text-secondary mb-0">
+                      <p class="text-sm text-dark mb-0">
                         <%= field.garment_type&.garment_name || "-" %>
                       </p>
                     </td>
                     <!-- ACTIVE -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 ">
+                      <p class="text-sm text-dark mb-0 ">
                         <span class="badge bg-<%= field.active? ? 'success' : 'secondary' %>">
                           <%= field.active? ? "Yes" : "No" %>
                         </span>
