@@ -1,44 +1,53 @@
 <turbo-frame id="members_unique_frame">
   <h6 class="text-uppercase text-dark mb-3"> Members</h6>
-  <div class="table-responsive p-0">
-    <table class="table align-items-center mb-0">
-      <thead>
-        <tr>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">ID</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Member Name</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Orders</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% if @members.any?%>
-          <% @members.each_with_index do |member, index| %>
+  <small class=" text-dark font-weight-bold text-xs mb-2">
+    Showing <%= @members.offset_value + 1 %> -
+    <%= @members.offset_value + @members.size %>
+    of <%= @members.total_count %> results
+  </small>
+  <div class="card my-2">
+    <div class="card-body px-0 pb-2">
+      <div class="table-responsive p-0">
+        <table class="table align-items-center mb-0">
+          <thead>
             <tr>
-              <td class="text-center text-sm">
-                <%= @members.offset_value + index + 1 %>
-              </td>
-              <td class="text-center text-sm font-weight-bolder">
-                <%= member&.name&.titleize %>
-              </td>
-              <td class="text-center text-sm">
-                <%= member.orders.size %>
-              </td>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">ID</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Member Name</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Orders</th>
             </tr>
-          <% end %>
-        <%else%>
-          <tr>
-            <td colspan="6" class="text-center py-4">
-              <p class="text-sm text-secondary mb-0">No records found.</p>
-            </td>
-          </tr>
-        <%end%>
-        <tr>
-          <td colspan="4" class="text-center py-3">
-            <%= paginate @members,
+          </thead>
+          <tbody>
+            <% if @members.any?%>
+              <% @members.each_with_index do |member, index| %>
+                <tr>
+                  <td class="text-center text-dark text-sm">
+                    <%= @members.offset_value + index + 1 %>
+                  </td>
+                  <td class="text-center text-dark text-sm ">
+                    <%= member&.name&.titleize %>
+                  </td>
+                  <td class="text-center  text-dark text-sm">
+                    <%= member.orders.size %>
+                  </td>
+                </tr>
+              <% end %>
+            <%else%>
+              <tr>
+                <td colspan="6" class="text-center py-4">
+                  <p class="text-sm text-dark mb-0">No records found.</p>
+                </td>
+              </tr>
+            <%end%>
+            <tr>
+              <td colspan="4" class="text-center py-3">
+                <%= paginate @members,
               param_name: :member_page,
               link_options: { data: { turbo_frame: "members_unique_frame" } } %>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </turbo-frame>

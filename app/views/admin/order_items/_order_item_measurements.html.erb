@@ -34,10 +34,10 @@
             <% if order_measurements.any? %>
               <% order_measurements.each_with_index do |m, index| %>
                 <tr>
-                  <td class="text-center text-sm text-dark">
+                  <td class="text-center text-dark text-sm text-dark">
                     <%= order_measurements.offset_value + index + 1 %>
                   </td>
-                  <td class="text-center text-sm">
+                  <td class="text-center text-dark text-sm">
                     <% if m.measurement_field.present? %>
                       <%= link_to admin_measurement_field_path(m.measurement_field),
                 class: "text-decoration-none text-info",
@@ -49,18 +49,18 @@
                       N/A
                     <% end %>
                   </td>
-                  <td class="text-center text-sm">
+                  <td class="text-center text-dark text-sm">
                     <% if m.store_measurement_field.present? %>
                       <%= m.store_measurement_field.name.titleize %>
                     <% else %>
                       N/A
                     <% end %>
                   </td>
-                  <td class="text-center text-sm">
+                  <td class="text-center text-dark text-sm">
                     <%= m.member&.name&.titleize || "N/A" %>
                   </td>
-                  <td class="text-center text-sm"><%= m.value %></td>
-                  <td class="text-center text-sm text-uppercase"><%= m.unit %></td>
+                  <td class="text-center text-dark text-sm"><%= m.value %></td>
+                  <td class="text-center text-dark text-sm text-uppercase"><%= m.unit %></td>
                   <td class="text-center">
                     <%= link_to history_admin_order_measurement_path(m),
               class: "btn btn-xs rounded btn-secondary",

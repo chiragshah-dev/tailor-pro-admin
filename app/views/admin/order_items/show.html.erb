@@ -25,29 +25,29 @@
           <div class="col-md-6">
             <p class="text-sm mb-2 text-dark">
               <strong>Item ID:</strong>
-              <span class="text-secondary ms-2"><%= @order_item.id %></span>
+              <span class="text-dark ms-2"><%= @order_item.id %></span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Item Number:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order_item.order_item_number %>
               </span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Work Type:</strong>
-              <span class="text-secondary ms-2 text-capitalize">
+              <span class="text-dark ms-2 text-capitalize">
                 <%= @order_item.work_type %>
               </span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Stitch For:</strong>
-              <span class="text-secondary ms-2 text-capitalize">
+              <span class="text-dark ms-2 text-capitalize">
                 <%= @order_item.stichfor %>
               </span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Garment Type:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order_item.garment_type&.garment_name || "-" %>
               </span>
             </p>
@@ -56,13 +56,13 @@
           <div class="col-md-6">
             <p class="text-sm mb-2 text-dark">
               <strong>Quantity:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order_item.quantity %>
               </span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Price:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 ₹ <%= @order_item.price %>
               </span>
             </p>
@@ -79,13 +79,13 @@
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Urgent:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order_item.is_urgent ? "Yes" : "No" %>
               </span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Measurement Dress Given:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order_item.measurement_dress_given ? "Yes" : "No" %>
               </span>
             </p>
@@ -98,13 +98,13 @@
           <div class="col-md-6">
             <p class="text-sm mb-2 text-dark">
               <strong>Assigned Worker:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order_item.worker&.name || "-" %>
               </span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Delivery Date:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order_item.delivery_date || "-" %>
               </span>
             </p>
@@ -112,13 +112,13 @@
           <div class="col-md-6">
             <p class="text-sm mb-2 text-dark">
               <strong>Trial Date:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order_item.trial_date || "-" %>
               </span>
             </p>
             <p class="text-sm mb-2 text-dark">
               <strong>Completion Date:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order_item.completion_date || "-" %>
               </span>
             </p>
@@ -131,7 +131,7 @@
           <div class="col-md-6">
             <p class="text-sm mb-2 text-dark">
               <strong>Special Instruction:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order_item.special_instruction.presence || "-" %>
               </span>
             </p>
@@ -139,7 +139,7 @@
           <div class="col-md-6">
             <p class="text-sm mb-2 text-dark">
               <strong>Video Link:</strong>
-              <span class="text-secondary ms-2">
+              <span class="text-dark ms-2">
                 <%= @order_item.video_link.presence || "-" %>
               </span>
             </p>
