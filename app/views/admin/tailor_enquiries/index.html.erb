@@ -33,7 +33,7 @@
                   <tr>
                     <!-- ID -->
                     <td>
-                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                      <p class="text-sm text-dark mb-0 px-3 py-1">
                         <%= (@tailor_enquiries.current_page - 1) *
                             @tailor_enquiries.limit_value + index + 1 %>
                       </p>
@@ -41,9 +41,9 @@
                     <!-- NAME -->
                     <td>
                       <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">
+                        <p class="mb-0 text-sm text-dark">
                           <%= enquiry.name || "-" %>
-                        </h6>
+                        </p>
                       </div>
                     </td>
                     <!-- EMAIL -->

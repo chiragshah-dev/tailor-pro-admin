@@ -20,27 +20,21 @@
             <thead>
               <tr>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("name", "Name") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("contact", "Contact") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("store", "Store") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("role", "Role") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("deleted", "Deleted") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
               </tr>
             </thead>
@@ -50,23 +44,23 @@
                   <tr>
                     <!-- Index -->
                     <td>
-                      <p class="text-xs font-weight-bold mb-0 px-3">
+                      <p class="text-sm text-dark mb-0 px-3 py-1">
                         <%= (@workers.current_page - 1) * @workers.limit_value + index + 1 %>
                       </p>
                     </td>
                     <!-- Name -->
                     <td>
-                      <span class="mb-0 text-sm"><%= worker.name %></span>
+                      <span class="mb-0 text-sm text-dark"><%= worker.name %></span>
                     </td>
                     <!-- Contact -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 ">
+                      <p class="text-sm text-dark mb-0 ">
                         <%= worker.contact_number.presence || "-" %>
                       </p>
                     </td>
                     <!-- Store -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 ">
+                      <p class="text-sm text-dark mb-0 ">
                         <% if worker.store.present? %>
                           <%= link_to worker.store.name,
                             admin_store_path(worker.store),
@@ -78,12 +72,12 @@
                     </td>
                     <!-- Role -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 text-capitalize ">
+                      <p class="text-sm text-dark mb-0 text-capitalize ">
                         <%= worker.job_role&.name || "-" %>
                       </p>
                     </td>
                     <td>
-                      <p class="text-sm text-secondary mb-0 text-dark">
+                      <p class="text-sm text-dark mb-0 text-dark">
                         <%= worker.deleted.to_s.capitalize%>
                       </p>
                     </td>
@@ -133,18 +127,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  .sortable-header {
-    cursor: pointer;
-  }
-
-  .sort-icon {
-    font-size: 14px;
-    opacity: 0.7;
-  }
-
-  .sortable-header:hover .sort-icon {
-    opacity: 1;
-  }
-</style>
