@@ -19,13 +19,13 @@ class Admin::UsersController < ApplicationController
   # end
 
   def index
-    @users = User.includes(:active_store)
+    @users = User.includes(:active_store, :stores)
 
     if params[:search].present?
       search = "%#{params[:search].strip}%"
       @users = @users.where(
         "name ILIKE :search OR email ILIKE :search OR contact_number ILIKE :search",
-        search: search
+        search: search,
       )
     end
 

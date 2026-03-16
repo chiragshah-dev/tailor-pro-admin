@@ -9,7 +9,7 @@ class Admin::OrderItemsController < ApplicationController
 
     @order_measurements = @order_item
       .order_measurements
-      .includes(:measurement_field, :member).order(created_at: :asc).page(measurements_page)
+      .includes(:measurement_field, :member, :store_measurement_field).order(created_at: :asc).page(measurements_page)
   end
 
   private
