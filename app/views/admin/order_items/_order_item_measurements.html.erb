@@ -1,85 +1,99 @@
 <turbo-frame id="order_measurements_frame">
   <h6 class="text-uppercase text-dark mb-3">Measurement Details</h6>
-  <div class="table-responsive p-0">
-    <table class="table align-items-center mb-0">
-      <thead>
-        <tr>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">ID</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
-            Measurement Field
-          </th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
-            Store Measurement Field (store custom)
-          </th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
-            Member
-          </th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
-            Value
-          </th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
-            Unit
-          </th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% if order_measurements.any? %>
-          <% order_measurements.each_with_index do |m, index| %>
+  <small class=" text-dark font-weight-bold text-xs mb-2">
+    Showing <%= order_measurements.offset_value + 1 %> -
+    <%= order_measurements.offset_value + order_measurements.size %>
+    of <%= order_measurements.total_count %> results
+  </small>
+  <div class="card my-2">
+    <div class="card-body px-0 pb-2">
+      <div class="table-responsive p-0">
+        <table class="table align-items-center mb-0">
+          <thead>
             <tr>
-              <td class="text-center text-sm"><%= index + 1 %></td>
-              <td class="text-center text-sm">
-                <% if m.measurement_field.present? %>
-                  <%= link_to admin_measurement_field_path(m.measurement_field),
-        class: "text-decoration-none text-info",
-        title: "View Measurement Field",
-        data: { turbo_frame: "_top" } do %>
-                    <%= m.measurement_field.name.titleize %>
-                  <% end %>
-                <% else %>
-                  N/A
-                <% end %>
-              </td>
-              <td class="text-center text-sm">
-                <% if m.store_measurement_field_id.present? %>
-                  <%= link_to '#',
-        class: "text-decoration-none text-info",
-        title: "View Measurement Field",
-        data: { turbo_frame: "_top" } do %>
-                    <%= m.store_measurement_field.name.titleize %>
-                  <% end %>
-                <% else %>
-                  N/A
-                <% end %>
-              </td>
-              <td class="text-center text-sm">
-                <% if m.member.present? %>
-                  <%= m.member.name.titleize %>
-                <% else %>
-                  N/A
-                <% end %>
-              </td>
-              <td class="text-center text-sm"><%= m.value %></td>
-              <td class="text-center text-sm text-uppercase"><%= m.unit %></td>
-              <!-- ACTION -->
-              <td class="text-center">
-                <%= link_to history_admin_order_measurement_path(m),  
-                        class: "btn btn-xs rounded btn-secondary",
-                        title: "History",
-                        data: { turbo_frame: "_top" } do %>
-                  <i class="fas fa-history"></i>
-                <% end %>
-              </td>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">ID</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
+                Measurement Field
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
+                Store Measurement Field (store custom)
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
+                Member
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
+                Value
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">
+                Unit
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Action</th>
             </tr>
-          <% end %>
-        <% else %>
-          <tr>
-            <td colspan="4" class="text-center">
-              <p class="no-content-text">No measurements found.</p>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+          </thead>
+          <tbody>
+            <% if order_measurements.any? %>
+              <% order_measurements.each_with_index do |m, index| %>
+                <tr>
+                  <td class="text-center text-sm text-dark">
+                    <%= order_measurements.offset_value + index + 1 %>
+                  </td>
+                  <td class="text-center text-sm">
+                    <% if m.measurement_field.present? %>
+                      <%= link_to admin_measurement_field_path(m.measurement_field),
+                class: "text-decoration-none text-info",
+                title: "View Measurement Field",
+                data: { turbo_frame: "_top" } do %>
+                        <%= m.measurement_field.name.titleize %>
+                      <% end %>
+                    <% else %>
+                      N/A
+                    <% end %>
+                  </td>
+                  <td class="text-center text-sm">
+                    <% if m.store_measurement_field.present? %>
+                      <%= m.store_measurement_field.name.titleize %>
+                    <% else %>
+                      N/A
+                    <% end %>
+                  </td>
+                  <td class="text-center text-sm">
+                    <%= m.member&.name&.titleize || "N/A" %>
+                  </td>
+                  <td class="text-center text-sm"><%= m.value %></td>
+                  <td class="text-center text-sm text-uppercase"><%= m.unit %></td>
+                  <td class="text-center">
+                    <%= link_to history_admin_order_measurement_path(m),
+              class: "btn btn-xs rounded btn-secondary",
+              title: "History",
+              data: { turbo_frame: "_top" } do %>
+                      <i class="fas fa-history"></i>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+              <!-- ✅ Pagination row -->
+              <tr>
+                <td colspan="11" class="text-center py-3">
+                  <%= paginate order_measurements,
+          param_name: :measurements_page,
+          link_options: {
+            data: {
+              turbo_frame: "order_measurements_frame",
+              turbo_prefetch: "false"
+            }
+          } %>
+                </td>
+              </tr>
+            <% else %>
+              <tr>
+                <td colspan="11" class="text-center">
+                  <p class="no-content-text">No measurements found.</p>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </turbo-frame>
