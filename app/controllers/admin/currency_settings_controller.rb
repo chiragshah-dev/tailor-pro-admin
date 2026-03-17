@@ -7,7 +7,7 @@ module Admin
     before_action :set_currency_setting, only: %i[edit update destroy history]
 
     def index
-      @currency_settings = CurrencySetting.includes(:currency).order(:created_at).page(params[:page]).per(10)
+      @currency_settings = CurrencySetting.includes(:currency).order(created_at: :desc).page(params[:page]).per(10)
     end
 
     def new
