@@ -40,13 +40,13 @@
                   <tr>
                     <!-- Index -->
                     <td>
-                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                      <p class="text-sm text-dark mb-0 px-3 py-1">
                         <%= (@job_roles.current_page - 1) * @job_roles.limit_value + index + 1 %>
                       </p>
                     </td>
                     <!-- Name -->
                     <td>
-                      <span class="mb-0 text-sm"><%= role.name %></span>
+                      <span class="mb-0 text-sm text-dark"><%= role.name %></span>
                     </td>
                     <!-- Actions -->
                     <td class="align-middle text-center">
@@ -89,18 +89,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  .sortable-header {
-    cursor: pointer;
-  }
-
-  .sort-icon {
-    font-size: 14px;
-    opacity: 0.7;
-  }
-
-  .sortable-header:hover .sort-icon {
-    opacity: 1;
-  }
-</style>

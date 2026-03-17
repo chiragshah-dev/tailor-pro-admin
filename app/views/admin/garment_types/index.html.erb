@@ -47,7 +47,7 @@
                 <% @garment_types.each_with_index do |garment, index| %>
                   <tr>
                     <td>
-                      <p class="text-xs font-weight-bold mb-0 px-3">
+                      <p class="text-sm text-dark mb-0 px-3">
                         <%= (@garment_types.current_page - 1) * @garment_types.limit_value + index + 1 %>
                       </p>
                     </td>
@@ -57,21 +57,21 @@
                             class: "avatar avatar-sm border-radius-lg",
                             alt: garment.garment_name %>
                       <% else %>
-                        <span class="text-secondary text-xs"> NA </span>
+                        <span class="text-dark text-xs"> NA </span>
                       <% end %>
                     </td>
                     <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                      <p class="text-sm text-dark mb-0">
                         <%= garment.garment_name || "-" %>
                       </p>
                     </td>
                     <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                      <p class="text-sm text-dark mb-0 ">
                         <%= garment.gender.titleize || "-" %>
                       </p>
                     </td>
                     <td>
-                      <p class="text-sm text-secondary mb-0 font-weight-bold">
+                      <p class="text-sm text-dark mb-0 ">
                         <%= garment.garment_type.titleize || "-" %>
                       </p>
                     </td>
@@ -123,17 +123,3 @@
     </div>
   </div>
 </div>
-<style>
-  .sortable-header {
-    cursor: pointer;
-  }
-
-  .sort-icon {
-    font-size: 14px;
-    opacity: 0.7;
-  }
-
-  .sortable-header:hover .sort-icon {
-    opacity: 1;
-  }
-</style>

@@ -10,7 +10,7 @@
       </div>
       <div class="card-body px-0 pb-2">
         <!-- Search -->
-        <div class="px-3 pb-3"> 
+        <div class="px-3 pb-3">
           <%= render "admin/shared/search",
                     url: admin_customers_path,
                     placeholder: "Search customers..." %>
@@ -24,15 +24,12 @@
                 <th class="text-uppercase text-dark text-xxs font-weight-bold">
                   <%= sortable_header("name", "Customer") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("store", "Store") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("members", "Members") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("orders", "Orders") %>
                 </th>
@@ -44,20 +41,20 @@
                 <% @customers.each_with_index do |customer, index| %>
                   <tr>
                     <td>
-                      <p class="text-xs font-weight-bold mb-0 px-3 py-1">
+                      <p class="text-sm text-dark mb-0 px-3 py-1">
                         <%= (@customers.current_page - 1) * @customers.limit_value + index + 1 %>
                       </p>
                     </td>
                     <td>
                       <div class="d-flex px-3 py-1">
                         <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm"><%= customer.name %></h6>
-                          <p class="text-xs text-secondary mb-0"><%= customer.contact_number %></p>
+                          <p class="mb-0 text-sm text-dark"><%= customer.name %></p>
+                          <p class="text-sm text-dark mb-0 mt-1"><%= customer.contact_number %></p>
                         </div>
                       </div>
                     </td>
                     <td>
-                      <p class="text-xs font-weight-bold mb-0"><%= customer.store&.name || '—' %></p>
+                      <p class="text-sm text-dark mb-0"><%= customer.store&.name || '—' %></p>
                     </td>
                     <td>
                       <%= link_to admin_customer_path(customer,page: params[:page], view: 'members'),
@@ -86,7 +83,7 @@
               <% else %>
                 <tr>
                   <td colspan="6" class="text-center py-4">
-                    <p class="text-sm text-secondary mb-0">No records found.</p>
+                    <p class="text-sm text-dark mb-0">No records found.</p>
                   </td>
                 </tr>
               <% end %>
@@ -101,18 +98,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  .sortable-header {
-    cursor: pointer;
-  }
-
-  .sort-icon {
-    font-size: 14px;
-    opacity: 0.7;
-  }
-
-  .sortable-header:hover .sort-icon {
-    opacity: 1;
-  }
-</style>
