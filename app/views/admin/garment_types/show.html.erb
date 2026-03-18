@@ -34,26 +34,26 @@
           <!-- LEFT -->
           <div class="col-md-6">
             <p class="text-sm mb-2">
-              <strong>Garment Name:</strong>
-              <span class="text-secondary fw-bold ms-2">
+              <span class="fw-bold text-dark">Garment Name: </span>
+              <span class="text-dark ms-2">
                 <%= @garment_type.garment_name.titleize %>
               </span>
             </p>
             <p class="text-sm mb-2">
-              <strong>Gender:</strong>
+              <span class="fw-bold text-dark">Gender:</span>
               <span class="badge bg-gradient-info text-white ms-2 text-capitalize">
                 <%= @garment_type.gender %>
               </span>
             </p>
             <p class="text-sm mb-2">
-              <strong>Garment Type:</strong>
+              <span class="fw-bold text-dark">Garment Type:</span>
               <span class="badge bg-gradient-info text-white ms-2 text-capitalize">
                 <%= @garment_type.garment_type %>
               </span>
             </p>
             <p class="text-sm mb-2">
-              <strong>Active:</strong>
-              <span class="text-secondary fw-bold ms-2">
+              <span class="fw-bold text-dark">Active:</span>
+              <span class="text-dark  ms-2">
                 <%= @garment_type.active? ? "Yes" : "No" %>
               </span>
             </p>
@@ -94,7 +94,7 @@
                   <% end %>
                 </div>
               <% else %>
-                <p class="text-sm text-secondary">
+                <p class="text-sm text-dark">
                   No measurements assigned.
                 </p>
               <% end %>
@@ -118,7 +118,7 @@
                 <% end %>
               </div>
             <% else %>
-              <p class="text-sm text-secondary mb-0">
+              <p class="text-sm text-dark mb-0">
                 No measurement fields assigned.
               </p>
             <% end %>

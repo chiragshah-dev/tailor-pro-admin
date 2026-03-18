@@ -30,27 +30,21 @@
             <thead>
               <tr>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold">ID</th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("order_number", "Order No") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("customer", "Customer") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("store", "Store") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("status", "Status") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("total", "Total") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Action</th>
               </tr>
             </thead>
@@ -59,12 +53,12 @@
                 <% @orders.each_with_index do |order, index| %>
                   <tr>
                     <td>
-                      <p class="text-xs font-weight-bold mb-0 px-3">
+                      <p class="text-sm text-dark mb-0 px-3">
                         <%= (@orders.current_page - 1) * @orders.limit_value + index + 1 %>
                       </p>
                     </td>
                     <td>
-                      <p class="mb-0 text-sm"><%= order.order_number %></p>
+                      <p class="mb-0 text-dark text-sm"><%= order.order_number %></p>
                     </td>
                     <td>
                       <p class="text-sm text-dark mb-0 ">
@@ -116,18 +110,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  .sortable-header {
-    cursor: pointer;
-  }
-
-  .sort-icon {
-    font-size: 14px;
-    opacity: 0.7;
-  }
-
-  .sortable-header:hover .sort-icon {
-    opacity: 1;
-  }
-</style>

@@ -1,84 +1,84 @@
-  <div class="row">
-    <div class="col-12">
-      <div class="card my-4">
-        <!-- HEADER -->
-        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-          <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
-            <h6 class="text-white text-capitalize ps-3 mb-0">
-              Measurement Field Details
-            </h6>
-            <div class="me-3 d-flex gap-2">
-              <%= link_to edit_admin_measurement_field_path(@measurement_field,page: params[:page]),
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            Measurement Field Details
+          </h6>
+          <div class="me-3 d-flex gap-2">
+            <%= link_to edit_admin_measurement_field_path(@measurement_field,page: params[:page]),
                     class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
-                Edit
-              <% end %>
-              <%= button_to admin_measurement_field_path(@measurement_field, page: params[:page]),
+              Edit
+            <% end %>
+            <%= button_to admin_measurement_field_path(@measurement_field, page: params[:page]),
               method: :delete,
               class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold",
               data: { turbo_confirm: "Are you sure you want to delete #{@measurement_field.name}?" } do %>
-                Delete             
-              <% end %>
-            </div>
-          </div>
-        </div>
-        <!-- BODY -->
-        <div class="card-body px-4 pt-4 pb-2">
-          <div class="row">
-            <!-- LEFT SIDE -->
-            <div class="col-md-6">
-              <p class="text-sm mb-2 text-dark">
-                <strong>Label:</strong>
-                <span class="text-secondary fw-bold ms-2">
-                  <%= @measurement_field.label %>
-                </span>
-              </p>
-              <p class="text-sm mb-2 text-dark">
-                <strong>System Name:</strong>
-                <span class="badge bg-light text-dark border ms-2">
-                  <%= @measurement_field.name %>
-                </span>
-              </p>
-              <p class="text-sm mb-2 text-dark">
-                <strong>Garment Type:</strong>
-                <% if @measurement_field.garment_type.present? %>
-                  <span class="badge bg-gradient-info text-white ms-2">
-                    <%= @measurement_field.garment_type.garment_name %>
-                  </span>
-                <% else %>
-                  <span class="text-secondary ms-2">—</span>
-                <% end %>
-              </p>
-              <p class="text-sm mb-2 text-dark">
-                <strong>Active:</strong>
-                <span class="fw-bold ms-2 text-secondary">
-                  <%= @measurement_field.active? ? "Yes" : "No" %>
-                </span>
-              </p>
-            </div>
-            <!-- RIGHT SIDE (IMAGE) -->
-            <div class="col-md-6">
-              <p class="text-sm fw-bold text-dark mb-2">
-                Measurement Image
-              </p>
-              <% if @measurement_field.measurement_image.attached? %>
-                <%= image_tag @measurement_field.measurement_image,
-                      class: "img-thumbnail",
-                      style: "max-width: 180px;" %>
-              <% else %>
-                <p class="text-sm text-secondary">
-                  No image uploaded.
-                </p>
-              <% end %>
-            </div>
-          </div>
-          <!-- BACK -->
-          <div class="mt-4 text-end">
-            <%= link_to admin_measurement_fields_path(page: params[:page]),
-                  class: "btn btn-secondary btn-sm text-uppercase font-weight-bold" do %>
-              Back
+              Delete             
             <% end %>
           </div>
         </div>
       </div>
+      <!-- BODY -->
+      <div class="card-body px-4 pt-4 pb-2">
+        <div class="row">
+          <!-- LEFT SIDE -->
+          <div class="col-md-6">
+            <p class="text-sm mb-2 text-dark">
+              <strong>Label:</strong>
+              <span class="text-dark  ms-2">
+                <%= @measurement_field.label %>
+              </span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>System Name:</strong>
+              <span class="badge bg-light text-dark border ms-2">
+                <%= @measurement_field.name %>
+              </span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Garment Type:</strong>
+              <% if @measurement_field.garment_type.present? %>
+                <span class="badge bg-gradient-info text-white ms-2">
+                  <%= @measurement_field.garment_type.garment_name %>
+                </span>
+              <% else %>
+                <span class="text-dark ms-2">—</span>
+              <% end %>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Active:</strong>
+              <span class=" ms-2 text-dark">
+                <%= @measurement_field.active? ? "Yes" : "No" %>
+              </span>
+            </p>
+          </div>
+          <!-- RIGHT SIDE (IMAGE) -->
+          <div class="col-md-6">
+            <p class="text-sm fw-bold text-dark mb-2">
+              Measurement Image
+            </p>
+            <% if @measurement_field.measurement_image.attached? %>
+              <%= image_tag @measurement_field.measurement_image,
+                      class: "img-thumbnail",
+                      style: "max-width: 180px;" %>
+            <% else %>
+              <p class="text-sm text-dark">
+                No image uploaded.
+              </p>
+            <% end %>
+          </div>
+        </div>
+        <!-- BACK -->
+        <div class="mt-4 text-end">
+          <%= link_to admin_measurement_fields_path(page: params[:page]),
+                  class: "btn btn-secondary btn-sm text-uppercase font-weight-bold" do %>
+            Back
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
+</div>

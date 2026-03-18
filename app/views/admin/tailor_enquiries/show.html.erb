@@ -33,6 +33,12 @@
                   <%= @tailor_enquiry.email.presence || "-" %>
                 </span>
               </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Contact Number:</span>
+                <span class="text-sm text-dark mb-0 ms-2">
+                  <%= @tailor_enquiry.contact_number.presence || "-" %>
+                </span>
+              </p>
             </div>
             <!-- RIGHT COLUMN -->
             <div class="col-md-6">
@@ -44,9 +50,18 @@
               </p>
             </div>
           </div>
+          <!-- MESSAGE FULL WIDTH -->
+          <div class="mt-3">
+            <p class="text-sm mb-1">
+              <span class="fw-bold text-dark">Message:</span>
+            </p>
+            <div class="border rounded p-2 bg-light">
+              <%= @tailor_enquiry.message.presence || "-" %>
+            </div>
+          </div>
           <!-- BACK BUTTON -->
           <%= link_to admin_tailor_enquiries_path(page: params[:page]),
-            class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end" do %>
+            class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end mt-3" do %>
             Back
           <% end %>
         </div>

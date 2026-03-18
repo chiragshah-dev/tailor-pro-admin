@@ -27,7 +27,7 @@
           <div class="col-md-6">
             <p class="text-sm mb-2">
               <span class="fw-bold text-dark">User:</span>
-              <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
+              <span class="text-sm text-dark mb-0 font-weight-bold ms-2">
                 <% if @contact_support.user.present? %>
                   <%= link_to @contact_support.user.name,
                     admin_user_path(@contact_support.user),
@@ -39,8 +39,14 @@
             </p>
             <p class="text-sm mb-2">
               <span class="fw-bold text-dark">Email:</span>
-              <span class="text-sm text-secondary mb-0  ms-2">
+              <span class="text-sm text-dark mb-0  ms-2">
                 <%= @contact_support.email %>
+              </span>
+            </p>
+            <p class="text-sm mb-2">
+              <span class="fw-bold text-dark">Subject:</span>
+              <span class="text-sm text-dark mb-0  ms-2">
+                <%= @contact_support.subject %>
               </span>
             </p>
           </div>
@@ -48,30 +54,24 @@
           <div class="col-md-6">
             <p class="text-sm mb-2">
               <span class="fw-bold text-dark">Status:</span>
-              <span class="text-sm text-secondary mb-0  ms-2">
+              <span class="text-sm text-dark mb-0  ms-2">
                 <%= @contact_support.status.capitalize %>
               </span>
             </p>
             <p class="text-sm mb-2">
               <span class="fw-bold text-dark">Created At:</span>
-              <span class="text-sm text-secondary mb-0  ms-2">
+              <span class="text-sm text-dark mb-0  ms-2">
                 <%= @contact_support.created_at.strftime("%d %b %Y %I:%M %p") %>
-              </span>
-            </p>
-          </div>
-          <div class="col-12">
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Subject:</span>
-              <span class="text-sm text-secondary mb-0  ms-2">
-                <%= @contact_support.subject %>
               </span>
             </p>
             <p class="text-sm mb-2">
               <span class="fw-bold text-dark">Message:</span>
+              <span class="text-sm text-dark mb-0  ms-2">
+                <%= simple_format(@contact_support.body) %>
+              </span>
             </p>
-            <p class="text-sm text-secondary mb-0 ">
-              <%= simple_format(@contact_support.body) %>
-            </p>
+          </div>
+          <div class="col-12">
           </div>
         </div>
         <% if @contact_support.attachments.attached? %>

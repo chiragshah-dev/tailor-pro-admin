@@ -1,4 +1,3 @@
-  
 <div class="row">
   <div class="col-12">
     <div class="card my-4">
@@ -27,33 +26,31 @@
           <div class="col-md-6">
             <p class="text-sm mb-2">
               <span class="fw-bold text-dark">Name:</span>
-              <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
+              <span class="text-sm text-dark mb-0  ms-2">
                 <%= @worker.name %>
               </span>
             </p>
             <p class="text-sm mb-2">
               <span class="fw-bold text-dark">Contact Number:</span>
-              <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
+              <span class="text-sm text-dark mb-0  ms-2">
                 <%= @worker.contact_number.presence || "-" %>
               </span>
             </p>
             <p class="text-sm mb-2">
               <span class="fw-bold text-dark">Job Role:</span>
-              <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
+              <span class="text-sm text-dark mb-0  ms-2">
                 <%= @worker.job_role&.name || "-" %>
               </span>
             </p>
-          </div>
-          <div class="col-md-6">
             <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Store:</span>
-              <span class="text-sm text-secondary mb-0 font-weight-bold ms-2">
+              <span class="fw-bold text-dark">Belongs to Store:</span>
+              <span class="text-sm text-dark mb-0  ms-2">
                 <% if @worker.store.present? %>
                   <%= link_to @worker.store.name,
                         admin_store_path(@worker.store),
-                        class: "text-decoration-none text-dark fw-bold" %>
+                        class: "text-decoration-none text-info" %>
                 <% else %>
-                  —
+                  -
                 <% end %>
               </span>
             </p>

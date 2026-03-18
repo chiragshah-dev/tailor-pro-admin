@@ -20,19 +20,15 @@
             <thead>
               <tr>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("store", "Store") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("balance", "Balance") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("currency", "Currency") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
               </tr>
             </thead>
@@ -42,13 +38,13 @@
                   <tr>
                     <!-- Index -->
                     <td>
-                      <p class="text-xs font-weight-bold mb-0 px-3">
+                      <p class="text-sm text-dark mb-0 px-3">
                         <%= (@wallets.current_page - 1) * @wallets.limit_value + index + 1 %>
                       </p>
                     </td>
                     <!-- Store -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 ">
+                      <p class="text-sm text-dark mb-0 ">
                         <% if wallet.store.present? %>
                           <%= link_to wallet.store.name,
                             admin_store_path(wallet.store),
@@ -59,13 +55,13 @@
                     </td>
                     <!-- Balance -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 ">
+                      <p class="text-sm text-dark mb-0 ">
                         <%= wallet.balance || "-" %>
                       </p>
                     </td>
                     <!-- currency -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 ">
+                      <p class="text-sm text-dark mb-0 ">
                         <%= wallet.currency || "-" %>
                       </p>
                     </td>
@@ -104,18 +100,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  .sortable-header {
-    cursor: pointer;
-  }
-
-  .sort-icon {
-    font-size: 14px;
-    opacity: 0.7;
-  }
-
-  .sortable-header:hover .sort-icon {
-    opacity: 1;
-  }
-</style>

@@ -1,67 +1,76 @@
 <turbo-frame id="orders_unique_frame">
   <h6 class="text-uppercase text-dark mb-3">Order History</h6>
-  <div class="table-responsive p-0">
-    <table class="table align-items-center mb-0">
-      <thead>
-        <tr>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">ID</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Order No</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Total Order Items</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Total Bill</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Balance Due</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Payment Status</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% if @orders.any?%>
-          <% @orders.each_with_index do |order, index| %>
+  <small class=" text-dark font-weight-bold text-xs mb-2">
+    Showing <%= @orders.offset_value + 1 %> -
+    <%= @orders.offset_value + @orders.size %>
+    of <%= @orders.total_count %> results
+  </small>
+  <div class="card my-2">
+    <div class="card-body px-0 pb-2">
+      <div class="table-responsive p-0">
+        <table class="table align-items-center mb-0">
+          <thead>
             <tr>
-              <td class="text-center text-sm">
-                <%= @orders.offset_value + index + 1 %>
-              </td>
-              <td class="text-center text-sm font-weight-bolder">
-                <%= order.order_number %>
-              </td>
-              <td class="text-center text-sm font-weight-bolder">
-                <%= order.order_items.size %>
-              </td>
-              <td class="text-center text-sm">
-                ₹ <%= order.total_bill_amount %>
-              </td>
-              <td class="text-center text-sm text-danger font-weight-bold">
-                ₹ <%= order.balance_due %>
-              </td>
-              <td class="text-center text-sm">
-                <span class="badge badge-sm
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">ID</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Order No</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Total Order Items</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Total Bill</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Balance Due</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Payment Status</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @orders.any?%>
+              <% @orders.each_with_index do |order, index| %>
+                <tr>
+                  <td class="text-center text-dark text-sm">
+                    <%= @orders.offset_value + index + 1 %>
+                  </td>
+                  <td class="text-center text-dark text-sm ">
+                    <%= order.order_number %>
+                  </td>
+                  <td class="text-center text-dark text-sm ">
+                    <%= order.order_items.size %>
+                  </td>
+                  <td class="text-center text-sm text-dark">
+                    ₹ <%= order.total_bill_amount %>
+                  </td>
+                  <td class="text-center text-dark text-sm text-danger ">
+                    ₹ <%= order.balance_due %>
+                  </td>
+                  <td class="text-center text-sm">
+                    <span class="badge badge-sm
             <%= order.payment_status == "paid" ? "bg-gradient-success" : "bg-gradient-warning" %>">
-                  <%= order.payment_status == "paid" ? "Paid" : "Unpaid" %>
-                </span>
-              </td>
-              <td class="text-center">
-                <%= link_to admin_order_path(order),
+                      <%= order.payment_status == "paid" ? "Paid" : "Unpaid" %>
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <%= link_to admin_order_path(order),
                         class: "btn btn-xs rounded btn-secondary",
                         data: { turbo_frame: "_top" } do %>
-                  <i class="fas fa-eye"></i>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
-        <%else%>
-          <tr>
-            <td colspan="12" class="text-center py-4">
-              <p class="text-sm text-secondary mb-0">No records found.</p>
-            </td>
-          </tr>
-        <%end%>
-      <tr>
-        <td colspan="6" class="text-center py-3">
-          <%= paginate @orders,
+                      <i class="fas fa-eye"></i>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            <%else%>
+              <tr>
+                <td colspan="12" class="text-center py-4">
+                  <p class="text-sm text-dark mb-0">No records found.</p>
+                </td>
+              </tr>
+            <%end%>
+            <tr>
+              <td colspan="6" class="text-center py-3">
+                <%= paginate @orders,
               param_name: :order_page,
               link_options: { data: { turbo_frame: "orders_unique_frame" } } %>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </turbo-frame>

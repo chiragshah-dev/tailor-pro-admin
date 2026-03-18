@@ -25,19 +25,15 @@
             <thead>
               <tr>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("label", "Label") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("garment_type", "Garment Type") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("active", "Active") %>
                 </th>
-
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
               </tr>
             </thead>
@@ -47,25 +43,25 @@
                   <tr>
                     <!-- SERIAL -->
                     <td>
-                      <p class="text-xs font-weight-bold mb-0 px-3">
+                      <p class="text-sm text-dark mb-0 px-3">
                         <%= (@measurement_fields.current_page - 1) * @measurement_fields.limit_value + index + 1 %>
                       </p>
                     </td>
                     <!-- LABEL -->
                     <td>
-                      <p class="text-sm text-secondary mb-0">
+                      <p class="text-sm text-dark mb-0">
                         <%= field.label %>
                       </p>
                     </td>
                     <!-- GARMENT TYPE -->
                     <td>
-                      <p class="text-sm text-secondary mb-0">
+                      <p class="text-sm text-dark mb-0">
                         <%= field.garment_type&.garment_name || "-" %>
                       </p>
                     </td>
                     <!-- ACTIVE -->
                     <td>
-                      <p class="text-sm text-secondary mb-0 ">
+                      <p class="text-sm text-dark mb-0 ">
                         <span class="badge bg-<%= field.active? ? 'success' : 'secondary' %>">
                           <%= field.active? ? "Yes" : "No" %>
                         </span>
@@ -115,18 +111,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  .sortable-header {
-    cursor: pointer;
-  }
-
-  .sort-icon {
-    font-size: 14px;
-    opacity: 0.7;
-  }
-
-  .sortable-header:hover .sort-icon {
-    opacity: 1;
-  }
-</style>

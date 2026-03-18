@@ -39,7 +39,7 @@
                   <tr>
                     <!-- ID -->
                     <td>
-                      <p class="text-xs font-weight-bold mb-0 px-3 py-1"><%= (@users.current_page - 1) * @users.limit_value + index + 1 %>
+                      <p class="text-sm text-dark mb-0 px-3 py-1"><%= (@users.current_page - 1) * @users.limit_value + index + 1 %>
                       </p>
                     </td>
                     <!-- Name -->
@@ -118,18 +118,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  .sortable-header {
-    cursor: pointer;
-  }
-
-  .sort-icon {
-    font-size: 14px;
-    opacity: 0.7;
-  }
-
-  .sortable-header:hover .sort-icon {
-    opacity: 1;
-  }
-</style>
