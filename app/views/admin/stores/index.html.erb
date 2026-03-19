@@ -46,9 +46,9 @@
                 <th class="text-uppercase text-dark text-xxs font-weight-bold">
                   <%= sortable_header("name", "Store Name") %>
                 </th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
-                  <%= sortable_header("code", "Code") %>
-                </th>
+                <%# <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2"> %>
+                <%#= sortable_header("code", "Code") %>
+                <%# </th> %>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("owner", "Owner") %>
                 </th>
@@ -152,7 +152,7 @@
                   <% end %>
                 <%else%>
                   <tr>
-                    <td colspan="12" class="text-center">
+                    <td colspan="13" class="text-center">
                       <p class="no-content-text">No record found.</p>
                     </td>
                   </tr>
