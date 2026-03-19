@@ -4,6 +4,7 @@ module Admin
     before_action :authenticate_admin_user!
 
     def index
+      today_range = Time.zone.now.beginning_of_day..Time.zone.now.end_of_day
       @stores = Store.count
       @customers_count = Customer.count
       @orders_count = Order.count
@@ -11,6 +12,10 @@ module Admin
       @job_roles_count = JobRole.count
       @garment_types = GarmentType.count
       @currencies = Currency.count
+      @today_stores_count = Store.where(created_at: today_range).count
+      @today_customers_count = Customer.where(created_at: today_range).count
+      @today_orders_count = Order.where(created_at: today_range).count
+      @today_users_count = User.where(created_at: today_range).count
 
       # ---- STORES WHERE BILLING LIMIT IS REACHED ----
       # Logic:
@@ -18,7 +23,6 @@ module Admin
       # country_code -> currency_countries
       # currency -> currency_settings (amount_limit)
       # compare SUM(orders.total_bill_amount) >= amount_limit
-
       @stores_limit_reached_count = Store
         .joins(:orders)
         .joins("INNER JOIN users ON users.id = stores.user_id")

@@ -62,38 +62,38 @@
                                   title: "Edit" do %>
                           <i class="fas fa-edit"></i>
                         <% end %>
-                        <%= button_to admin_currency_path(currency, page: params[:page]),
+                        <%#= button_to admin_currency_path(currency, page: params[:page]),
                                     method: :delete,
                                     onclick: "return confirm('Are you sure you want to delete this #{currency.name}?')",
                                     class: "btn btn-xs rounded btn-secondary",
                                     form: { class: "d-inline" },
                                     title: "Delete" do %>
-                          <i class="fas fa-trash"></i>
-                        <% end %>
-                        <%= link_to history_admin_currency_path(currency),
+                          <%# <i class="fas fa-trash"></i> %>
+                          <%# end %>
+                          <%= link_to history_admin_currency_path(currency),
       class: "btn btn-xs rounded btn-secondary",
       title: "View History" do %>
-                          <i class="fas fa-history"></i>
-                        <% end %>
-                      </div>
+                            <i class="fas fa-history"></i>
+                          <% end %>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% else %>
+                  <tr>
+                    <td colspan="12" class="text-center">
+                      <p class="no-content-text">No records found.</p>
                     </td>
                   </tr>
                 <% end %>
-              <% else %>
-                <tr>
-                  <td colspan="12" class="text-center">
-                    <p class="no-content-text">No records found.</p>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-        <!-- Pagination -->
-        <div class="d-flex justify-content-center px-3 mt-3">
-          <%= paginate @currencies %>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination -->
+          <div class="d-flex justify-content-center px-3 mt-3">
+            <%= paginate @currencies %>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>

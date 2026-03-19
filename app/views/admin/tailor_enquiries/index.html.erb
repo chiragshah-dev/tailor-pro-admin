@@ -64,31 +64,31 @@
                         <%= link_to admin_tailor_enquiry_path(enquiry), class: "btn btn-xs rounded btn-secondary", title: "Show" do %>
                           <i class="fas fa-eye"></i>
                         <% end %>
-                        <%= button_to admin_tailor_enquiry_path(enquiry),
+                        <%#= button_to admin_tailor_enquiry_path(enquiry),
                           method: :delete,
                           class: "btn btn-xs rounded btn-secondary",
                           data: { turbo_confirm: "Are you sure you want to delete #{enquiry&.name}'s enquiry?" } do %>
-                          <i class="fas fa-trash"></i>
-                        <% end %>
-                      </div>
+                          <%# <i class="fas fa-trash"></i> %>
+                          <%# end %>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% else %>
+                  <tr>
+                    <td colspan="12" class="text-center">
+                      <p class="no-content-text">No records found.</p>
                     </td>
                   </tr>
                 <% end %>
-              <% else %>
-                <tr>
-                  <td colspan="12" class="text-center">
-                    <p class="no-content-text">No records found.</p>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-        <!-- PAGINATION -->
-        <div class="d-flex justify-content-center px-3 mt-3">
-          <%= paginate @tailor_enquiries %>
+              </tbody>
+            </table>
+          </div>
+          <!-- PAGINATION -->
+          <div class="d-flex justify-content-center px-3 mt-3">
+            <%= paginate @tailor_enquiries %>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
