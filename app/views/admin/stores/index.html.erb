@@ -10,27 +10,45 @@
       <!-- BODY -->
       <div class="card-body px-0 pb-2">
         <!-- SEARCH -->
-        <div class="px-3 pb-3">
-          <%= render "admin/shared/search", url: admin_stores_path,placeholder: "Search stores..." do %>
-            <!-- FILTER: MAIN / BRANCH -->
-            <div class="w-11">
-              <%= select_tag :main_store,options_for_select([["All Stores", "false"], ["Main Store", "true"]],
-                  params[:main_store]),class: "form-select",onchange: "this.form.submit();"  %>
-            </div>
-          <% end %>
+        <div class="px-3 pb-3 d-flex justify-content-between align-items-center">
+          <!-- LEFT : TOTAL STORES -->
+          <div>
+            <h6 class="mb-0 text-sm text-dark fw-bold">
+              Total Stores :
+              <span class="text-info">
+                <%= @stores.total_count %>
+              </span>
+            </h6>
+          </div>
+          <!-- RIGHT : SEARCH -->
+          <div>
+            <%= render "admin/shared/search",
+          url: admin_stores_path,
+          placeholder: "Search stores..." do %>
+              <div class="w-11">
+                <%= select_tag :main_store,
+              options_for_select(
+                [["All Stores", "false"], ["Main Store", "true"]],
+                params[:main_store]
+              ),
+              class: "form-select",
+              onchange: "this.form.submit();" %>
+              </div>
+            <% end %>
+          </div>
         </div>
         <!-- TABLE -->
         <div class="table-responsive p-0">
           <table class="table align-items-center mb-0">
             <thead>
               <tr>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                <%# <th class="text-uppercase text-dark text-xxs font-weight-bold">Id</th> %>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">
                   <%= sortable_header("name", "Store Name") %>
                 </th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
-                  <%= sortable_header("code", "Code") %>
-                </th>
+                <%# <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2"> %>
+                <%# <%= sortable_header("code", "Code") %>
+                <%# </th> %>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("owner", "Owner") %>
                 </th>
@@ -40,9 +58,9 @@
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("wallet_balance", "Wallet Balance") %>
                 </th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
-                  <%= sortable_header("deleted", "Deleted") %>
-                </th>
+                <%# <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2"> %>
+                <%#= sortable_header("deleted", "Deleted") %>
+                <%# </th> %>
                 <%# <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Location</th> %>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
               </tr>
@@ -52,14 +70,14 @@
                 <% @stores.each_with_index do |store, index| %>
                   <tr>
                     <!-- SR NO -->
-                    <td>
-                      <p class="text-sm text-dark mb-0 px-3 py-1">
-                        <%= (@stores.current_page - 1) * @stores.limit_value + index + 1 %>
-                      </p>
-                    </td>
+                    <%# <td> %>
+                    <%# <p class="text-sm text-dark mb-0 px-3 py-1"> %>
+                    <%# <%= (@stores.current_page - 1) * @stores.limit_value + index + 1 %>
+                    <%# </p> %>
+                    <%# </td> %>
                     <!-- STORE NAME -->
                     <td>
-                      <p class="mb-0 text-sm text-dark">
+                      <p class="mb-0 text-sm text-dark mb-0 px-3 py-1">
                         <%= store.name %>
                         <% if store.is_main_store %>
                           <span class="badge bg-gradient-info ms-1">Main</span>
@@ -67,11 +85,11 @@
                       </p>
                     </td>
                     <!-- CODE -->
-                    <td>
-                      <p class="text-sm  mb-0 text-dark">
-                        <%= store.code.presence || "-" %>
-                      </p>
-                    </td>
+                    <%# <td> %>
+                    <%# <p class="text-sm  mb-0 text-dark"> %>
+                    <%#= store.code.presence || "-" %>
+                    <%# </p> %>
+                    <%# </td> %>
                     <!-- OWNER -->
                     <td>
                       <p class="text-sm  mb-0 text-dark">
@@ -99,11 +117,11 @@
                         <% end %>
                       </div>
                     </td>
-                    <td>
-                      <p class="text-sm  mb-0 text-dark">
-                        <%= store.deleted.to_s.capitalize%>
-                      </p>
-                    </td>
+                    <%# <td> %>
+                    <%# <p class="text-sm  mb-0 text-dark"> %>
+                    <%# <%= store.deleted.to_s.capitalize%>
+                    <%# </p> %>
+                    <%# </td> %>
                     <!-- ACTIONS -->
                     <td class="align-middle text-center">
                       <div class="d-flex justify-content-center gap-1">
@@ -117,36 +135,36 @@
                               title: "Edit" do %>
                           <i class="fas fa-edit"></i>
                         <% end %>
-                        <%= button_to admin_store_path(store, page: params[:page]),
+                        <%#= button_to admin_store_path(store, page: params[:page]),
               method: :delete,
               class: "btn btn-xs rounded btn-secondary",
               data: { turbo_confirm: "Are you sure you want to delete #{store.name}?" } do %>
-                          <i class="fas fa-trash"></i>
-                        <% end %>
-                        <%= link_to history_admin_store_path(store),
+                          <%# <i class="fas fa-trash"></i> %>
+                          <%# end %>
+                          <%= link_to history_admin_store_path(store),
       class: "btn btn-xs rounded btn-secondary",
       title: "View History" do %>
-                          <i class="fas fa-history"></i>
-                        <% end %>
-                      </div>
+                            <i class="fas fa-history"></i>
+                          <% end %>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                <%else%>
+                  <tr>
+                    <td colspan="12" class="text-center">
+                      <p class="no-content-text">No record found.</p>
                     </td>
                   </tr>
-                <% end %>
-              <%else%>
-                <tr>
-                  <td colspan="12" class="text-center">
-                    <p class="no-content-text">No record found.</p>
-                  </td>
-                </tr>
-              <%end%>
-            </tbody>
-          </table>
-        </div>
-        <!-- PAGINATION -->
-        <div class="d-flex justify-content-center px-3 mt-3">
-          <%= paginate @stores %>
+                <%end%>
+              </tbody>
+            </table>
+          </div>
+          <!-- PAGINATION -->
+          <div class="d-flex justify-content-center px-3 mt-3">
+            <%= paginate @stores %>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>

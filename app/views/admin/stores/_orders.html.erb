@@ -1,0 +1,88 @@
+<turbo-frame id="orders_frame">
+  <hr class="horizontal dark my-3" style="border-top: 1.5px solid #adb5bd; opacity: 1; margin: 12px 0;">
+  <h6 class="text-uppercase text-dark mb-3">Orders</h6>
+  <small class=" text-dark font-weight-bold text-xs mb-2">
+    Showing <%= @orders.offset_value + 1 %> -
+    <%= @orders.offset_value + @orders.size %>
+    of <%= @orders.total_count %> results
+  </small>
+  <div class="card my-2">
+    <div class="card-body px-0 pb-2">
+      <div class="table-responsive p-0">
+        <table class="table align-items-center mb-0">
+          <thead>
+            <tr>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold ">
+                Order No
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold ">
+                Customer
+              </th>
+              <th class=" text-center text-uppercase text-secondary text-xxs font-weight-bold ">
+                Store
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold ">
+                Status
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold ">
+                Total
+              </th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold ">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @orders.any?%>
+              <% @orders.each do |order| %>
+                <tr>
+                  <td class="text-center text-dark text-sm  ">
+                    <%= order.id %>
+                  </td>
+                  <td class=" text-center text-dark text-sm">
+                    <%= order.customer&.contact_number.presence || "-" %>
+                  </td>
+                  <td class="text-center  text-dark text-sm">
+                    <%= order.store&.name || "-" %>
+                  </td>
+                  <td class=" text-center text-sm">
+                    <%= order_status_badge(order.status) %>
+                  </td>
+                  <td class="text-center  text-dark text-sm">
+                    <%= order.total_bill_amount %>
+                  </td>
+                  <td class="align-middle text-center">
+                    <%= link_to admin_order_path(order),
+                        class: "btn btn-xs rounded btn-secondary",
+                        title: "Show",
+                        data: { turbo_frame: "_top" } do %>
+                      <i class="fas fa-eye"></i>
+                    <% end %>
+                  </tr>
+                <% end %>
+              <%else%>
+                <tr>
+                  <td colspan="12" class="text-center">
+                    <p class="no-content-text">No workers found for this store.</p>
+                  </td>
+                </tr>
+              <%end%>
+              <!-- Pagination -->
+              <tr>
+                <td colspan="5" class="text-center py-3">
+                  <%= paginate @orders,param_name: :orders_page,
+                  params: { order_search: params[:order_search] },
+                  link_options: {
+                    data: {
+                      turbo_frame: "orders_frame",
+                      turbo_prefetch: "false"
+                    }
+                  } %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </turbo-frame>

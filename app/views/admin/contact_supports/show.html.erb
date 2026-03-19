@@ -9,97 +9,97 @@
           </h6>
           <div class="me-3">
             <div class="me-3 d-flex gap-2">
-              <%= button_to admin_contact_support_path(@contact_support, page: params[:page]),
+              <%#= button_to admin_contact_support_path(@contact_support, page: params[:page]),
                 method: :delete,
                 class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold",
                 data: { turbo_confirm: "Are you sure?" } do %>
-                Delete
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- BODY -->
-      <div class="card-body px-4 pt-4 pb-2">
-        <!-- TOP DETAILS -->
-        <div class="row">
-          <!-- LEFT COLUMN -->
-          <div class="col-md-6">
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">User:</span>
-              <span class="text-sm text-dark mb-0 font-weight-bold ms-2">
-                <% if @contact_support.user.present? %>
-                  <%= link_to @contact_support.user.name,
-                    admin_user_path(@contact_support.user),
-                    class: "text-info" %>
-                <% else %>
-                  -
-                <% end %>
-              </span>
-            </p>
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Email:</span>
-              <span class="text-sm text-dark mb-0  ms-2">
-                <%= @contact_support.email %>
-              </span>
-            </p>
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Subject:</span>
-              <span class="text-sm text-dark mb-0  ms-2">
-                <%= @contact_support.subject %>
-              </span>
-            </p>
-          </div>
-          <!-- RIGHT COLUMN -->
-          <div class="col-md-6">
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Status:</span>
-              <span class="text-sm text-dark mb-0  ms-2">
-                <%= @contact_support.status.capitalize %>
-              </span>
-            </p>
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Created At:</span>
-              <span class="text-sm text-dark mb-0  ms-2">
-                <%= @contact_support.created_at.strftime("%d %b %Y %I:%M %p") %>
-              </span>
-            </p>
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Message:</span>
-              <span class="text-sm text-dark mb-0  ms-2">
-                <%= simple_format(@contact_support.body) %>
-              </span>
-            </p>
-          </div>
-          <div class="col-12">
-          </div>
-        </div>
-        <% if @contact_support.attachments.attached? %>
-          <hr class="horizontal dark mb-3">
-          <!-- ATTACHMENTS -->
-          <div class="row">
-            <div class="col-12">
-              <p class="text-sm mb-2">
-                <span class="fw-bold text-dark">Attachments:</span>
-              </p>
-              <div class="d-flex flex-wrap gap-2">
-                <% @contact_support.attachments.each do |file| %>
-                  <%= link_to url_for(file),
-                    target: "_blank",
-                    class: "btn btn-xs btn-outline-secondary" do %>
-                    <i class="fas fa-paperclip me-1"></i>
-                    <%= file.filename.to_s %>
-                  <% end %>
-                <% end %>
+                <%# Delete %>
+                <%# end %>
               </div>
             </div>
           </div>
-        <% end %>
-        <%= link_to admin_contact_supports_path(page: params[:page]),
+        </div>
+        <!-- BODY -->
+        <div class="card-body px-4 pt-4 pb-2">
+          <!-- TOP DETAILS -->
+          <div class="row">
+            <!-- LEFT COLUMN -->
+            <div class="col-md-6">
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">User:</span>
+                <span class="text-sm text-dark mb-0 font-weight-bold ms-2">
+                  <% if @contact_support.user.present? %>
+                    <%= link_to @contact_support.user.name,
+                    admin_user_path(@contact_support.user),
+                    class: "text-info" %>
+                  <% else %>
+                    -
+                  <% end %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Email:</span>
+                <span class="text-sm text-dark mb-0  ms-2">
+                  <%= @contact_support.email %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Subject:</span>
+                <span class="text-sm text-dark mb-0  ms-2">
+                  <%= @contact_support.subject %>
+                </span>
+              </p>
+            </div>
+            <!-- RIGHT COLUMN -->
+            <div class="col-md-6">
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Status:</span>
+                <span class="text-sm text-dark mb-0  ms-2">
+                  <%= @contact_support.status.capitalize %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Created At:</span>
+                <span class="text-sm text-dark mb-0  ms-2">
+                  <%= @contact_support.created_at.strftime("%d %b %Y %I:%M %p") %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Message:</span>
+                <span class="text-sm text-dark mb-0  ms-2">
+                  <%= simple_format(@contact_support.body) %>
+                </span>
+              </p>
+            </div>
+            <div class="col-12">
+            </div>
+          </div>
+          <% if @contact_support.attachments.attached? %>
+            <hr class="horizontal dark mb-3">
+            <!-- ATTACHMENTS -->
+            <div class="row">
+              <div class="col-12">
+                <p class="text-sm mb-2">
+                  <span class="fw-bold text-dark">Attachments:</span>
+                </p>
+                <div class="d-flex flex-wrap gap-2">
+                  <% @contact_support.attachments.each do |file| %>
+                    <%= link_to url_for(file),
+                    target: "_blank",
+                    class: "btn btn-xs btn-outline-secondary" do %>
+                      <i class="fas fa-paperclip me-1"></i>
+                      <%= file.filename.to_s %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <%= link_to admin_contact_supports_path(page: params[:page]),
           class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end mt-3" do %>
-          Back
-        <% end %>
+            Back
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
-</div>
