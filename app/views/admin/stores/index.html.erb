@@ -46,9 +46,9 @@
                 <th class="text-uppercase text-dark text-xxs font-weight-bold">
                   <%= sortable_header("name", "Store Name") %>
                 </th>
-                <%# <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2"> %>
-                <%# <%= sortable_header("code", "Code") %>
-                <%# </th> %>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("code", "Code") %>
+                </th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("owner", "Owner") %>
                 </th>
@@ -70,11 +70,11 @@
                 <% @stores.each_with_index do |store, index| %>
                   <tr>
                     <!-- SR NO -->
-                    <%# <td> %>
-                    <%# <p class="text-sm text-dark mb-0 px-3 py-1"> %>
-                    <%# <%= (@stores.current_page - 1) * @stores.limit_value + index + 1 %>
-                    <%# </p> %>
-                    <%# </td> %>
+                    <td>
+                      <p class="text-sm text-dark mb-0 px-3 py-1">
+                        <%= (@stores.current_page - 1) * @stores.limit_value + index + 1 %>
+                      </p>
+                    </td>
                     <!-- STORE NAME -->
                     <td>
                       <p class="mb-0 text-sm text-dark mb-0 px-3 py-1">
