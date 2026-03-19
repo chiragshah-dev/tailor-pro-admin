@@ -12,53 +12,53 @@
                   class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
               Edit
             <% end %>
-            <%= button_to admin_notification_template_path(@notification_template, page: params[:page]),
+            <%#= button_to admin_notification_template_path(@notification_template, page: params[:page]),
                   method: :delete,
                   class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold",
                   data: { turbo_confirm: "Are you sure you want to delete #{@notification_template.key}?" } do %>
-              Delete
+              <%# Delete %>
+              <%# end %>
+            </div>
+          </div>
+        </div>
+        <!-- BODY -->
+        <div class="card-body px-4 pt-4 pb-2">
+          <div class="row">
+            <div class="col-md-6">
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Key:</span>
+                <span class="text-sm text-dark mb-0  ms-2">
+                  <%= @notification_template.key %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Title:</span>
+                <span class="text-sm text-dark mb-0  ms-2">
+                  <%= @notification_template.title %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Active:</span>
+                <span class="text-sm text-dark mb-0 x ms-2">
+                  <%= @notification_template.active? ? "Yes" : "No" %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Body:</span>
+                <span class="text-sm text-dark mb-0  ms-2">
+                  <%= @notification_template.body %>
+                </span>
+              </p>
+            </div>
+          </div>
+          <!-- ACTIONS -->
+          <div class="d-flex justify-content-end">
+            <%= link_to admin_notification_templates_path(page: params[:page]),
+                class: "btn btn-secondary btn-sm text-uppercase font-weight-bold" do %>
+              Back
             <% end %>
           </div>
         </div>
       </div>
-      <!-- BODY -->
-      <div class="card-body px-4 pt-4 pb-2">
-        <div class="row">
-          <div class="col-md-6">
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Key:</span>
-              <span class="text-sm text-dark mb-0  ms-2">
-                <%= @notification_template.key %>
-              </span>
-            </p>
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Title:</span>
-              <span class="text-sm text-dark mb-0  ms-2">
-                <%= @notification_template.title %>
-              </span>
-            </p>
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Active:</span>
-              <span class="text-sm text-dark mb-0 x ms-2">
-                <%= @notification_template.active? ? "Yes" : "No" %>
-              </span>
-            </p>
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Body:</span>
-              <span class="text-sm text-dark mb-0  ms-2">
-                <%= @notification_template.body %>
-              </span>
-            </p>
-          </div>
-        </div>
-        <!-- ACTIONS -->
-        <div class="d-flex justify-content-end">
-          <%= link_to admin_notification_templates_path(page: params[:page]),
-                class: "btn btn-secondary btn-sm text-uppercase font-weight-bold" do %>
-            Back
-          <% end %>
-        </div>
-      </div>
     </div>
   </div>
-</div>

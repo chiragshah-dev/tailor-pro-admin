@@ -12,57 +12,57 @@
                   class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
               Edit
             <% end %>
-            <%= button_to admin_worker_path(@worker, page: params[:page]),
+            <%#= button_to admin_worker_path(@worker, page: params[:page]),
               method: :delete,
               class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold",
               data: { turbo_confirm: "Are you sure you want to delete #{@worker.name}?" } do %>
-              Delete
+              <%# Delete %>
+              <%# end %>
+            </div>
+          </div>
+        </div>
+        <div class="card-body px-4 pt-4 pb-2">
+          <div class="row">
+            <div class="col-md-6">
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Name:</span>
+                <span class="text-sm text-dark mb-0  ms-2">
+                  <%= @worker.name %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Contact Number:</span>
+                <span class="text-sm text-dark mb-0  ms-2">
+                  <%= @worker.contact_number.presence || "-" %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Job Role:</span>
+                <span class="text-sm text-dark mb-0  ms-2">
+                  <%= @worker.job_role&.name || "-" %>
+                </span>
+              </p>
+              <p class="text-sm mb-2">
+                <span class="fw-bold text-dark">Belongs to Store:</span>
+                <span class="text-sm text-dark mb-0  ms-2">
+                  <% if @worker.store.present? %>
+                    <%= link_to @worker.store.name,
+                        admin_store_path(@worker.store),
+                        class: "text-decoration-none text-info" %>
+                  <% else %>
+                    -
+                  <% end %>
+                </span>
+              </p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <%= link_to admin_workers_path(page:params[:page]),
+                class: "btn btn-secondary btn-sm text-uppercase font-weight-bold" do %>
+              Back
             <% end %>
           </div>
         </div>
       </div>
-      <div class="card-body px-4 pt-4 pb-2">
-        <div class="row">
-          <div class="col-md-6">
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Name:</span>
-              <span class="text-sm text-dark mb-0  ms-2">
-                <%= @worker.name %>
-              </span>
-            </p>
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Contact Number:</span>
-              <span class="text-sm text-dark mb-0  ms-2">
-                <%= @worker.contact_number.presence || "-" %>
-              </span>
-            </p>
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Job Role:</span>
-              <span class="text-sm text-dark mb-0  ms-2">
-                <%= @worker.job_role&.name || "-" %>
-              </span>
-            </p>
-            <p class="text-sm mb-2">
-              <span class="fw-bold text-dark">Belongs to Store:</span>
-              <span class="text-sm text-dark mb-0  ms-2">
-                <% if @worker.store.present? %>
-                  <%= link_to @worker.store.name,
-                        admin_store_path(@worker.store),
-                        class: "text-decoration-none text-info" %>
-                <% else %>
-                  -
-                <% end %>
-              </span>
-            </p>
-          </div>
-        </div>
-        <div class="d-flex justify-content-end">
-          <%= link_to admin_workers_path(page:params[:page]),
-                class: "btn btn-secondary btn-sm text-uppercase font-weight-bold" do %>
-            Back
-          <% end %>
-        </div>
-      </div>
     </div>
   </div>
-</div>
