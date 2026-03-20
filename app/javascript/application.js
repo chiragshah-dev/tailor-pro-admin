@@ -1,5 +1,6 @@
-import * as Turbo from "https://cdn.jsdelivr.net/npm/@hotwired/turbo/+esm";
-Turbo.start()
+import "@hotwired/turbo-rails"
+import "controllers"
+
 
 
 // Core

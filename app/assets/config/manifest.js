@@ -16,3 +16,4 @@
 //= link controllers/application.js
 //= link controllers/index.js
 //= link controllers/hello_controller.js
+//= link controllers/admin_user_controller.js

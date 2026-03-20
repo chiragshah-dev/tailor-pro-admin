@@ -23,8 +23,16 @@
       <li class="nav-item">
         <%= link_to admin_roles_path,
           class: "nav-link #{controller_name == 'roles' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
-          <i class="material-symbols-rounded opacity-5">groups</i>
+          <i class="material-symbols-rounded opacity-5">verified_user</i>
           <span class="nav-link-text ms-1">Admin Roles</span>
+        <% end %>
+      </li>
+      <!-- System admins users -->
+      <li class="nav-item">
+        <%= link_to admin_accounts_path,
+          class: "nav-link #{controller_name == 'admin_users' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
+          <i class="material-symbols-rounded opacity-5">groups</i>
+          <span class="nav-link-text ms-1">Admin Users</span>
         <% end %>
       </li>
       <!-- Store Owners -->

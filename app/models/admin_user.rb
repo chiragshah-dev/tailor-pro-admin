@@ -7,6 +7,8 @@ class AdminUser < ApplicationRecord
 
   belongs_to :role
 
+  validates :email, presence: true, uniqueness: { case_sensitive: false }
+
   delegate :super_admin?, to: :role
   delegate :display_name, to: :role, prefix: true  # gives role_display_name
 
