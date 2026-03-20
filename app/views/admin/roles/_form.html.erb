@@ -1,0 +1,114 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- Header -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            <%= @role.persisted? ? "Edit Role" : "New Role" %>
+          </h6>
+        </div>
+      </div>
+      <!-- Body -->
+      <div class="card-body px-4 pb-4">
+        <%= form_with model: @role,
+              url: @role.persisted? ? admin_role_path(@role, page: params[:page]) : admin_roles_path,
+              local: true,
+              html: { id: "role-form" } do |f| %>
+          <div class="row g-4">
+            <!-- Display Name -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Display Name</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :display_name,
+                      class: "form-control",
+                      placeholder: "e.g. Content Manager",
+                      id: "role_display_name" %>
+              </div>
+              <div id="display_name_err" class="text-danger mt-2 text-xs">
+                <%= @role.errors.full_messages_for(:display_name).first %>
+              </div>
+            </div>
+            <!-- Name (auto-generated, read-only on edit) -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">
+                Name <span class="text-secondary text-xs">(auto-generated)</span>
+              </label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :name,
+                      class: "form-control",
+                      placeholder: "e.g. content_manager",
+                      id: "role_name",
+                      readonly: @role.persisted? %>
+              </div>
+              <div id="name_err" class="text-danger mt-2 text-xs">
+                <%= @role.errors.full_messages_for(:name).first %>
+              </div>
+            </div>
+            <!-- Super Admin -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark d-block">Super Admin</label>
+              <div class="form-check form-switch mt-2">
+                <%= f.check_box :is_super_admin,
+                      class: "form-check-input",
+                      id: "role_is_super_admin"
+                       %>
+                <label class="form-check-label text-dark text-sm" for="role_is_super_admin">
+                  Grant full access (bypasses all permission checks)
+                </label>
+              </div>
+              <div class="text-danger mt-2 text-xs">
+                <%= @role.errors.full_messages_for(:is_super_admin).first %>
+              </div>
+            </div>
+          </div>
+          <!-- Actions -->
+          <div class="d-flex justify-content-end mt-4">
+            <%= link_to "Back",
+                  admin_roles_path(page: params[:page]),
+                  class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+            <%= f.submit @role.persisted? ? "Update" : "Save",
+                  class: "btn btn-info text-white text-uppercase font-weight-bold" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("turbo:render", () => {
+    const form = document.getElementById("role-form");
+    if (!form) return;
+
+    const displayNameField = document.getElementById("role_display_name");
+    const nameField        = document.getElementById("role_name");
+    const isNewRecord      = <%= @role.persisted? ? "false" : "true" %>;
+
+    if (isNewRecord) {
+      displayNameField.oninput = () => {
+        nameField.value = displayNameField.value.trim().toLowerCase()
+          .replace(/\s+/g, "_")
+          .replace(/[^a-z0-9_]/g, "");
+      };
+    }
+
+    form.onsubmit = (event) => {
+      const displayName = displayNameField.value.trim();
+      const name        = nameField.value.trim();
+      const isValidName = /^[a-z][a-z0-9_]*$/.test(name);
+
+      // errors
+      document.getElementById("display_name_err").textContent =
+        displayName ? "" : "Display name is required";
+
+      document.getElementById("name_err").textContent =
+        !name ? "Name is required" : !isValidName ? "Invalid format" : "";
+
+      // UI state
+      displayNameField.classList.toggle("is-invalid", !displayName);
+      nameField.classList.toggle("is-invalid", !name || !isValidName);
+
+      if (!displayName || !name || !isValidName) event.preventDefault();
+    };
+  });
+</script>

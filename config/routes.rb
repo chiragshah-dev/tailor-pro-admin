@@ -27,6 +27,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :roles, concerns: :historyable
+
     resources :contact_infos, concerns: :historyable
 
     resources :users, concerns: :historyable
