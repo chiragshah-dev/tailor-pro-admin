@@ -7,7 +7,6 @@ class Customer < ApplicationRecord
   enum :gender, { male: 0, female: 1 }
 
   # associations
-  belongs_to :store
   has_one_attached :face_image
   has_many_attached :body_images
   has_many :customer_measurements, dependent: :destroy
@@ -15,14 +14,16 @@ class Customer < ApplicationRecord
   has_many :orders, dependent: :destroy
   has_many :customer_dress_measurements, dependent: :destroy
   has_many :members, dependent: :destroy
+  has_many :store_customers
+  has_many :stores, through: :store_customers
 
   # validations
   # validates :name, :contact_number, :gender, presence: true
   validates :contact_number, numericality: { only_integer: true }, length: { is: 10 }
   validates :email, format: {
-            with: URI::MailTo::EMAIL_REGEXP,
-            message: "must be a valid email address (e.g., example@example.com)",
-          }, allow_blank: true
+                      with: URI::MailTo::EMAIL_REGEXP,
+                      message: "must be a valid email address (e.g., example@example.com)",
+                    }, allow_blank: true
 
   validate :dob_validation, :storewise_unique_customers
 
