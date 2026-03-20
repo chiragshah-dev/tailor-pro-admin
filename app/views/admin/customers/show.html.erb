@@ -31,8 +31,18 @@
                   <span class="text-dark ms-2"><%= @customer&.name&.titleize || "-" %></span></p>
                 <p class="text-sm mb-2"><span class="fw-bold text-dark">Contact:</span>
                   <span class="text-dark  ms-2"><%= @customer.contact_number %></span></p>
-                <p class="text-sm mb-2"><span class="fw-bold text-dark">Belongs to Store:</span>
-                  <span class="text-dark  ms-2"><%= @customer.store&.name %></span></p>
+                <p class="text-sm mb-2">
+                  <span class="fw-bold text-dark">Belongs to Store:</span>
+                </p>
+                <div class="row">
+                  <% @customer.stores.each do |store| %>
+                    <div class="col-md-3 mb-2">
+                      <span class="badge bg-light text-dark border w-100 text-start py-2">
+                        <%= store.name %>
+                      </span>
+                    </div>
+                  <% end %>
+                </div>
               </div>
             </div>
             <!-- member and order dropdwons starts -->
