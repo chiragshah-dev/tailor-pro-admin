@@ -31,7 +31,7 @@ class Admin::StoresController < ApplicationController
       q = "%#{params[:search].strip}%"
       @stores = @stores.where(
         "stores.name ILIKE :q OR stores.code ILIKE :q OR stores.contact_number ILIKE :q",
-        q: q
+        q: q,
       )
     end
 
@@ -40,12 +40,12 @@ class Admin::StoresController < ApplicationController
     end
 
     sortable_columns = {
-      "name"           => "stores.name",
-      "code"           => "stores.code",
-      "owner"          => "users.name",
-      "contact"        => "stores.contact_number",
+      "name" => "stores.name",
+      "code" => "stores.code",
+      "owner" => "users.name",
+      "contact" => "stores.contact_number",
       "wallet_balance" => "wallets.balance",
-      "deleted"        => "stores.deleted"
+      "deleted" => "stores.deleted",
     }
 
     sort_column =
@@ -55,10 +55,10 @@ class Admin::StoresController < ApplicationController
       params[:direction] == "asc" ? "asc" : "desc"
 
     @stores = @stores
-                .references(:user, :wallet)
-                .order("#{sort_column} #{sort_direction}")
-                .page(params[:page])
-                .per(10)
+      .references(:user, :wallet)
+      .order("#{sort_column} #{sort_direction}")
+      .page(params[:page])
+      .per(10)
   end
 
   def new
@@ -81,6 +81,9 @@ class Admin::StoresController < ApplicationController
     workers = @store.workers.includes(:job_role).order(created_at: :desc)
 
     @workers = workers.page(page).per(5)
+
+    orders = @store.orders.includes(:customer).order(created_at: :desc)
+    @orders = orders.page(params[:orders_page]).per(5)
   end
 
   def edit
