@@ -1,0 +1,127 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            <%= @admin_user.persisted? ? "Edit Admin User" : "New Admin User" %>
+          </h6>
+        </div>
+      </div>
+      <div class="card-body px-4 pb-4">
+        <%= form_with model: @admin_user,
+              url: @admin_user.persisted? ? admin_account_path(@admin_user, page: params[:page]) : admin_accounts_path,
+              local: true,
+              html: {
+                data: {
+                  controller: "admin-user",
+                  is_edit: @admin_user.persisted?,
+                  action: "submit->admin-user#submit"
+                }
+              } do |f| %>
+          <div class="row g-4">
+            <!-- Email -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Email</label>
+              <div class="input-group input-group-outline">
+                <%= f.email_field :email,
+                      class: "form-control",
+                      placeholder: "admin@example.com",
+                      id: "admin_user_email",
+                      data: {
+                        admin_user_target: "email",
+                        action: "input->admin-user#clearError"
+                      } %>
+              </div>
+              <div class="text-danger mt-2 text-xs">
+                <%= @admin_user.errors.full_messages_for(:email).first %>
+              </div>
+            </div>
+            <!-- Role -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Role</label>
+              <div class="input-group input-group-outline">
+                <%= f.select :role_id,
+                      options_from_collection_for_select(
+                        Role.order(:display_name),
+                        :id,
+                        :display_name,
+                        @admin_user.role_id
+                      ),
+                      {},
+                      class: "form-control",
+                      id: "admin_user_role_id" %>
+              </div>
+              <div class="text-danger mt-2 text-xs">
+                <%= @admin_user.errors.full_messages_for(:role_id).first %>
+              </div>
+            </div>
+            <!-- Password -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">
+                Password
+                <% if @admin_user.persisted? %>
+                  <span class="text-secondary text-xs">(leave blank to keep current)</span>
+                <% end %>
+              </label>
+              <div class="input-group input-group-outline position-relative">
+                <%= f.password_field :password,
+                      class: "form-control pe-5",
+                      placeholder: "••••••••",
+                      id: "admin_user_password",
+                      autocomplete: "new-password",
+                      data: {
+                        admin_user_target: "password",
+                        action: "input->admin-user#clearError"
+                      } %>
+                <button type="button"
+                        class="btn btn-link p-0 position-absolute"
+                        data-admin-user-target="passwordIcon"
+                        data-action="click->admin-user#togglePassword"
+                  style="right: 12px; top: 50%; transform: translateY(-50%); z-index: 10; cursor: pointer; border: none; background: none; color: #67748e; font-size: 1rem;">
+                  <i class="fa fa-eye"></i>
+                </button>
+              </div>
+              <div class="text-danger mt-2 text-xs">
+                <%= @admin_user.errors.full_messages_for(:password).first %>
+              </div>
+            </div>
+            <!-- Confirm Password -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Confirm Password</label>
+              <div class="input-group input-group-outline position-relative">
+                <%= f.password_field :password_confirmation,
+                      class: "form-control pe-5",
+                      placeholder: "••••••••",
+                      id: "admin_user_password_confirmation",
+                      autocomplete: "new-password",
+                      data: {
+                        admin_user_target: "passwordConfirmation",
+                        action: "input->admin-user#clearError"
+                      } %>
+                <button type="button"
+                        class="btn btn-link p-0 position-absolute"
+                        data-admin-user-target="passwordConfirmationIcon"
+                        data-action="click->admin-user#togglePasswordConfirmation"
+                  style="right: 12px; top: 50%; transform: translateY(-50%); z-index: 10; cursor: pointer; border: none; background: none; color: #67748e; font-size: 1rem;">
+                  <i class="fa fa-eye"></i>
+                </button>
+              </div>
+              <div class="text-danger mt-2 text-xs">
+                <%= @admin_user.errors.full_messages_for(:password_confirmation).first %>
+              </div>
+            </div>
+          </div>
+          <!-- Actions -->
+          <div class="d-flex justify-content-end mt-4">
+            <%= link_to "Back",
+                  admin_accounts_path(page: params[:page]),
+                  class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+            <%= f.submit @admin_user.persisted? ? "Update" : "Save",
+                  class: "btn btn-info text-white text-uppercase font-weight-bold" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

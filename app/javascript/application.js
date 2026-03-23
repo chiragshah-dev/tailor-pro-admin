@@ -1,19 +1,18 @@
-import * as Turbo from "https://cdn.jsdelivr.net/npm/@hotwired/turbo/+esm";
-Turbo.start()
+import "@hotwired/turbo-rails"
+import "@hotwired/stimulus"
+import "controllers"
+
 
 
 // Core
 import "core/bootstrap.bundle.min"
 import "core/popper.min"
 
+// 
 import "plugins/material-dashboard"
-// import "plugins/bootstrap-notify"
-// import "plugins/Chart.extension"
-// import "plugins/chartjs.min"
-// import "plugins/countup.min"
 import "plugins/perfect-scrollbar.min"
-// import "plugins/world"
 
+// Custom
 import "custom/central"
 import "custom/login"
 

@@ -45,10 +45,13 @@ gem "wicked_pdf"
 gem "wkhtmltopdf-binary"
 gem "activeadmin", "~> 3.3"
 gem "arctic_admin", "~> 4.3.3"
-gem "sassc-rails" # ensure SCSS support with Rails 8 + Propshaft
-gem "sprockets-rails"
+# gem "sassc-rails" # ensure SCSS support with Rails 8 + Propshaft
+# gem "sprockets-rails"
 # Needed for Propshaft or Sprockets (Rails 8)
-# gem 'propshaft' # default for Rails 8
+gem "propshaft" # default for Rails 8
+gem "turbo-rails"
+gem "stimulus-rails"
+
 # Authorization
 gem "pundit"
 # Pagination

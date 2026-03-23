@@ -1,15 +1,22 @@
-if Rails.env.development?
-  AdminUser.find_or_create_by!(email: 'admin@example.com') do |admin|
-    admin.password = 'password'
-    admin.password_confirmation = 'password'
-  end
-else
-  AdminUser.find_or_create_by!(email: 'adminpro@example.com') do |admin|
-    admin.password = 'password'
-    admin.password_confirmation = 'password'
-  end
+# Create default role super admin and assign to first admin user
+super_admin_role = Role.find_or_create_by!(name: "super_admin") do |r|
+  r.display_name = "Super Admin"
+  r.is_super_admin = true
 end
 
+if Rails.env.development?
+  AdminUser.find_or_create_by!(email: "admin@example.com") do |admin|
+    admin.password = "password"
+    admin.password_confirmation = "password"
+    admin.role_id = super_admin_role.id
+  end
+else
+  AdminUser.find_or_create_by!(email: "adminpro@example.com") do |admin|
+    admin.password = "password"
+    admin.password_confirmation = "password"
+    admin.role_id = super_admin_role.id
+  end
+end
 
 #AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
 
@@ -701,7 +708,6 @@ end
 #   puts "✅ Attached image to #{field.label}"
 # end
 
-
 # garment_type = GarmentType.find_by(garment_name: "Lehenga")
 
 # image_base_path = Rails.root.join("public", "Tailor's Pro")
@@ -959,7 +965,6 @@ end
 #   "Coat Length" => "Shirt Length.png",
 # }
 
-
 # garment_type.measurement_fields.each do |field|
 #   filename = mapping[field.label]
 #   next unless filename.present?
@@ -982,9 +987,6 @@ end
 
 #   puts "✅ Attached image to #{field.label}"
 # end
-
-
-
 
 # puts "✅ Measurement fields created with garment_type_id reference."
 # puts "✅ Seeding completed."

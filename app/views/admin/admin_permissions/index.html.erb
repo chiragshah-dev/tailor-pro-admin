@@ -1,0 +1,125 @@
+<div class="row" data-controller="permissions">
+  <div class="col-12">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header">
+        <div class="row p-2 justify-content-between align-items-center">
+          <!-- LEFT -->
+          <div class="col-xl-4 col-12 mt-2">
+            <h6 class="mb-0">Admin Permissions</h6>
+            <small class="text-muted">Role-based access control</small>
+          </div>
+          <!-- RIGHT -->
+          <div class="col-xl-8 col-12 mt-2 d-flex justify-content-end">
+            <div class="d-flex align-items-center gap-2">
+              <%= form_with url: admin_permissions_path,
+              method: :get,
+              local: true do %>
+                <div class="d-flex align-items-center gap-2">
+                  <label for="role_id" class="mb-0 small text-nowrap me-3">
+                    Select Role:
+                  </label>
+                  <%= select_tag :role_id,
+                        options_for_select(
+                          @roles.map { |r| [r.display_name, r.id] },
+                          @selected_role&.id
+                        ),
+                        class: "form-select form-select-sm",
+                        style: "min-width: 100px;",
+                        onchange: "this.form.requestSubmit();" %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Global select-all header -->
+      <div class="px-3 py-2 border-bottom small">
+        <div class="permission-actions permission-actions-header">
+          <% ["Read", "Write", "Danger", "Custom"].each do |label| %>
+            <label class="font-weight-bold permission-group-label cursor-pointer">
+              <input type="checkbox"
+       class="select-global cursor-pointer"
+       data-global="<%= label.downcase %>"
+       data-action="change->permissions#toggleGlobal">
+              <span class="cursor-pointer"><%= label %> (All Modules)</span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+      <%= form_with url: admin_permission_path(@selected_role&.id),
+      method: :patch,
+      local: true do %>
+        <%#= hidden_field_tag :role_id, @selected_role&.id %>
+        <div class="table-responsive">
+          <table class="table table-sm mb-0 permission-table">
+            <tbody>
+              <% @modules.each do |mod| %>
+                <tr>
+                  <!-- Module name -->
+                  <td class="permission-module">
+                    <strong><%= mod.name.humanize %></strong>
+                    <div class=" small"><%= mod.namespace %></div>
+                    <label class="small  d-block mt-1 cursor-pointer">
+                      <input type="checkbox"
+       class="select-module cursor-pointer"
+       data-module="<%= mod.id %>"
+       data-action="change->permissions#toggleModule">
+                      <span class="cursor-pointer">Select all</span>
+                    </label>
+                  </td>
+                  <!-- Actions -->
+                  <td>
+                    <div class="permission-actions">
+                      <% used_action_ids = [] %>
+                      <% ["Read", "Write", "Danger", "Custom"].each do |label| %>
+                        <% if label == "Custom" %>
+                          <% actions = mod.admin_module_actions.reject { |a| @standard_groups.values.flatten.include?(a.name) } %>
+                        <% else %>
+                          <% names = @standard_groups[label] || [] %>
+                          <% actions = mod.admin_module_actions.select { |a| names.include?(a.name) } %>
+                        <% end %>
+                        <div class="permission-group">
+                          <label class="permission-group-label cursor-pointer">
+                            <input type="checkbox"
+       class="select-group cursor-pointer"
+       data-group="<%= "#{mod.id}-#{label.downcase}" %>"
+       data-action="change->permissions#toggleGroup">
+                            <span class="fw-bold"><%= label %></span>
+                          </label>
+                          <div class="permission-group-items">
+                            <% actions.each do |action| %>
+                              <label class="permission-item cursor-pointer">
+                                <%= check_box_tag(
+  "permissions[]",
+  action.id,
+  @existing.include?(action.id),
+  class: [
+    "permission-checkbox",
+    "cursor-pointer",
+    "module-#{mod.id}",
+    "group-#{mod.id}-#{label.downcase}",
+    "global-#{label.downcase}"
+  ].join(" "),
+  data: { action: "change->permissions#toggleSingle" }
+) %>
+                                <span><%= action.name.humanize %></span>
+                              </label>
+                            <% end %>
+                          </div>
+                        </div>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- Save -->
+        <div class="border-top px-3 py-2 text-right">
+          <%= submit_tag "Save Changes", class: "btn btn-sm btn-info text-white px-4" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
