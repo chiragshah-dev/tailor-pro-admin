@@ -29,6 +29,8 @@ Rails.application.routes.draw do
 
     resources :roles, concerns: :historyable
 
+    resources :admin_users, path: "accounts", as: :accounts, concerns: :historyable
+    resources :admin_permissions, path: "permissions", as: :permissions, only: [:index, :update]
     resources :contact_infos, concerns: :historyable
 
     resources :users, concerns: :historyable

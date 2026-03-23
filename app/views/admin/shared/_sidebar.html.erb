@@ -19,22 +19,6 @@
           <span class="nav-link-text ms-1">Dashboard</span>
         <% end %>
       </li>
-      <!-- Roles -->
-      <li class="nav-item">
-        <%= link_to admin_roles_path,
-          class: "nav-link #{controller_name == 'roles' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
-          <i class="material-symbols-rounded opacity-5">verified_user</i>
-          <span class="nav-link-text ms-1">Admin Roles</span>
-        <% end %>
-      </li>
-      <!-- System admins users -->
-      <li class="nav-item">
-        <%= link_to admin_accounts_path,
-          class: "nav-link #{controller_name == 'admin_users' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
-          <i class="material-symbols-rounded opacity-5">groups</i>
-          <span class="nav-link-text ms-1">Admin Users</span>
-        <% end %>
-      </li>
       <!-- Store Owners -->
       <li class="nav-item">
         <%= link_to admin_users_path,
@@ -177,6 +161,39 @@
           <span class="nav-link-text ms-1">Currency Settings</span>
         <% end %>
       </li>
+      <% is_super_admin = current_admin_user&.role&.is_super_admin? %>
+      <% if is_super_admin %>
+        <!-- permissions Header -->
+        <li class="nav-item mt-3">
+          <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">
+            Admin Panel
+          </h6>
+        </li>
+        <!-- Roles -->
+        <li class="nav-item">
+          <%= link_to admin_roles_path,
+          class: "nav-link #{controller_name == 'roles' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
+            <i class="material-symbols-rounded opacity-5">badge</i>
+            <span class="nav-link-text ms-1">Admin Roles</span>
+          <% end %>
+        </li>
+        <!-- System admins users -->
+        <li class="nav-item">
+          <%= link_to admin_accounts_path,
+          class: "nav-link #{controller_name == 'admin_users' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
+            <i class="material-symbols-rounded opacity-5">groups</i>
+            <span class="nav-link-text ms-1">Admin Users</span>
+          <% end %>
+        </li>
+        <!-- System admins users -->
+        <li class="nav-item">
+          <%= link_to admin_permissions_path,
+          class: "nav-link #{controller_name == 'admin_permissions' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
+            <i class="material-symbols-rounded opacity-5">admin_panel_settings</i>
+            <span class="nav-link-text ms-1">Admin Permissions</span>
+          <% end %>
+        </li>
+      <%end%>
     </ul>
   </div>
 </aside>

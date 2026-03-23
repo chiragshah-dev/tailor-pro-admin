@@ -6,6 +6,7 @@ class AdminUser < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   belongs_to :role
+  has_many :admin_permissions, through: :role
 
   validates :email, presence: true, uniqueness: { case_sensitive: false }
 
