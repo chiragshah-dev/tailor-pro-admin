@@ -34,8 +34,8 @@ class Admin::OrdersController < ApplicationController
     params.permit(:search, :page, :sort, :direction, :status)
 
     @orders = Order
-                .left_joins(:customer, :store)
-                .includes(:customer, :store)
+      .left_joins(:customer)
+      .includes(:customer, :store)
 
     if params[:status].present?
       @orders = @orders.where(status: params[:status])
@@ -51,16 +51,16 @@ class Admin::OrdersController < ApplicationController
           OR stores.name ILIKE :search
           OR CAST(stores.code AS TEXT) ILIKE :search
         ",
-        search: search
+        search: search,
       )
     end
 
     sortable_columns = {
       "order_number" => "orders.order_number",
-      "customer"     => "customers.name",
-      "store"        => "stores.name",
-      "status"       => "orders.status",
-      "total"        => "orders.total_bill_amount"
+      "customer" => "customers.name",
+      "store" => "stores.name",
+      "status" => "orders.status",
+      "total" => "orders.total_bill_amount",
     }
 
     sort_column =
@@ -70,10 +70,10 @@ class Admin::OrdersController < ApplicationController
       params[:direction] == "asc" ? "asc" : "desc"
 
     @orders = @orders
-                .references(:customer, :store)
-                .order("#{sort_column} #{sort_direction}")
-                .page(params[:page])
-                .per(10)
+      .references(:customer, :store)
+      .order("#{sort_column} #{sort_direction}")
+      .page(params[:page])
+      .per(10)
   end
 
   def show
