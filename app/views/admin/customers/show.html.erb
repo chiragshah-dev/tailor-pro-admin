@@ -6,46 +6,45 @@
           <h6 class="text-white text-capitalize ps-3 mb-0">Customer Details</h6>
           <div class="me-3 d-flex gap-2">
             <button
-                class="btn btn-sm btn-white text-dark text-uppercase font-weight-bold"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseMembers"
-                <%= 'disabled' if @members.blank? %>>
-                Members (<%= @members.size %>)
-              </button>
+              class="btn btn-sm btn-white text-dark text-uppercase font-weight-bold"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseMembers"
+              <%= 'disabled' if @members.blank? %>>
+              Members (<%= @members.size %>)
+            </button>
               <button
-                class="btn btn-sm btn-white text-dark text-uppercase font-weight-bold"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseOrders"
-                <%= 'disabled' if @orders.blank? %>>
-                Orders (<%= @orders.size %>)
-              </button>
+              class="btn btn-sm btn-white text-dark text-uppercase font-weight-bold"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseOrders"
+              <%= 'disabled' if @orders.blank? %>>
+              Orders (<%= @orders.size %>)
+            </button>
               </div>
             </div>
           </div>
           <div class="card-body px-4 pt-4 pb-2">
             <div class="row">
               <div class="col-md-6">
-                <p class="text-sm mb-2"><span class="fw-bold text-dark">Name:</span>
-                  <span class="text-dark ms-2"><%= @customer&.name&.titleize || "-" %></span></p>
-                <p class="text-sm mb-2"><span class="fw-bold text-dark">Contact:</span>
-                  <span class="text-dark  ms-2"><%= @customer.contact_number %></span></p>
                 <p class="text-sm mb-2">
-                  <span class="fw-bold text-dark">Belongs to Store:</span>
+                  <span class="fw-bold text-dark">Name:</span>
+                  <span class="text-dark ms-2"><%= @customer&.name&.titleize || "-" %></span>
                 </p>
-                <div class="row">
+                <p class="text-sm mb-2">
+                  <span class="fw-bold text-dark">Contact:</span>
+                  <span class="text-dark ms-2"><%= @customer.contact_number %></span>
+                </p>
+                <p class="text-sm mb-2 fw-bold text-dark">Belongs to Store:</p>
+                <div class="d-flex flex-wrap gap-2">
                   <% @customer.stores.each do |store| %>
-                    <div class="col-md-3 mb-2">
-                      <span class="badge bg-light text-dark border w-100 text-start py-2">
-                        <%= store.name %>
-                      </span>
-                    </div>
+                    <span class="badge bg-light text-dark border py-2 px-3">
+                      <%= store.name %>
+                    </span>
                   <% end %>
                 </div>
               </div>
             </div>
-            <!-- member and order dropdwons starts -->
             <div class="collapse mt-4 <%= 'show' if params[:view] == 'members' %>" id="collapseMembers">
               <turbo-frame id="customer_members_unique_frame">
                 <%= render "members_table" %>
@@ -56,8 +55,10 @@
                 <%= render "customer_orders" %>
               </turbo-frame>
             </div>
-            <!-- member and order dropdwons end -->
-            <%= link_to admin_customers_path(page: params[:page]), class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end" do %>Back<% end %>
+            <%= link_to admin_customers_path(page: params[:page]),
+          class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end" do %>
+              Back
+            <% end %>
           </div>
         </div>
       </div>

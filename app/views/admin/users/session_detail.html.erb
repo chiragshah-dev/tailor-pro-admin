@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col-12">
+    <!-- PAGE HEADER -->
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            Session Details
+          </h6>
+        </div>
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-4 pt-4 pb-2">
+        <div class="row">
+          <!-- LEFT -->
+          <div class="col-md-6">
+            <p class="text-sm mb-2">
+              <span class="fw-bold text-dark">User:</span>
+              <span class="ms-2 text-dark">
+                <%= @user.name %>
+              </span>
+            </p>
+            <p class="text-sm mb-2">
+              <span class="fw-bold text-dark">Session ID:</span>
+              <span class="ms-2 text-dark">
+                <%= @session.session_id %>
+              </span>
+            </p>
+            <p class="text-sm mb-2">
+              <span class="fw-bold text-dark">Device ID:</span>
+              <span class="ms-2 text-dark">
+                <%= @session.device_id.presence || "-" %>
+              </span>
+            </p>
+            <p class="text-sm mb-2">
+              <span class="fw-bold text-dark">Entry Route:</span>
+              <span class="ms-2 text-dark">
+                <%= @session.entry_route.presence || "-" %>
+              </span>
+            </p>
+          </div>
+          <!-- RIGHT -->
+          <div class="col-md-6">
+            <p class="text-sm mb-2">
+              <span class="fw-bold text-dark">Status:</span>
+              <span class="badge bg-gradient-<%= @session.status == "active" ? "success" : "secondary" %> ms-2">
+                <%= @session.status.capitalize %>
+              </span>
+            </p>
+            <p class="text-sm mb-2">
+              <span class="fw-bold text-dark">Start Time:</span>
+              <span class="ms-2 text-dark">
+                <%= @session.start_time.strftime("%d %b %Y %I:%M %p") %>
+              </span>
+            </p>
+            <p class="text-sm mb-2">
+              <span class="fw-bold text-dark">End Time:</span>
+              <span class="ms-2 text-dark">
+                <%= @session.end_time.present? ? @session.end_time.strftime("%d %b %Y %I:%M %p") : "-" %>
+              </span>
+            </p>
+            <p class="text-sm mb-2">
+              <span class="fw-bold text-dark">Exit Route:</span>
+              <span class="ms-2 text-dark">
+                <%= @session.exit_route || "-" %>
+              </span>
+            </p>
+          </div>
+        </div>
+        <!-- ROUTE JOURNEY -->
+        <hr class="horizontal dark my-4">
+        <h6 class="text-uppercase text-dark mb-3">
+          Route Journey
+        </h6>
+        <% if @route_sequence.present? %>
+          <small class="text-dark font-weight-bold text-xs mb-2 d-block">
+            Showing <%= @route_sequence.offset_value + 1 %> -
+            <%= @route_sequence.offset_value + @route_sequence.size %>
+            of <%= @route_sequence.total_count %> routes
+          </small>
+          <ul class="list-group mb-3">
+            <% @route_sequence.each do |route| %>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <strong class="text-info">
+                  <%= route["route"] %>
+                </strong>
+                <span class="text-sm text-dark">
+                  <%= Time.parse(route["timestamp"]).strftime("%d %b %Y %I:%M:%S %p") rescue route["timestamp"] %>
+                </span>
+              </li>
+            <% end %>
+          </ul>
+          <div class="d-flex justify-content-center">
+            <%= paginate @route_sequence, param_name: :route_page %>
+          </div>
+        <% else %>
+          <p class="text-sm text-dark">No route data available.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
