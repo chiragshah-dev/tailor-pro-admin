@@ -24,9 +24,9 @@
                 <th class="text-uppercase text-dark text-xxs font-weight-bold">
                   <%= sortable_header("name", "Customer") %>
                 </th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
-                  <%= sortable_header("store", "Store") %>
-                </th>
+                <%# <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2"> %>
+                <%#= sortable_header("store", "Store") %>
+                <%# </th> %>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("members", "Members") %>
                 </th>
@@ -53,9 +53,9 @@
                         </div>
                       </div>
                     </td>
-                    <td>
-                      <p class="text-sm text-dark mb-0"><%= customer.store&.name || '—' %></p>
-                    </td>
+                    <%# <td>
+                      <p class="text-sm text-dark mb-0"><%= customer.stores.map(&:name).join(", ") || '—' %>
+                    <%# </td> %>
                     <td>
                       <%= link_to admin_customer_path(customer,page: params[:page], view: 'members'),
             class: "btn btn-xs btn-info text-uppercase font-weight-bold #{'disabled' if customer.members_count.zero?}" do %>

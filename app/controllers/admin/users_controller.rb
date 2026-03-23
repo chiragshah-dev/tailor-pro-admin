@@ -2,7 +2,7 @@ class Admin::UsersController < ApplicationController
   include AuditableHistory
 
   before_action :authenticate_admin_user!
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :history]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :history, :sessions, :session_detail]
 
   # def index
   #   @users = User.includes(:active_store).order(created_at: :desc)
@@ -70,6 +70,23 @@ class Admin::UsersController < ApplicationController
   def destroy
     @user.soft_delete!
     redirect_to admin_users_path(page: params[:page]), notice: "User was successfully deleted."
+  end
+
+  def sessions
+    @app_sessions = @user.app_sessions
+                         .order(created_at: :desc)
+                         .page(params[:page])
+                         .per(10)
+  end
+
+  def session_detail
+    @session = @user.app_sessions.find(params[:session_id])
+
+    routes = @session.route_sequence || []
+
+    @route_sequence = Kaminari.paginate_array(
+      routes.reverse
+    ).page(params[:route_page]).per(10)
   end
 
   private

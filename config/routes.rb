@@ -29,7 +29,12 @@ Rails.application.routes.draw do
 
     resources :contact_infos, concerns: :historyable
 
-    resources :users, concerns: :historyable
+    resources :users, concerns: :historyable do
+      member do
+        get :sessions
+        get "sessions/:session_id", action: :session_detail, as: :session_detail
+      end
+    end
     resources :currency_settings, concerns: :historyable
     resources :stores, concerns: :historyable
     resources :workers, concerns: :historyable
