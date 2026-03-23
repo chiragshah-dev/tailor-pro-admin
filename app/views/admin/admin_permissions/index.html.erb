@@ -48,7 +48,7 @@
       </div>
       <%= form_with url: admin_permission_path(@selected_role&.id),
       method: :patch,
-      local: true do %>
+      data: { turbo: false }  do %>
         <%#= hidden_field_tag :role_id, @selected_role&.id %>
         <div class="table-responsive">
           <table class="table table-sm mb-0 permission-table">
