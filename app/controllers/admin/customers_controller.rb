@@ -45,7 +45,7 @@ class Admin::CustomersController < ApplicationController
       COUNT(DISTINCT members.id) AS members_count,
       COUNT(DISTINCT orders.id)  AS orders_count"
       )
-      .group("customers.id", "stores.id")
+      .group("customers.id")
 
     if params[:search].present?
       search = "%#{params[:search].strip}%"

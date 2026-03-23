@@ -21,9 +21,9 @@
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("name", "Name") %>
                 </th>
-                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                <%# <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("email", "Email") %>
-                </th>
+                <%# </th>  %>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Contact Number</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Active Store</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
@@ -49,72 +49,75 @@
                       </div>
                     </td>
                     <!-- Email -->
-                    <td>
+                    <%# <td>
                       <p class="text-sm text-secondary mb-0 text-dark"><%= user.email || "-" %></p>
-                    </td>
-                    <!-- Contact Number -->
-                    <td>
-                      <p class="text-sm text-secondary mb-0 text-dark">
-                        <%= user.contact_number.presence || "-" %>
-                      </p>
-                    </td>
-                    <!-- Active Store -->
-                    <td>
-                      <% store = user.active_store || user.stores.first %>
-                      <% if store.present? %>
-                        <%= link_to admin_store_path(store), class: "text-info", title: "Show Store" do %>
-                          <%= store.name %>
-                        <% end %>
-                      <% else %>
-                        <span class="text-dark">-</span>
+                  <%# </td> %>
+                  <!-- Contact Number -->
+                  <td>
+                    <p class="text-sm text-secondary mb-0 text-dark">
+                      <%= user.contact_number.presence || "-" %>
+                    </p>
+                  </td>
+                  <!-- Active Store -->
+                  <td>
+                    <% store = user.active_store || user.stores.first %>
+                    <% if store.present? %>
+                      <%= link_to admin_store_path(store), class: "text-info", title: "Show Store" do %>
+                        <%= store.name %>
                       <% end %>
-                    </td>
-                    <td>
-                      <p class="text-sm text-secondary mb-0 text-dark">
-                        <%= user.deleted.to_s.capitalize%>
-                      </p>
-                    </td>
-                    <!-- Actions -->
-                    <td class="align-middle text-center">
-                      <div class="d-flex justify-content-center gap-1">
-                        <!-- Show -->
-                        <%= link_to admin_user_path(user,page: params[:page]), class: "btn btn-xs rounded btn-secondary", title: "Show" do %>
-                          <i class="fas fa-eye"></i>
-                        <% end %>
-                        <!-- Edit -->
-                        <%= link_to edit_admin_user_path(user,page: params[:page]), class: "btn btn-xs rounded btn-secondary", title: "Edit" do %>
-                          <i class="fas fa-edit"></i>
-                        <% end %>
-                        <!-- Delete -->
-                        <%#= button_to admin_user_path(user, page: params[:page]),
+                    <% else %>
+                      <span class="text-dark">-</span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <p class="text-sm text-secondary mb-0 text-dark">
+                      <%= user.deleted.to_s.capitalize%>
+                    </p>
+                  </td>
+                  <!-- Actions -->
+                  <td class="align-middle text-center px-0">
+                    <div class="d-flex justify-content-center gap-1">
+                      <!-- Show -->
+                      <%= link_to admin_user_path(user,page: params[:page]), class: "btn btn-xs rounded btn-secondary", title: "Show" do %>
+                        <i class="fas fa-eye"></i>
+                      <% end %>
+                      <!-- Edit -->
+                      <%= link_to edit_admin_user_path(user,page: params[:page]), class: "btn btn-xs rounded btn-secondary", title: "Edit" do %>
+                        <i class="fas fa-edit"></i>
+                      <% end %>
+                      <!-- Delete -->
+                      <%#= button_to admin_user_path(user, page: params[:page]),
               method: :delete,
               class: "btn btn-xs rounded btn-secondary",
               data: { turbo_confirm: "Are you sure you want to delete #{user.name}?" } do %>
-                          <%# <i class="fas fa-trash"></i> %>
-                          <%# end %>
-                          <%= link_to history_admin_user_path(user),
+                        <%# <i class="fas fa-trash"></i> %>
+                        <%# end %>
+                        <%= link_to history_admin_user_path(user),
       class: "btn btn-xs rounded btn-secondary",
       title: "View History" do %>
-                            <i class="fas fa-history"></i>
-                          <% end %>
-                        </div>
-                      </td>
-                    </tr>
-                  <% end %>
-                <%else%>
-                  <tr>
-                    <td colspan="12" class="text-center">
-                      <p class="no-content-text">No records found.</p>
+                          <i class="fas fa-history"></i>
+                        <% end %>
+                        <%= link_to "App Sessions",
+    sessions_admin_user_path(user),
+    class: "btn btn-xs rounded btn-secondary text-uppercase fw-bold" %>
+                      </div>
                     </td>
                   </tr>
-                <%end%>
-              </tbody>
-            </table>
-          </div>
-          <div class="d-flex justify-content-center px-3 mt-3">
-            <%= paginate @users %>
-          </div>
+                <% end %>
+              <%else%>
+                <tr>
+                  <td colspan="11" class="text-center">
+                    <p class="no-content-text">No records found.</p>
+                  </td>
+                </tr>
+              <%end%>
+            </tbody>
+          </table>
+        </div>
+        <div class="d-flex justify-content-center px-3 mt-3">
+          <%= paginate @users %>
         </div>
       </div>
     </div>
   </div>
+</div>
