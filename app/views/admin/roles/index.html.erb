@@ -62,15 +62,6 @@
                             title: "Edit" do %>
                           <i class="fas fa-edit"></i>
                         <% end %>
-                        <% unless role.is_super_admin? %>
-                          <%= button_to admin_role_path(role, page: params[:page]),
-                              method: :delete,
-                              form: { data: { turbo_confirm: "Are you sure you want to delete '#{role.display_name}'?" } },
-                              class: "btn btn-xs rounded btn-danger",
-                              title: "Delete" do %>
-                            <i class="fas fa-trash"></i>
-                          <% end %>
-                        <% end %>
                       </div>
                     </td>
                   </tr>
