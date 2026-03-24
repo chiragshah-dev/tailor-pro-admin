@@ -2,7 +2,7 @@
   <% if flash[type] %>
     <div class="flash-alert bg-gradient-info font-weight-bold" 
          id="flash-<%= type %>"
-         data-controller="flash">
+         data-controller="flash" data-turbo-temporary >
       <div class="flash-alert-content d-flex align-items-center">
         <span class="flash-alert-message text-center">
           <%= flash[type] %>
