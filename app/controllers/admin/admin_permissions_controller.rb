@@ -5,6 +5,9 @@ class Admin::AdminPermissionsController < ApplicationController
   def index
     # byebug
     @roles = Role.where(is_super_admin: false).order(:display_name)
+     
+    redirect_to admin_roles_path, alert: "No non-super-admin roles are available. Please create a role to manage permissions"  if @roles.blank?
+
 
     @selected_role = if params[:role_id].present?
         Role.find_by(id: params[:role_id])
