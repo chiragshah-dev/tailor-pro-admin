@@ -18,62 +18,80 @@ else
   end
 end
 
-puts "SEEDING ACCESSORY CATEGORIES "
+# ============================================================
+# Accessory Categories & Accessories Seed
+# ============================================================
 
-puts "🧵 Seeding ALL Categories + Accessories..."
+puts "Seeding Accessory Categories and Accessories..."
 
-data = [
+# ============================================================
+# CATEGORIES WITH THEIR ACCESSORIES
+# ============================================================
 
-  # --- Categories WITH accessories ---
+categories_data = [
   {
-    name: "Zippers",
-    items: ["Closed-End", "Open-End", "Invisible", "Metal", "Coil (Plastic)", "Two-Way"],
+    name: "Fabrics",
+    position: 1,
+    accessories: [
+      "Cotton", "Gaji Silk", "Cotton Silk", "Satin", "Linen",
+      "Denim", "Chiffon", "Velvet", "Georgette", "Rayon",
+      "Net/Tulle", "Woolen",
+    ],
   },
   {
-    name: "Needles",
-    items: ["Ballpoint Needle", "Denim Needle", "Embroidery Needle", "Leather Needle", "Twin Needle"],
+    name: "Accessories",
+    position: 2,
+    accessories: [],
   },
   {
-    name: "Elastics",
-    items: ["Knitted Elastic", "Woven Elastic", "Braided Elastic", "Buttonhole Elastic", "Fold-Over Elastic"],
+    name: "Stitching Machines",
+    position: 3,
+    accessories: [
+      "Single Needle", "Double Needle", "Overlock",
+      "Flatlock", "Zigzag", "Button Hole", "Bartack",
+      "Feed of Arm", "Embroidery",
+    ],
   },
   {
-    name: "Measuring tape",
-    items: ["Dual-Sided Tape", "Body Measuring Tape"],
+    name: "Threads",
+    position: 4,
+    accessories: [
+      # Thread Types
+      "Polyester Thread", "Cotton Thread", "Silk Thread",
+      "Embroidery Thread", "Overlock Thread",
+      # From image 2
+      "Cotton Threads", "Polyester Thread", "Nylon Thread",
+      "Embroidery Thread", "Elastic Thread", "Metallic Thread", "Woolen Yarn",
+    ].uniq,
   },
   {
-    name: "Thread",
-    items: ["Polyester Thread", "Cotton Thread", "Silk Thread", "Embroidery Thread", "Overlock Thread"],
-  },
-  {
-    name: "Machine Types",
-    items: ["Single Needle Machine", "Overlock Machine", "Zigzag Machine", "Hand Stitch Machine"],
-  },
-  {
-    name: "Dye Types",
-    items: ["Piece Dyeing", "Yarn Dyeing", "Garment Dyeing", "Tie-Dye", "Dip Dye"],
+    name: "Dyes & Chemicals",
+    position: 5,
+    accessories: [
+      "Piece Dyeing", "Yarn Dyeing", "Garment Dyeing",
+      "Tie-Dye", "Dip Dye",
+    ],
   },
 ]
 
-data.each_with_index do |category_data, index|
-  category = AccessoryCategory.find_or_initialize_by(name: category_data[:name])
-
-  category.update!(
-    position: index + 1,
-    is_active: category_data[:items].present?,
+categories_data.each do |cat_data|
+  category = AccessoryCategory.find_or_initialize_by(name: cat_data[:name])
+  category.assign_attributes(
+    position: cat_data[:position],
+    is_active: true,
   )
+  category.save!
+  puts "Category: #{category.name}"
 
-  category_data[:items].each_with_index do |item, idx|
-    accessory = Accessory.find_or_initialize_by(
-      name: item,
-      accessory_category_id: category.id,
-    )
-
-    accessory.update!(
-      position: idx + 1,
+  cat_data[:accessories].each_with_index do |acc_name, index|
+    accessory = category.accessories.find_or_initialize_by(name: acc_name)
+    accessory.assign_attributes(
+      position: index + 1,
       is_active: true,
     )
+    accessory.save!
+    puts "      → #{acc_name}"
   end
 end
 
-puts "✅ All categories seeded properly!"
+puts "\n✅ Done! Seeded #{AccessoryCategory.count} categories and #{Accessory.count} accessories."
