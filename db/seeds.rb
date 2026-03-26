@@ -18,80 +18,148 @@ else
   end
 end
 
-# ============================================================
-# Accessory Categories & Accessories Seed
-# ============================================================
+puts "Cleaning up existing data..."
 
-puts "Seeding Accessory Categories and Accessories..."
+puts "Starting seeding process..."
 
-# ============================================================
-# CATEGORIES WITH THEIR ACCESSORIES
-# ============================================================
-
-categories_data = [
-  {
-    name: "Fabrics",
-    position: 1,
-    accessories: [
-      "Cotton", "Gaji Silk", "Cotton Silk", "Satin", "Linen",
-      "Denim", "Chiffon", "Velvet", "Georgette", "Rayon",
-      "Net/Tulle", "Woolen",
+# Master Data Dictionary reflecting the mixed hierarchy
+master_data = {
+  "Fabrics" => {
+    has_subcategories: true,
+    items: {
+      "Cotton" => ["Pure cotton", "Poplin", "Cambric", "Twill cotton"],
+      "Linen" => ["Pure linen", "Linen blends"],
+      "Silk" => ["Pure Silk", "Raw silk", "Banarasi silk", "Gajji silk"],
+      "Woolen" => ["Tweed", "Merino wool", "Wool blends"],
+      "Denim" => [],
+      "Polyester" => ["Poly-cotton"],
+      "Rayon" => ["Modal"],
+      "Khadi" => ["Handwoven cotton"],
+      "Velvet" => [],
+      "Cotton Silk" => [],
+      "Satin" => [],
+      "Chiffon" => [],
+      "Georgette" => [],
+      "Net/Tulle" => [],
+    },
+  },
+  "Accessories" => {
+    has_subcategories: true,
+    items: {
+      "Measuring tape" => ["Dual-Sided Tape", "Body Measuring Tape"],
+      "Rulers, scale" => [],
+      "French curve" => [],
+      "Scissors" => [],
+      "Thread cutters" => ["Spring thread snips", "Electric thread cutter"],
+      "Rotary cutters" => [],
+      "Tracing wheel" => [],
+      "Needles" => ["Ballpoint Needle", "Denim Needle", "Embroidery Needle", "Leather Needle", "Twin Needle"],
+      "Zippers" => ["Closed-End", "Open-End", "Invisible", "Metal", "Coil (Plastic)", "Two-Way"],
+      "Hooks" => [],
+      "Velcro" => ["Industrial Velcro", "Self-adhesive Velcro"],
+      "Elastics" => ["Knitted Elastic", "Woven Elastic", "Braided Elastic", "Buttonhole Elastic", "Fold-Over Elastic"],
+    },
+  },
+  "Stitching Machines" => {
+    has_subcategories: false,
+    items: [
+      "Single Needle", "Double Needle", "Overlock", "Flatlock",
+      "Zigzag", "Button Hole", "Bartack", "Feed of arm", "Embroidery",
     ],
   },
-  {
-    name: "Accessories",
-    position: 2,
-    accessories: [],
-  },
-  {
-    name: "Stitching Machines",
-    position: 3,
-    accessories: [
-      "Single Needle", "Double Needle", "Overlock",
-      "Flatlock", "Zigzag", "Button Hole", "Bartack",
-      "Feed of Arm", "Embroidery",
+  "Threads" => {
+    has_subcategories: false,
+    items: [
+      "Cotton Threads", "Polyester Thread", "Silk Thread",
+      "Nylon Thread", "Embroidery Thread", "Elastic Thread",
+      "Metallic Thread", "Woolen Yarn", "Overlock Thread",
     ],
   },
-  {
-    name: "Threads",
-    position: 4,
-    accessories: [
-      # Thread Types
-      "Polyester Thread", "Cotton Thread", "Silk Thread",
-      "Embroidery Thread", "Overlock Thread",
-      # From image 2
-      "Cotton Threads", "Polyester Thread", "Nylon Thread",
-      "Embroidery Thread", "Elastic Thread", "Metallic Thread", "Woolen Yarn",
-    ].uniq,
-  },
-  {
-    name: "Dyes & Chemicals",
-    position: 5,
-    accessories: [
-      "Piece Dyeing", "Yarn Dyeing", "Garment Dyeing",
-      "Tie-Dye", "Dip Dye",
+  "Dyes & Chemicals" => {
+    has_subcategories: false,
+    items: [
+      "Piece Dyeing", "Yarn Dyeing", "Garment Dyeing", "Tie-Dye", "Dip Dye",
     ],
   },
-]
+}
 
-categories_data.each do |cat_data|
-  category = AccessoryCategory.find_or_initialize_by(name: cat_data[:name])
-  category.assign_attributes(
-    position: cat_data[:position],
-    is_active: true,
-  )
-  category.save!
-  puts "Category: #{category.name}"
+puts "Cleaning up existing data..."
+puts "Starting seeding process..."
 
-  cat_data[:accessories].each_with_index do |acc_name, index|
-    accessory = category.accessories.find_or_initialize_by(name: acc_name)
-    accessory.assign_attributes(
-      position: index + 1,
+ActiveRecord::Base.transaction do
+  parent_position = 1
+
+  master_data.each do |parent_name, data|
+    # 1. Parent Category (find or create)
+    parent_category = StitchIt::Category.find_or_initialize_by(name: parent_name)
+    parent_category.assign_attributes(
       is_active: true,
+      position: parent_position,
+      parent_id: nil,
     )
-    accessory.save!
-    puts "      → #{acc_name}"
+    parent_category.save!
+
+    puts "Created/Found Parent Category: #{parent_category.name}"
+
+    if data[:has_subcategories]
+      # --- 3-LEVEL HIERARCHY ---
+      sub_position = 1
+
+      data[:items].each do |sub_name, products|
+        sub_category = StitchIt::Category.find_or_initialize_by(
+          name: sub_name,
+          parent_id: parent_category.id,
+        )
+        sub_category.assign_attributes(
+          is_active: true,
+          position: sub_position,
+        )
+        sub_category.save!
+
+        product_position = 1
+
+        products.each do |product_name|
+          product = StitchIt::Product.find_or_initialize_by(
+            name: product_name,
+            category_id: sub_category.id,
+          )
+          product.assign_attributes(
+            is_active: true,
+            position: product_position,
+          )
+          product.save!
+
+          product_position += 1
+        end
+
+        sub_position += 1
+      end
+    else
+      # --- 2-LEVEL HIERARCHY ---
+      product_position = 1
+
+      data[:items].each do |product_name|
+        product = StitchIt::Product.find_or_initialize_by(
+          name: product_name,
+          category_id: parent_category.id,
+        )
+        product.assign_attributes(
+          is_active: true,
+          position: product_position,
+        )
+        product.save!
+
+        product_position += 1
+      end
+    end
+
+    parent_position += 1
   end
 end
 
-puts "\n✅ Done! Seeded #{AccessoryCategory.count} categories and #{Accessory.count} accessories."
+puts "================================================="
+puts "Seeding complete!"
+puts "Total Parent Categories: #{StitchIt::Category.where(parent_id: nil).count}"
+puts "Total Sub-Categories: #{StitchIt::Category.where.not(parent_id: nil).count}"
+puts "Total Products: #{StitchIt::Product.count}"
+puts "================================================="
