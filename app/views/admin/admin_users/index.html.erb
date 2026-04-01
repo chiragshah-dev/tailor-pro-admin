@@ -1,0 +1,101 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- Header -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center px-3">
+          <h6 class="text-white text-capitalize mb-0">Admin Users</h6>
+          <%= link_to new_admin_account_path, class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
+            New Admin User
+          <% end %>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <!-- Search -->
+        <div class="px-3 pb-3">
+          <%= render "admin/shared/search",
+                url: admin_accounts_path,
+                placeholder: "Search by email or role..." %>
+        </div>
+        <!-- Table -->
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">ID</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Email</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Role</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Created At</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @admin_users.any? %>
+                <% @admin_users.each_with_index do |admin_user, index| %>
+                  <tr>
+                    <td>
+                      <p class="text-sm text-dark mb-0 px-3">
+                        <%= (@admin_users.current_page - 1) * @admin_users.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="text-sm text-dark mb-0"><%= admin_user.email %></p>
+                    </td>
+                    <td>
+                      <% if admin_user.role %>
+                        <% if admin_user.role.is_super_admin? %>
+                          <span class="badge badge-sm bg-gradient-warning">
+                            <%= admin_user.role.display_name %>
+                          </span>
+                        <% else %>
+                          <span class="badge badge-sm bg-gradient-secondary">
+                            <%= admin_user.role.display_name %>
+                          </span>
+                        <% end %>
+                      <% else %>
+                        <span class="badge badge-sm bg-gradient-danger">No Role</span>
+                      <% end %>
+                    </td>
+                    <td>
+                      <p class="text-sm text-dark mb-0">
+                        <%= admin_user.created_at.strftime("%d %b %Y") %>
+                      </p>
+                    </td>
+                    <td class="align-middle text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <%= link_to edit_admin_account_path(admin_user, page: params[:page]),
+                            class: "btn btn-xs rounded btn-secondary text-white",
+                            title: "Edit" do %>
+                          <i class="fas fa-edit"></i>
+                        <% end %>
+                        <% unless admin_user == current_admin_user %>
+                          <%= button_to admin_account_path(admin_user, page: params[:page]),
+                              method: :delete,
+                              form: { data: { turbo_confirm: "Are you sure you want to delete #{admin_user.email}?" } },
+                              class: "btn btn-xs rounded btn-danger",
+                              title: "Delete" do %>
+                            <i class="fas fa-trash"></i>
+                          <% end %>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr>
+                  <td colspan="5" class="text-center">
+                    <p class="no-content-text">No records found.</p>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center px-3 mt-3">
+          <%= paginate @admin_users %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

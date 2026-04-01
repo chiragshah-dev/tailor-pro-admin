@@ -1,0 +1,86 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- Header -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center px-3">
+          <h6 class="text-white text-capitalize mb-0">Roles</h6>
+          <%= link_to new_admin_role_path, class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
+            New Role
+          <% end %>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <!-- Search -->
+        <div class="px-3 pb-3">
+          <%= render "admin/shared/search", url: admin_roles_path, placeholder: "Search roles..." %>
+        </div>
+        <!-- Table -->
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">ID</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Name</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Display Name</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Super Admin</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Users</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @roles.any? %>
+                <% @roles.each_with_index do |role, index| %>
+                  <tr>
+                    <td>
+                      <p class="text-sm text-dark mb-0 px-3">
+                        <%= (@roles.current_page - 1) * @roles.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="text-sm text-dark mb-0">
+                        <span class="badge badge-sm bg-gradient-secondary"><%= role.name %></span>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="text-sm text-dark mb-0"><%= role.display_name %></p>
+                    </td>
+                    <td>
+                      <% if role.is_super_admin? %>
+                        <span class="badge badge-sm bg-gradient-success">Yes</span>
+                      <% else %>
+                        <span class="badge badge-sm bg-gradient-secondary">No</span>
+                      <% end %>
+                    </td>
+                    <td>
+                      <p class="text-sm text-dark mb-0"><%= role.admin_users.count %></p>
+                    </td>
+                    <td class="align-middle text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <%= link_to edit_admin_role_path(role, page: params[:page]),
+                            class: "btn btn-xs rounded btn-secondary text-white",
+                            title: "Edit" do %>
+                          <i class="fas fa-edit"></i>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr>
+                  <td colspan="6" class="text-center">
+                    <p class="no-content-text">No records found.</p>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center px-3 mt-3">
+          <%= paginate @roles %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
