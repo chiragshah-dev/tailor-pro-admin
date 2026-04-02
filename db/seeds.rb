@@ -297,3 +297,32 @@ measurement_mappings.each do |garment_name, labels|
 end
 
 puts "\n StitchIt measurement seeding complete!"
+
+# -------------------------------------------------------------------
+# Notification Templates
+# -------------------------------------------------------------------
+
+notification_templates = [
+  {
+    key: "order_assigned",
+    title: "New Order Assigned",
+    body: "Order #%{order_number} has been assigned to you. Have a good day.",
+    active: true,
+  },
+  {
+    key: "stitch_it_inquiry",
+    title: "New Inquiry Received",
+    body: "A new %{garment_type} inquiry has been received at %{store_name}. It's just %{distance} km away from your location. Check it out now!",
+    active: true,
+  },
+]
+
+notification_templates.each do |attrs|
+  NotificationTemplate.find_or_create_by!(key: attrs[:key]) do |template|
+    template.title = attrs[:title]
+    template.body = attrs[:body]
+    template.active = attrs[:active]
+  end
+end
+
+puts "Seed: Notification templates processed."
