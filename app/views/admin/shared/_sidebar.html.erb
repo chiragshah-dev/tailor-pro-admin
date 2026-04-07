@@ -91,6 +91,16 @@
           <span class="nav-link-text ms-1">Wallets</span>
         <% end %>
       </li>
+
+      <!-- Subscription Packages -->
+      <li class="nav-item">
+        <%= link_to admin_subscription_packages_path,
+          class: "nav-link #{controller_name == 'subscription_packages' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
+          <i class="material-symbols-rounded opacity-5">workspace_premium</i>
+          <span class="nav-link-text ms-1">Subscription Packages</span>
+        <% end %>
+      </li>
+
       <!-- Notification Templates -->
       <li class="nav-item">
         <%= link_to admin_notification_templates_path,

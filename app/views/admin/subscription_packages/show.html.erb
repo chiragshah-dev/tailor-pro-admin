@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+          <h6 class="text-white text-capitalize ps-3 mb-0">Subscription Package Details</h6>
+          <div class="me-3 d-flex gap-2">
+            <%= link_to edit_admin_subscription_package_path(@subscription_package, page: params[:page]),
+                class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
+              Edit
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-4 pt-4 pb-4">
+        <div class="row mb-3">
+          <!-- LEFT -->
+          <div class="col-md-6">
+            <p class="text-sm mb-2 text-dark">
+              <strong>Name:</strong>
+              <span class="ms-2"><%= @subscription_package.name %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Billing Type:</strong>
+              <span class="ms-2 text-capitalize">
+                <span class="badge bg-gradient-info"><%= @subscription_package.billing_type %></span>
+              </span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Currency:</strong>
+              <span class="ms-2"><%= @subscription_package.currency %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Status:</strong>
+              <span class="ms-2">
+                <% if @subscription_package.active? %>
+                  <span class="badge bg-gradient-success">Active</span>
+                <% else %>
+                  <span class="badge bg-gradient-secondary">Inactive</span>
+                <% end %>
+              </span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Created At:</strong>
+              <span class="ms-2">
+                <%= @subscription_package.created_at.strftime("%d %b %Y %I:%M %p") %>
+              </span>
+            </p>
+          </div>
+          <!-- RIGHT -->
+          <div class="col-md-6">
+            <p class="text-sm mb-2 text-dark">
+              <strong>Monthly Price:</strong>
+              <span class="ms-2">
+                <% if @subscription_package.free? %>
+                  <span class="badge bg-gradient-success">Free</span>
+                <% else %>
+                  <%= @subscription_package.symbol %><%= number_with_precision(@subscription_package.price_month, precision: 2) %>
+                <% end %>
+              </span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Yearly Price:</strong>
+              <span class="ms-2">
+                <% if @subscription_package.free? %>
+                  <span class="badge bg-gradient-success">Free</span>
+                <% else %>
+                  <%= @subscription_package.symbol %><%= number_with_precision(@subscription_package.price_year, precision: 2) %>
+                <% end %>
+              </span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Invoice Fee:</strong>
+              <span class="ms-2">
+                <%= number_with_precision(@subscription_package.invoice_fee_percent, precision: 2) %>%
+              </span>
+            </p>
+            <% unless @subscription_package.free? %>
+              <p class="text-sm mb-2 text-dark">
+                <strong>Yearly Savings:</strong>
+                <span class="ms-2 text-success fw-bold">
+                  <%= @subscription_package.symbol %><%= number_with_precision((@subscription_package.price_month * 12) - @subscription_package.price_year, precision: 2) %>
+                </span>
+              </p>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <% if @subscription_package.description.present? %>
+          <hr class="horizontal dark my-3" style="border-top: 1.5px solid #adb5bd; opacity: 1;">
+          <p class="text-sm mb-2 text-dark">
+            <strong>Description:</strong>
+          </p>
+          <p class="text-sm text-secondary"><%= @subscription_package.description %></p>
+        <% end %>
+
+        <!-- BACK -->
+        <%= link_to admin_subscription_packages_path(page: params[:page]),
+            class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end mt-3" do %>
+          Back
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
