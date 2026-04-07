@@ -1,0 +1,132 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            <%= @subscription_package.new_record? ? "New Package" : "Edit Package" %>
+          </h6>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div class="card-body px-4 pb-4">
+        <%= form_with model: [:admin, @subscription_package], local: true do |f| %>
+
+          <%= hidden_field_tag :page, params[:page] %>
+
+          <div class="row g-4">
+
+            <!-- Name -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Package Name</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :name, class: "form-control", id: "package_name" %>
+              </div>
+              <div id="name_err" class="text-danger text-xs mt-2">
+                <%= @subscription_package.errors.full_messages_for(:name).first %>
+              </div>
+            </div>
+
+            <!-- Currency -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Currency</label>
+              <div class="input-group input-group-outline">
+                <%= f.select :currency,
+                  options_for_select(SubscriptionPackage::CURRENCIES, @subscription_package.currency),
+                  {},
+                  class: "form-control",
+                  id: "package_currency" %>
+              </div>
+            </div>
+
+            <!-- Billing Type -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Billing Type</label>
+              <div class="input-group input-group-outline">
+                <%= f.select :billing_type,
+                  options_for_select(SubscriptionPackage::BILLING_TYPES.map { |t| [t.capitalize, t] }, @subscription_package.billing_type),
+                  {},
+                  class: "form-control",
+                  id: "package_billing_type" %>
+              </div>
+            </div>
+
+            <!-- Invoice Fee -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Invoice Fee (%)</label>
+              <div class="input-group input-group-outline">
+                <%= f.number_field :invoice_fee_percent,
+                  step: 0.01,
+                  class: "form-control",
+                  id: "invoice_fee" %>
+              </div>
+              <div id="invoice_err" class="text-danger text-xs mt-2">
+                <%= @subscription_package.errors.full_messages_for(:invoice_fee_percent).first %>
+              </div>
+            </div>
+
+            <!-- Monthly Price -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Monthly Price (₹)</label>
+              <div class="input-group input-group-outline">
+                <%= f.number_field :price_month,
+                  step: 0.01,
+                  class: "form-control",
+                  id: "price_month" %>
+              </div>
+              <div id="month_err" class="text-danger text-xs mt-2">
+                <%= @subscription_package.errors.full_messages_for(:price_month).first %>
+              </div>
+            </div>
+
+            <!-- Yearly Price -->
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">Yearly Price (₹)</label>
+              <div class="input-group input-group-outline">
+                <%= f.number_field :price_year,
+                  step: 0.01,
+                  class: "form-control",
+                  id: "price_year" %>
+              </div>
+              <div id="year_err" class="text-danger text-xs mt-2">
+                <%= @subscription_package.errors.full_messages_for(:price_year).first %>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="col-12">
+              <label class="form-label font-weight-bold text-dark">Description</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_area :description, rows: 3, class: "form-control", id: "description" %>
+              </div>
+            </div>
+
+            <!-- Active -->
+            <div class="col-12">
+              <label class="form-label font-weight-bold text-dark">Status</label>
+              <div class="form-check mt-2">
+                <%= f.check_box :active, class: "form-check-input", id: "active_checkbox" %>
+                <label class="form-check-label">Active</label>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ACTIONS -->
+          <div class="d-flex justify-content-end mt-4">
+            <%= link_to "Back",
+              admin_subscription_packages_path(page: params[:page]),
+              class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+
+            <%= f.submit @subscription_package.new_record? ? "Create" : "Update",
+              class: "btn btn-info text-white text-uppercase font-weight-bold" %>
+          </div>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
