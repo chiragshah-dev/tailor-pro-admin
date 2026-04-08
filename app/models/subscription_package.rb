@@ -1,5 +1,7 @@
 class SubscriptionPackage < ApplicationRecord
   include Auditable
+  has_one_attached :icon
+
   # has_many :tailor_subscriptions
 
   # # Safely calculate duration in days

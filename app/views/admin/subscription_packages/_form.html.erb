@@ -122,6 +122,31 @@
               </div>
             </div>
 
+             <hr class="my-4">
+
+              <!-- ICON / IMAGE -->
+              <h6 class="text-uppercase text-dark mb-3">Package Icon</h6>
+              <div class="form-group col-md-6">
+                <% if f.object.icon.attached? %>
+                  <div class="mb-2">
+                    <%= image_tag f.object.icon,
+                          class: "img-thumbnail",
+                          style: "max-width: 120px;" %>
+                  </div>
+                <% end %>
+                <div class="d-flex align-items-center gap-2">
+                  <label class="btn bg-gradient-info text-white mb-0">
+                    Choose Icon
+                    <%= f.file_field :icon,
+                          class: "d-none",
+                          accept: "image/png,image/jpeg,image/svg+xml",
+                          onchange: "this.closest('.d-flex').querySelector('.file-name').innerText = this.files[0]?.name || 'No file chosen'" %>
+                  </label>
+                  <span class="file-name text-muted">No file chosen</span>
+                </div>
+                <p class="text-xs text-secondary mt-1">Accepted: PNG, JPG, SVG</p>
+              </div>
+
           </div>
 
           <!-- ACTIONS -->

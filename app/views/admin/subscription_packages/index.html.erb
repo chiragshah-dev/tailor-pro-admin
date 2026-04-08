@@ -46,6 +46,7 @@
                 <th class="text-uppercase text-dark text-xxs font-weight-bold">
                   <%= sortable_header("name", "Name") %>
                 </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Icon</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("price_month", "Monthly Price") %>
                 </th>
@@ -75,6 +76,15 @@
                         <p class="text-sm font-weight-bold text-dark mb-0"><%= package.name %></p>
                         <p class="text-xs text-secondary mb-0"><%= package.currency %></p>
                       </div>
+                    </td>
+                    <td>
+                      <% if package.icon.attached? %>
+                        <%= image_tag package.icon,
+                              class: "avatar avatar-sm border-radius-lg",
+                              alt: package.name %>
+                      <% else %>
+                        <span class="text-dark text-xs">NA</span>
+                      <% end %>
                     </td>
                     <td>
                       <p class="text-sm text-dark mb-0">
