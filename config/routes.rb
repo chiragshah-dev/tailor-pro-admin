@@ -77,6 +77,6 @@ Rails.application.routes.draw do
         patch :toggle_active
       end
     end
-
+    resources :questions
   end
 end

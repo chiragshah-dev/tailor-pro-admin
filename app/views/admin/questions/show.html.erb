@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+          <h6 class="text-white text-capitalize ps-3 mb-0">Question Details</h6>
+          <div class="me-3 d-flex gap-2">
+            <%= link_to edit_admin_question_path(@question, page: params[:page]),
+                  class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" do %>
+              Edit
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div class="card-body px-4 pt-4 pb-2">
+        <div class="row">
+          <!-- LEFT -->
+          <div class="col-md-8">
+            <p class="text-sm mb-3">
+              <span class="fw-bold text-dark">Question:</span>
+              <span class="text-dark ms-2"><%= @question.question %></span>
+            </p>
+            <p class="text-sm mb-3">
+              <span class="fw-bold text-dark">Answer:</span>
+              <span class="text-dark ms-2"><%= @question.answer %></span>
+            </p>
+            <p class="text-sm mb-3">
+              <span class="fw-bold text-dark">Active:</span>
+              <span class="badge bg-<%= @question.active? ? 'success' : 'secondary' %> ms-2">
+                <%= @question.active? ? "Yes" : "No" %>
+              </span>
+            </p>
+            <p class="text-sm mb-3">
+              <span class="fw-bold text-dark">Created At:</span>
+              <span class="text-dark ms-2"><%= @question.created_at.strftime("%d %b %Y, %I:%M %p") %></span>
+            </p>
+            <p class="text-sm mb-3">
+              <span class="fw-bold text-dark">Updated At:</span>
+              <span class="text-dark ms-2"><%= @question.updated_at.strftime("%d %b %Y, %I:%M %p") %></span>
+            </p>
+          </div>
+        </div>
+
+        <!-- BACK -->
+        <div class="mt-4 text-end">
+          <%= link_to admin_questions_path(page: params[:page]),
+                class: "btn btn-secondary btn-sm text-uppercase font-weight-bold" do %>
+            Back
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

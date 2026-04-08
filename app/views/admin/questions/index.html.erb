@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+          <h6 class="text-white text-capitalize ps-3 mb-0">Questions & Answers</h6>
+          <div class="d-flex gap-2 me-3">
+            <%= link_to "Add Question",
+                  new_admin_question_path,
+                  class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body px-0 pb-2">
+        <!-- SEARCH -->
+        <div class="px-3 pb-3">
+          <%= render "admin/shared/search", url: admin_questions_path, placeholder: "Search questions or answers..." do %>
+          <% end %>
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">ID</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("question", "Question") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Answer</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("active", "Active") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("created_at", "Created At") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @questions.any? %>
+                <% @questions.each_with_index do |question, index| %>
+                  <tr>
+                    <td>
+                      <p class="text-sm text-dark mb-0 px-3">
+                        <%= (@questions.current_page - 1) * @questions.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="text-sm text-dark mb-0">
+                        <%= truncate(question.question, length: 60) %>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="text-sm text-dark mb-0">
+                        <%= truncate(question.answer, length: 80) %>
+                      </p>
+                    </td>
+                    <td>
+                      <span class="badge bg-<%= question.active? ? 'success' : 'secondary' %>">
+                        <%= question.active? ? "Yes" : "No" %>
+                      </span>
+                    </td>
+                    <td>
+                      <p class="text-sm text-dark mb-0">
+                        <%= question.created_at.strftime("%d %b %Y") %>
+                      </p>
+                    </td>
+                    <td class="align-middle text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <%= link_to admin_question_path(question, page: params[:page]),
+                              class: "btn btn-xs btn-secondary" do %>
+                          <i class="fas fa-eye"></i>
+                        <% end %>
+                        <%= link_to edit_admin_question_path(question, page: params[:page]),
+                              class: "btn btn-xs btn-secondary" do %>
+                          <i class="fas fa-edit"></i>
+                        <% end %>
+                        <%= button_to admin_question_path(question, page: params[:page]),
+                              method: :delete,
+                              class: "btn btn-xs btn-secondary",
+                              data: { turbo_confirm: "Are you sure you want to delete this question?" } do %>
+                          <i class="fas fa-trash"></i>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr>
+                  <td colspan="6" class="text-center">
+                    <p class="no-content-text">No records found.</p>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- PAGINATION -->
+        <div class="d-flex justify-content-center mt-3">
+          <%= paginate @questions %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
