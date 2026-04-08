@@ -107,6 +107,14 @@
           <p class="text-sm text-secondary"><%= @subscription_package.description.html_safe %></p>
         <% end %>
 
+        <div class="col-md-4">
+          <% if @subscription_package.icon.attached? %>
+            <p class="text-sm fw-bold text-dark mb-2">Package Icon:</p>
+            <%= image_tag @subscription_package.icon,
+                  class: "img-thumbnail",
+                  style: "max-width: 150px;" %>
+          <% end %>
+        </div>
         <!-- BACK -->
         <%= link_to admin_subscription_packages_path(page: params[:page]),
             class: "btn btn-secondary btn-sm text-uppercase font-weight-bold float-end mt-3" do %>
