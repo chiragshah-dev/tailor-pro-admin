@@ -101,6 +101,15 @@
         <% end %>
       </li>
 
+      <!-- Questions -->
+      <li class="nav-item">
+        <%= link_to admin_questions_path,
+          class: "nav-link #{controller_name == 'questions' ? 'active bg-gradient-info text-white' : 'text-dark'}" do %>
+          <i class="material-symbols-rounded opacity-5">quiz</i>
+          <span class="nav-link-text ms-1">Questions</span>
+        <% end %>
+      </li>
+
       <!-- Notification Templates -->
       <li class="nav-item">
         <%= link_to admin_notification_templates_path,

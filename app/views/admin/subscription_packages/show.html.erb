@@ -43,6 +43,16 @@
               </span>
             </p>
             <p class="text-sm mb-2 text-dark">
+              <strong>Best Choice:</strong>
+              <span class="ms-2">
+                <% if @subscription_package.best_choice? %>
+                  <span class="badge bg-gradient-success">Active</span>
+                <% else %>
+                  <span class="badge bg-gradient-secondary">Inactive</span>
+                <% end %>
+              </span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
               <strong>Created At:</strong>
               <span class="ms-2">
                 <%= @subscription_package.created_at.strftime("%d %b %Y %I:%M %p") %>
@@ -94,7 +104,7 @@
           <p class="text-sm mb-2 text-dark">
             <strong>Description:</strong>
           </p>
-          <p class="text-sm text-secondary"><%= @subscription_package.description %></p>
+          <p class="text-sm text-secondary"><%= @subscription_package.description.html_safe %></p>
         <% end %>
 
         <!-- BACK -->

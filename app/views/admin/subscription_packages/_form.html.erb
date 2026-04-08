@@ -14,7 +14,6 @@
       <!-- BODY -->
       <div class="card-body px-4 pb-4">
         <%= form_with model: [:admin, @subscription_package], local: true do |f| %>
-
           <%= hidden_field_tag :page, params[:page] %>
 
           <div class="row g-4">
@@ -99,8 +98,9 @@
             <!-- Description -->
             <div class="col-12">
               <label class="form-label font-weight-bold text-dark">Description</label>
-              <div class="input-group input-group-outline">
-                <%= f.text_area :description, rows: 3, class: "form-control", id: "description" %>
+              <div>
+                <div id="editor" style="height: 200px; background-color: #fff; border: 1px solid #ced4da; border-radius: 0.25rem;"></div>
+                <%= f.hidden_field :description, id: "description" %>
               </div>
             </div>
 
@@ -109,7 +109,16 @@
               <label class="form-label font-weight-bold text-dark">Status</label>
               <div class="form-check mt-2">
                 <%= f.check_box :active, class: "form-check-input", id: "active_checkbox" %>
-                <label class="form-check-label">Active</label>
+                <label class="form-check-label" for="active_checkbox">Active</label>
+              </div>
+            </div>
+
+            <!-- Best Choice -->
+            <div class="col-12">
+              <label class="form-label font-weight-bold text-dark">Best Choice</label>
+              <div class="form-check mt-2">
+                <%= f.check_box :best_choice, class: "form-check-input", id: "best_choice_checkbox" %>
+                <label class="form-check-label" for="best_choice_checkbox">Active</label>
               </div>
             </div>
 
@@ -130,3 +139,82 @@
     </div>
   </div>
 </div>
+
+<!-- Quill Initialization -->
+<script>
+  document.addEventListener("turbo:load", () => {
+    const form = document.querySelector("form");
+    if (!form) return;
+
+    const nameInput = document.getElementById("package_name");
+    const nameErr   = document.getElementById("name_err");
+
+    // Clear error on input
+    nameInput?.addEventListener("input", () => {
+      if (nameInput.value.trim()) {
+        nameErr.innerHTML = "";
+        nameInput.classList.remove("is-invalid");
+      }
+    });
+
+    form.addEventListener("submit", (e) => {
+      let valid = true;
+
+      // Reset error
+      nameErr.innerHTML = "";
+      nameInput.classList.remove("is-invalid");
+
+      // Validate Package Name
+      if (!nameInput.value.trim()) {
+        nameErr.innerHTML = "Package name can't be blank";
+        nameInput.classList.add("is-invalid");
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+  });
+  document.addEventListener("turbo:load", () => {
+    const editorContainer = document.querySelector('#editor');
+
+    if (editorContainer && !editorContainer.classList.contains("ql-container")) {
+      const quill = new Quill('#editor', {
+        theme: 'snow',
+        placeholder: 'Write description...',
+        modules: {
+          toolbar: [
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ['bold', 'italic', 'underline'],
+            ['link']
+          ]
+        }
+      });
+
+      // Load existing content (edit page)
+      const hiddenInput = document.querySelector('#description');
+      if (hiddenInput.value) {
+        quill.root.innerHTML = hiddenInput.value;
+      }
+
+      // Sync to hidden field before submit
+      const form = editorContainer.closest("form");
+      form.addEventListener("submit", () => {
+        hiddenInput.value = quill.root.innerHTML.trim();
+      });
+
+      // Store reference for cleanup
+      editorContainer._quill = quill;
+    }
+  });
+
+  // Cleanup for Turbo cache
+  document.addEventListener("turbo:before-cache", () => {
+    const editorContainer = document.querySelector('#editor');
+    if (editorContainer) {
+      if (editorContainer._quill) {
+        editorContainer._quill.destroy();
+      }
+      editorContainer.innerHTML = "";
+    }
+  });
+</script>

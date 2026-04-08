@@ -95,7 +95,8 @@ class Admin::SubscriptionPackagesController < ApplicationController
       :currency,
       :billing_type,
       :invoice_fee_percent,
-      :active
+      :active,
+      :best_choice
     )
   end
 end
