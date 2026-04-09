@@ -1,7 +1,5 @@
 class SubscriptionPackage < ApplicationRecord
   include Auditable
-  include RailsSortable::Model
-  include Auditable
   has_one_attached :icon
   has_many :tailor_subscriptions
 
