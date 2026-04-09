@@ -76,6 +76,9 @@ Rails.application.routes.draw do
       member do
         patch :toggle_active
       end
+      collection do
+        post :reorder
+      end
     end
     resources :questions
   end
