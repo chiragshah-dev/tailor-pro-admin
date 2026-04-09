@@ -12,7 +12,7 @@ class Admin::SubscriptionPackagesController < ApplicationController
     if params[:search].present?
       q = "%#{params[:search].strip}%"
       @subscription_packages = @subscription_packages.where(
-        "name ILIKE :q OR description ILIKE :q", q: q
+        "name ILIKE :q OR description ILIKE :q", q: q,
       )
     end
 
@@ -25,14 +25,14 @@ class Admin::SubscriptionPackagesController < ApplicationController
     end
 
     sortable_columns = {
-      "name"                => "subscription_packages.name",
-      "price_month"         => "subscription_packages.price_month",
-      "price_year"          => "subscription_packages.price_year",
+      "name" => "subscription_packages.name",
+      "price_month" => "subscription_packages.price_month",
+      "price_year" => "subscription_packages.price_year",
       "invoice_fee_percent" => "subscription_packages.invoice_fee_percent",
-      "active"              => "subscription_packages.active",
+      "active" => "subscription_packages.active",
     }
 
-    sort_column    = sortable_columns[params[:sort]] || "subscription_packages.created_at"
+    sort_column = sortable_columns[params[:sort]] || "subscription_packages.created_at"
     sort_direction = params[:direction] == "asc" ? "asc" : "desc"
 
     @subscription_packages = @subscription_packages
@@ -77,7 +77,15 @@ class Admin::SubscriptionPackagesController < ApplicationController
   def toggle_active
     @subscription_package.update!(active: !@subscription_package.active)
     redirect_to admin_subscription_packages_path(page: params[:page]),
-                notice: "Package #{@subscription_package.active? ? 'activated' : 'deactivated'} successfully."
+                notice: "Package #{@subscription_package.active? ? "activated" : "deactivated"} successfully."
+  end
+
+  def reorder
+    params[:data_items].each_with_index do |id, index|
+      SubscriptionPackage.where(id: id).update_all(position: index + 1)
+    end
+
+    render json: { success: true }
   end
 
   private
@@ -97,6 +105,10 @@ class Admin::SubscriptionPackagesController < ApplicationController
       :invoice_fee_percent,
       :active,
       :best_choice,
+      :razorpay_plan_id_monthly,
+      :razorpay_plan_id_yearly,
+      :ios_product_id_monthly,
+      :ios_product_id_yearly,
       :icon
     )
   end

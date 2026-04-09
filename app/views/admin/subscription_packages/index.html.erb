@@ -57,15 +57,18 @@
                   <%= sortable_header("invoice_fee_percent", "Invoice Fee") %>
                 </th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("position", "Position") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("active", "Status") %>
                 </th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="sortable_table" data-reorder-url="<%= reorder_admin_subscription_packages_path %>">
               <% if @subscription_packages.present? %>
                 <% @subscription_packages.each_with_index do |package, index| %>
-                  <tr>
+                  <tr id="sortable_item<%= package.id %>" style="cursor: move;">
                     <td>
                       <p class="text-sm text-dark mb-0 px-3 py-1">
                         <%= (@subscription_packages.current_page - 1) * @subscription_packages.limit_value + index + 1 %>
@@ -109,6 +112,11 @@
                         <%= number_with_precision(package.invoice_fee_percent, precision: 2) %>%
                       </p>
                     </td>
+                    <td class="text-center">
+                      <span class="badge bg-gradient-info">
+                        <%= package.position || '-' %>
+                      </span>
+                    </td>
                     <td>
                       <% if package.active? %>
                         <span class="badge bg-gradient-success">Active</span>
@@ -135,8 +143,8 @@
                         <%= link_to history_admin_subscription_package_path(package),
                             class: "btn btn-xs rounded btn-secondary",
                             title: "View History" do %>
-                        <i class="fas fa-history"></i>
-                      <% end %>
+                          <i class="fas fa-history"></i>
+                        <% end %>
                       </div>
                     </td>
                   </tr>

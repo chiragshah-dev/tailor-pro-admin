@@ -1,7 +1,6 @@
 <div class="row">
   <div class="col-12">
     <div class="card my-4">
-
       <!-- HEADER -->
       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
         <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
@@ -10,14 +9,11 @@
           </h6>
         </div>
       </div>
-
       <!-- BODY -->
       <div class="card-body px-4 pb-4">
         <%= form_with model: [:admin, @subscription_package], local: true do |f| %>
           <%= hidden_field_tag :page, params[:page] %>
-
           <div class="row g-4">
-
             <!-- Name -->
             <div class="col-md-6">
               <label class="form-label font-weight-bold text-dark">Package Name</label>
@@ -28,7 +24,6 @@
                 <%= @subscription_package.errors.full_messages_for(:name).first %>
               </div>
             </div>
-
             <!-- Currency -->
             <div class="col-md-6">
               <label class="form-label font-weight-bold text-dark">Currency</label>
@@ -40,7 +35,6 @@
                   id: "package_currency" %>
               </div>
             </div>
-
             <!-- Billing Type -->
             <div class="col-md-6">
               <label class="form-label font-weight-bold text-dark">Billing Type</label>
@@ -52,7 +46,6 @@
                   id: "package_billing_type" %>
               </div>
             </div>
-
             <!-- Invoice Fee -->
             <div class="col-md-6">
               <label class="form-label font-weight-bold text-dark">Invoice Fee (%)</label>
@@ -66,7 +59,6 @@
                 <%= @subscription_package.errors.full_messages_for(:invoice_fee_percent).first %>
               </div>
             </div>
-
             <!-- Monthly Price -->
             <div class="col-md-6">
               <label class="form-label font-weight-bold text-dark">Monthly Price (₹)</label>
@@ -80,7 +72,6 @@
                 <%= @subscription_package.errors.full_messages_for(:price_month).first %>
               </div>
             </div>
-
             <!-- Yearly Price -->
             <div class="col-md-6">
               <label class="form-label font-weight-bold text-dark">Yearly Price (₹)</label>
@@ -94,7 +85,42 @@
                 <%= @subscription_package.errors.full_messages_for(:price_year).first %>
               </div>
             </div>
-
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">RazorPay PlanID Monthly</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :razorpay_plan_id_monthly, class: "form-control", id: "razorpay_plan_id_monthly" %>
+              </div>
+              <div id="razorpay_plan_id_monthly_err" class="text-danger text-xs mt-2">
+                <%= @subscription_package.errors.full_messages_for(:razorpay_plan_id_monthly).first %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">RazorPay PlanID Yearly</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :razorpay_plan_id_yearly, class: "form-control", id: "razorpay_plan_id_yearly" %>
+              </div>
+              <div id="razorpay_plan_id_yearly_err" class="text-danger text-xs mt-2">
+                <%= @subscription_package.errors.full_messages_for(:razorpay_plan_id_yearly).first %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">IOS ProductId Monthly</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :ios_product_id_monthly, class: "form-control", id: "ios_product_id_monthly" %>
+              </div>
+              <div id="ios_product_id_monthly_err" class="text-danger text-xs mt-2">
+                <%= @subscription_package.errors.full_messages_for(:ios_product_id_monthly).first %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label font-weight-bold text-dark">IOS ProductId Yearly</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :ios_product_id_yearly, class: "form-control", id: "ios_product_id_yearly" %>
+              </div>
+              <div id="ios_product_id_yearly_err" class="text-danger text-xs mt-2">
+                <%= @subscription_package.errors.full_messages_for(:ios_product_id_yearly).first %>
+              </div>
+            </div>
             <!-- Description -->
             <div class="col-12">
               <label class="form-label font-weight-bold text-dark">Description</label>
@@ -103,7 +129,6 @@
                 <%= f.hidden_field :description, id: "description" %>
               </div>
             </div>
-
             <!-- Active -->
             <div class="col-12">
               <label class="form-label font-weight-bold text-dark">Status</label>
@@ -112,7 +137,6 @@
                 <label class="form-check-label" for="active_checkbox">Active</label>
               </div>
             </div>
-
             <!-- Best Choice -->
             <div class="col-12">
               <label class="form-label font-weight-bold text-dark">Best Choice</label>
@@ -121,50 +145,43 @@
                 <label class="form-check-label" for="best_choice_checkbox">Active</label>
               </div>
             </div>
-
-             <hr class="my-4">
-
-              <!-- ICON / IMAGE -->
-              <h6 class="text-uppercase text-dark mb-3">Package Icon</h6>
-              <div class="form-group col-md-6">
-                <% if f.object.icon.attached? %>
-                  <div class="mb-2">
-                    <%= image_tag f.object.icon,
+            <hr class="my-4">
+            <!-- ICON / IMAGE -->
+            <h6 class="text-uppercase text-dark mb-3">Package Icon</h6>
+            <div class="form-group col-md-6">
+              <% if f.object.icon.attached? %>
+                <div class="mb-2">
+                  <%= image_tag f.object.icon,
                           class: "img-thumbnail",
                           style: "max-width: 120px;" %>
-                  </div>
-                <% end %>
-                <div class="d-flex align-items-center gap-2">
-                  <label class="btn bg-gradient-info text-white mb-0">
-                    Choose Icon
-                    <%= f.file_field :icon,
+                </div>
+              <% end %>
+              <div class="d-flex align-items-center gap-2">
+                <label class="btn bg-gradient-info text-white mb-0">
+                  Choose Icon
+                  <%= f.file_field :icon,
                           class: "d-none",
                           accept: "image/png,image/jpeg,image/svg+xml",
                           onchange: "this.closest('.d-flex').querySelector('.file-name').innerText = this.files[0]?.name || 'No file chosen'" %>
-                  </label>
-                  <span class="file-name text-muted">No file chosen</span>
-                </div>
-                <p class="text-xs text-secondary mt-1">Accepted: PNG, JPG, SVG</p>
+                </label>
+                <span class="file-name text-muted">No file chosen</span>
               </div>
-
+              <p class="text-xs text-secondary mt-1">Accepted: PNG, JPG, SVG</p>
+            </div>
           </div>
-
           <!-- ACTIONS -->
           <div class="d-flex justify-content-end mt-4">
             <%= link_to "Back",
               admin_subscription_packages_path(page: params[:page]),
               class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
-
             <%= f.submit @subscription_package.new_record? ? "Create" : "Update",
               class: "btn btn-info text-white text-uppercase font-weight-bold" %>
           </div>
-
         <% end %>
       </div>
     </div>
   </div>
 </div>
-
 <!-- Quill Initialization -->
 <script>
   document.addEventListener("turbo:load", () => {

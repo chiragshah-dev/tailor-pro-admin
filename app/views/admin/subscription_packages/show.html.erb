@@ -87,6 +87,30 @@
                 <%= number_with_precision(@subscription_package.invoice_fee_percent, precision: 2) %>%
               </span>
             </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Razorpay PlanID Monthly:</strong>
+              <span class="ms-2">
+                <%= @subscription_package.razorpay_plan_id_monthly %>
+              </span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Razorpay PlanID Yearly:</strong>
+              <span class="ms-2">
+                <%= @subscription_package.razorpay_plan_id_yearly %>
+              </span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>IOS ProductId Monthly:</strong>
+              <span class="ms-2">
+                <%= @subscription_package.ios_product_id_monthly %>
+              </span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>IOS ProductId Yearly:</strong>
+              <span class="ms-2">
+                <%= @subscription_package.ios_product_id_yearly %>
+              </span>
+            </p>
             <% unless @subscription_package.free? %>
               <p class="text-sm mb-2 text-dark">
                 <strong>Yearly Savings:</strong>
@@ -97,7 +121,6 @@
             <% end %>
           </div>
         </div>
-
         <!-- DESCRIPTION -->
         <% if @subscription_package.description.present? %>
           <hr class="horizontal dark my-3" style="border-top: 1.5px solid #adb5bd; opacity: 1;">
@@ -106,7 +129,6 @@
           </p>
           <p class="text-sm text-secondary"><%= @subscription_package.description.html_safe %></p>
         <% end %>
-
         <div class="col-md-4">
           <% if @subscription_package.icon.attached? %>
             <p class="text-sm fw-bold text-dark mb-2">Package Icon:</p>

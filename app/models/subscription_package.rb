@@ -1,8 +1,9 @@
 class SubscriptionPackage < ApplicationRecord
   include Auditable
+  include RailsSortable::Model
+  include Auditable
   has_one_attached :icon
-
-  # has_many :tailor_subscriptions
+  has_many :tailor_subscriptions
 
   # # Safely calculate duration in days
   # def total_duration_in_days
@@ -13,24 +14,24 @@ class SubscriptionPackage < ApplicationRecord
   # end
 
   BILLING_TYPES = %w[free paid].freeze
-  CURRENCIES    = %w[INR USD EUR GBP].freeze
+  CURRENCIES = %w[INR USD EUR GBP].freeze
 
   # -------------------------
   # Validations
   # -------------------------
-  validates :name,                 presence: true
-  validates :price_month,         numericality: { greater_than_or_equal_to: 0 }
-  validates :price_year,          numericality: { greater_than_or_equal_to: 0 }
-  validates :invoice_fee_percent,  numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
-  validates :billing_type,         inclusion: { in: BILLING_TYPES }
-  validates :currency,             inclusion: { in: CURRENCIES }
+  validates :name, presence: true
+  validates :price_month, numericality: { greater_than_or_equal_to: 0 }
+  validates :price_year, numericality: { greater_than_or_equal_to: 0 }
+  validates :invoice_fee_percent, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
+  validates :billing_type, inclusion: { in: BILLING_TYPES }
+  validates :currency, inclusion: { in: CURRENCIES }
 
   # -------------------------
   # Scopes
   # -------------------------
-  scope :active,   -> { where(active: true) }
+  scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
-
+  default_scope { order(:position) }
   # -------------------------
   # Helpers
   # -------------------------
@@ -52,5 +53,17 @@ class SubscriptionPackage < ApplicationRecord
 
   def symbol
     Money::Currency.find(currency)&.symbol
+  end
+
+  def razorpay_plan_id_for(billing_cycle)
+    case billing_cycle.to_s
+    when "yearly" then razorpay_plan_id_yearly
+    when "monthly" then razorpay_plan_id_monthly
+    else nil
+    end
+  end
+
+  def razorpay_configured_for?(billing_cycle)
+    razorpay_plan_id_for(billing_cycle).present?
   end
 end
