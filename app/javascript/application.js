@@ -121,29 +121,24 @@ document.addEventListener("turbo:load", () => {
 });
 
 
-import "jquery"
-import "jquery-ui"
 
-document.addEventListener("DOMContentLoaded", () => {
+
+document.addEventListener("turbo:load", () => {
   const $table = $("#sortable_table");
 
   if ($table.length === 0) return;
 
   const reorderUrl = $table.data("reorder-url");
 
+  if ($table.data("ui-sortable")) {
+    $table.sortable("destroy");
+  }
+
   $table.sortable({
     items: "tr",
     cursor: "move",
     opacity: 0.7,
     axis: "y",
-
-    start: function (event, ui) {
-      ui.item.addClass("dragging");
-    },
-
-    stop: function (event, ui) {
-      ui.item.removeClass("dragging");
-    },
 
     update: function () {
       const items = [];
@@ -155,8 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      if (items.length === 0) return;
-
       $.ajax({
         type: "POST",
         url: reorderUrl,
@@ -164,13 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
         data: {
           data_items: items,
           authenticity_token: $('meta[name="csrf-token"]').attr("content"),
-        },
-        success: function () {
-          // reload to reflect updated positions
-          window.location.reload();
-        },
-        error: function (xhr) {
-          console.error("Reorder failed:", xhr.responseText);
         },
       });
     },
