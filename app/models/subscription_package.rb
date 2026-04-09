@@ -24,6 +24,7 @@ class SubscriptionPackage < ApplicationRecord
   validates :billing_type, inclusion: { in: BILLING_TYPES }
   validates :currency, inclusion: { in: CURRENCIES }
 
+  before_create :set_position
   # -------------------------
   # Scopes
   # -------------------------
@@ -63,5 +64,10 @@ class SubscriptionPackage < ApplicationRecord
 
   def razorpay_configured_for?(billing_cycle)
     razorpay_plan_id_for(billing_cycle).present?
+  end
+
+  def set_position
+    last_position = SubscriptionPackage.maximum(:position)
+    self.position = last_position ? last_position + 1 : 1
   end
 end
