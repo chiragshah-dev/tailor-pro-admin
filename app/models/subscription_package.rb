@@ -69,7 +69,7 @@ class SubscriptionPackage < ApplicationRecord
   private
 
   def set_position
-    last_position = SubscriptionPackage.unscoped.maximum(:position)
+    last_position = SubscriptionPackage.maximum(:position)
     self.position = last_position ? last_position + 1 : 1
   end
 end
