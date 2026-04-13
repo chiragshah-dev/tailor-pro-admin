@@ -26,6 +26,8 @@ class SubscriptionPackage < ApplicationRecord
   validates :currency, inclusion: { in: CURRENCIES }
 
   before_create :set_position
+  before_destroy :recalculate_position_on_delete
+
   # -------------------------
   # Scopes
   # -------------------------
@@ -72,5 +74,9 @@ class SubscriptionPackage < ApplicationRecord
   def set_position
     last_position = SubscriptionPackage.maximum(:position)
     self.position = last_position ? last_position + 1 : 1
+  end
+
+  def recalculate_position_on_delete
+    SubscriptionPackage.unscoped.where("position > ?", self.position).update_all("position = position - 1")
   end
 end
