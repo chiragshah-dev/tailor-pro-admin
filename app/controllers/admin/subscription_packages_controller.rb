@@ -30,6 +30,7 @@ class Admin::SubscriptionPackagesController < ApplicationController
       "price_year" => "subscription_packages.price_year",
       "invoice_fee_percent" => "subscription_packages.invoice_fee_percent",
       "active" => "subscription_packages.active",
+      "position" => "subscription_packages.position",
     }
 
     sort_column = sortable_columns[params[:sort]] || "subscription_packages.created_at"
