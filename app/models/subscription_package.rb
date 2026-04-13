@@ -2,6 +2,7 @@ class SubscriptionPackage < ApplicationRecord
   include Auditable
   has_one_attached :icon
   has_many :tailor_subscriptions
+  has_many :user_subscriptions, dependent: :restrict_with_error
 
   # # Safely calculate duration in days
   # def total_duration_in_days
