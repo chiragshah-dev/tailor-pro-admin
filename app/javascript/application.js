@@ -59,26 +59,6 @@ document.addEventListener("turbo:load", () => {
   });
 });
 
-
-
-import "@hotwired/turbo-rails"
-import "@hotwired/stimulus"
-import "controllers"
-
-
-
-// Core
-import "core/bootstrap.bundle.min"
-import "core/popper.min"
-
-// 
-import "plugins/material-dashboard"
-import "plugins/perfect-scrollbar.min"
-
-// Custom
-import "custom/central"
-import "custom/login"
-
 document.addEventListener("turbo:load", () => {
   const confirmBtn = document.getElementById("turboConfirmOk");
   const confirmMsg = document.getElementById("turboConfirmMessage");
