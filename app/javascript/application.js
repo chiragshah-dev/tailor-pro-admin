@@ -158,6 +158,9 @@ document.addEventListener("turbo:load", () => {
           data_items: items,
           authenticity_token: $('meta[name="csrf-token"]').attr("content"),
         },
+        success: function () {
+         window.location.reload();
+        },
       });
     },
   });
