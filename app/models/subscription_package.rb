@@ -67,6 +67,8 @@ class SubscriptionPackage < ApplicationRecord
     razorpay_plan_id_for(billing_cycle).present?
   end
 
+  private
+
   def set_position
     last_position = SubscriptionPackage.maximum(:position)
     self.position = last_position ? last_position + 1 : 1
