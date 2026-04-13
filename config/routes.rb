@@ -80,6 +80,7 @@ Rails.application.routes.draw do
         post :reorder
       end
     end
+    resources :user_subscriptions, only: [:index, :show], concerns: :historyable
     resources :questions
   end
 end
