@@ -1,0 +1,114 @@
+<%# app/views/admin/user_subscriptions/index.html.erb %>
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">User Subscriptions</h6>
+        </div>
+      </div>
+      <div class="card-body px-0 pb-2">
+        <div class="px-3 pb-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
+          <div>
+            <h6 class="mb-0 text-sm text-dark fw-bold">
+              Total Subscriptions : <span class="text-info"><%= @subscriptions.total_count %></span>
+            </h6>
+          </div>
+          <div class="d-flex gap-2 align-items-center">
+            <%= render "admin/shared/search", url: admin_user_subscriptions_path, placeholder: "Search..." do %>
+              <div style="min-width: 140px;">
+                <%= select_tag :status,
+      options_for_select(
+        [["All Status", ""]] + UserSubscription::STATUSES.map { |s| [s.titleize, s] },
+        params[:status]
+      ),
+      class: "form-select",
+      onchange: "this.form.submit();" %>              </div>
+              <div style="min-width: 140px;">
+                <%= select_tag :billing_cycle,
+      options_for_select(
+        [["All Cycles", ""]] + UserSubscription::BILLING_CYCLES.map { |c| [c.titleize, c] },
+        params[:billing_cycle]
+      ),
+      class: "form-select",
+      onchange: "this.form.submit();" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">ID</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2"><%= sortable_header("user", "User") %></th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2"><%= sortable_header("package", "Package") %></th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2"><%= sortable_header("status", "Status") %></th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2"><%= sortable_header("cycle", "Billing Cycle") %></th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2"><%= sortable_header("amount", "Paid Amount") %></th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2"><%= sortable_header("expires", "Expires At") %></th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @subscriptions.present? %>
+                <% @subscriptions.each_with_index do |sub, index| %>
+                  <tr>
+                    <td>
+                      <p class="text-sm text-dark mb-0 px-3 py-1">
+                        <%= (@subscriptions.current_page - 1) * @subscriptions.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="text-sm mb-0 text-dark "><%= sub.user&.name&.titleize %></p>
+                    </td>
+                    <td>
+                      <p class="text-sm mb-0">
+                        <% if sub.subscription_package.present? %>
+                          <%= link_to sub.subscription_package.name, admin_subscription_package_path(sub.subscription_package), class: "text-info " %>
+                        <% else %>
+                          <span class="text-secondary">N/A</span>
+                        <% end %>
+                      </p>
+                    </td>
+                    <td>
+                      <%# Inline status color mapping %>
+                      <% 
+                        status_colors = { "active" => "success", "cancelled" => "danger", "expired" => "warning" }
+                        badge_color = status_colors[sub.status] || "secondary"
+                      %>
+                      <span class="badge bg-gradient-<%= badge_color %>"><%= sub.status&.titleize %></span>
+                    </td>
+                    <td>
+                      <p class="text-sm mb-0 text-dark"><%= sub.billing_cycle&.titleize %></p>
+                    </td>
+                    <td>
+                      <p class="text-sm mb-0 text-dark"><%= sub.currency %> <%= sub.paid_amount %></p>
+                    </td>
+                    <td>
+                      <p class="text-sm mb-0 text-dark"><%= sub.expires_at&.strftime("%d-%b-%Y") || "-" %></p>
+                    </td>
+                    <td class="align-middle text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <%= link_to admin_user_subscription_path(sub, page: params[:page]), class: "btn btn-xs rounded btn-secondary", title: "Show" do %>
+                          <i class="fas fa-eye"></i>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr>
+                  <td colspan="8" class="text-center py-4">No record found.</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <div class="d-flex justify-content-center px-3 mt-3">
+          <%= paginate @subscriptions %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
