@@ -72,8 +72,12 @@
                   </td>
                   <td>
                     <% sub = user.active_user_subscription %>
-                    <%= link_to admin_user_subscription_path(sub), class: "text-sm  text-info" do %>
-                      <%= sub.subscription_package&.name %>
+                    <% if sub.present? %>
+                      <%= link_to admin_user_subscription_path(sub), class: "text-sm text-info" do %>
+                        <%= sub.subscription_package&.name %>
+                      <% end %>
+                    <% else %>
+                      <small class="text-muted">No Active Subscription</small>
                     <% end %>
                   </td>
                   <td>
