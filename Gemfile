@@ -74,6 +74,7 @@ gem "numbers_and_words"
 gem "kaminari"
 gem "importmap-rails"
 gem "streamio-ffmpeg"
+gem "rails_sortable"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

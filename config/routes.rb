@@ -72,5 +72,15 @@ Rails.application.routes.draw do
     get "stores/:id/stitches_for", to: "orders#store_stitches_for"
     get "garment_types/by_gender/:gender", to: "orders#garment_types_by_gender"
     get "garment_types/:id/measurement_fields", to: "orders#measurement_fields"
+    resources :subscription_packages, concerns: :historyable do
+      member do
+        patch :toggle_active
+      end
+      collection do
+        post :reorder
+      end
+    end
+    resources :user_subscriptions, only: [:index, :show], concerns: :historyable
+    resources :questions
   end
 end

@@ -19,7 +19,7 @@ class Admin::UsersController < ApplicationController
   # end
 
   def index
-    @users = User.includes(:active_store, :stores)
+    @users = User.includes(:active_store, :stores, active_user_subscription: :subscription_package)
 
     if params[:search].present?
       search = "%#{params[:search].strip}%"

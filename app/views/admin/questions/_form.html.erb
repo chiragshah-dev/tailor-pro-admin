@@ -1,0 +1,100 @@
+<%= form_with model: [:admin, @question], local: true do |f| %>
+  <%= hidden_field_tag :page, params[:page] %>
+
+  <% if @question.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% @question.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row g-4">
+    <!-- QUESTION -->
+    <div class="form-group col-md-12">
+      <label class="form-label font-weight-bold text-dark">Question</label>
+      <div class="input-group input-group-outline">
+        <%= f.text_area :question,
+              class: "form-control",
+              rows: 3,
+              placeholder: "Enter the question..." %>
+      </div>
+      <div id="question_err" class="text-danger mt-2 text-xs">
+        <%= @question.errors.full_messages_for(:question).first %>
+      </div>
+    </div>
+
+    <!-- ANSWER -->
+    <div class="form-group col-md-12">
+      <label class="form-label font-weight-bold text-dark">Answer</label>
+      <div class="input-group input-group-outline">
+        <%= f.text_area :answer,
+              class: "form-control",
+              rows: 5,
+              placeholder: "Enter the answer..." %>
+      </div>
+      <div id="answer_err" class="text-danger mt-2 text-xs">
+        <%= @question.errors.full_messages_for(:answer).first %>
+      </div>
+    </div>
+
+    <!-- ACTIVE -->
+    <div class="form-group col-md-6">
+      <label class="form-label font-weight-bold text-dark">Active</label>
+      <div class="form-check mt-2">
+        <%= f.check_box :active, class: "form-check-input", id: "active_checkbox" %>
+        <label class="form-check-label" for="best_choice_checkbox">Active</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="d-flex justify-content-end mt-4">
+    <%= link_to "Back",
+          admin_questions_path(page: params[:page]),
+          class: "btn btn-secondary me-2 text-uppercase font-weight-bold" %>
+    <%= f.submit @question.persisted? ? "Update" : "Create",
+          class: "btn btn-info text-white text-uppercase font-weight-bold" %>
+  </div>
+<% end %>
+
+<script>
+  document.addEventListener("turbo:load", () => {
+    const form = document.querySelector("form");
+    if (!form) return;
+
+    const questionInput = document.querySelector("textarea[name='question[question]']");
+    const answerInput   = document.querySelector("textarea[name='question[answer]']");
+    const questionErr   = document.getElementById("question_err");
+    const answerErr     = document.getElementById("answer_err");
+
+    form.addEventListener("submit", (e) => {
+      let valid = true;
+
+      questionErr.innerHTML = "";
+      answerErr.innerHTML   = "";
+
+      if (!questionInput.value.trim()) {
+        questionErr.innerHTML = "Question can't be blank";
+        valid = false;
+      }
+
+      if (!answerInput.value.trim()) {
+        answerErr.innerHTML = "Answer can't be blank";
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+
+    questionInput?.addEventListener("input", () => {
+      if (questionInput.value.trim()) questionErr.innerHTML = "";
+    });
+
+    answerInput?.addEventListener("input", () => {
+      if (answerInput.value.trim()) answerErr.innerHTML = "";
+    });
+  });
+</script>

@@ -30,7 +30,7 @@
               </div>
             </div>
             <!-- Amount Limit -->
-            <div class="col-md-3">
+            <div class="col-md-6">
               <label class="form-label font-weight-bold text-dark">Amount Limit</label>
               <div class="input-group input-group-outline">
                 <%= f.number_field :amount_limit,
@@ -43,18 +43,6 @@
               </div>
             </div>
             <!-- Commission Rate -->
-            <div class="col-md-3">
-              <label class="form-label font-weight-bold text-dark">Commission Rate (%)</label>
-              <div class="input-group input-group-outline">
-                <%= f.number_field :commission_rate,
-          step: 0.01,
-          class: "form-control",
-          placeholder: "Enter commission rate" %>
-              </div>
-              <div id="commission_err" class="text-danger mt-2 text-xs">
-                <%= @currency_setting.errors.full_messages_for(:commission_rate).first %>
-              </div>
-            </div>
             <!-- Message -->
             <div class="col-md-12">
               <label class="form-label font-weight-bold text-dark">Message (Modal Text)</label>

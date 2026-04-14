@@ -1,0 +1,161 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+          <h6 class="text-white text-capitalize ps-3 mb-0">
+            User Subscription Details
+          </h6>
+        </div>
+      </div>
+      <div class="card-body px-4 pt-4 pb-4">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <p class="text-sm mb-2 text-dark">
+              <strong class="fw-bold">User:</strong>
+              <span class="ms-2"><%= @subscription.user&.name&.titleize %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong class="fw-bold">Package Name:</strong>
+              <span class="ms-2 text-info">
+                <%= @subscription.subscription_package&.name || "N/A" %>
+              </span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong class="fw-bold">Status:</strong>
+              <% 
+                status_colors = { "active" => "success", "cancelled" => "danger", "expired" => "warning" }
+                badge_color = status_colors[@subscription.status] || "secondary"
+              %>
+              <span class="ms-2 badge bg-gradient-<%= badge_color %>">
+                <%= @subscription.status&.upcase %>
+              </span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong class="fw-bold">Billing Cycle:</strong>
+              <span class="ms-2 text-capitalize"><%= @subscription.billing_cycle %></span>
+            </p>
+          </div>
+          <div class="col-md-6">
+            <p class="text-sm mb-2 text-dark">
+              <strong class="fw-bold">Paid Amount:</strong>
+              <span class="ms-2  text-dark">
+                <%= @subscription.currency %> <%= number_with_precision(@subscription.paid_amount, precision: 2) %>
+              </span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong class="fw-bold">Currency:</strong>
+              <span class="ms-2"><%= @subscription.currency || "N/A" %></span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong class="fw-bold">Auto Renew:</strong>
+              <span class="ms-2">
+                <% if @subscription.auto_renew %>
+                  <span class="text-success"><i class="fas fa-check-circle"></i> Enabled</span>
+                <% else %>
+                  <span class="text-secondary"><i class="fas fa-times-circle"></i> Disabled</span>
+                <% end %>
+              </span>
+            </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong class="fw-bold"> Created:</strong>
+              <span class="ms-2"><%= @subscription.created_at.strftime("%d %b %Y, %I:%M %p") %></span>
+            </p>
+          </div>
+        </div>
+        <hr class="horizontal dark my-3 border-top border-secondary border-2 opacity-50">
+        <h6 class="text-uppercase text-dark mb-3 fw-bold">Validity Period</h6>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <p class="text-sm mb-2 text-dark">
+              <strong class="fw-bold">Started At:</strong>
+              <span class="ms-2"><%= @subscription.started_at&.strftime("%d %b %Y, %I:%M %p") || "-" %></span>
+            </p>
+          </div>
+          <div class="col-md-6">
+            <p class="text-sm mb-2 text-dark">
+              <strong class="fw-bold">Expires At:</strong>
+              <span class="ms-2 text-danger">
+                <%= @subscription.expires_at&.strftime("%d %b %Y, %I:%M %p") || "-" %>
+              </span>
+            </p>
+          </div>
+        </div>
+        <% if @subscription.razorpay_subscription_id.present? || @subscription.razorpay_payment_id.present? || @subscription.razorpay_order_id.present? %>
+          <hr class="horizontal dark my-3 border-top border-secondary border-2 opacity-50">
+          <h6 class="text-uppercase text-dark mb-3 d-flex justify-content-between align-items-center cursor-pointer fw-bold"
+              data-bs-toggle="collapse"
+              data-bs-target="#razorpayCollapse">
+            Razorpay Details
+            <i class="fas fa-chevron-down text-dark"></i>
+          </h6>
+          <div id="razorpayCollapse" class="collapse">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p class="text-sm mb-2 text-dark">
+                  <strong class="fw-bold">Subscription ID:</strong>
+                  <span class="ms-2 text-secondary font-monospace"><%= @subscription.razorpay_subscription_id.presence || "N/A" %></span>
+                </p>
+                <p class="text-sm mb-2 text-dark">
+                  <strong class="fw-bold">Order ID:</strong>
+                  <span class="ms-2 text-secondary font-monospace"><%= @subscription.razorpay_order_id.presence || "N/A" %></span>
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-sm mb-2 text-dark">
+                  <strong class="fw-bold">Payment ID:</strong>
+                  <span class="ms-2 text-secondary font-monospace"><%= @subscription.razorpay_payment_id.presence || "N/A" %></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if @subscription.ios_transaction_id.present? || @subscription.ios_product_id.present? %>
+          <hr class="horizontal dark my-3 border-top border-secondary border-2 opacity-50">
+          <h6 class="text-uppercase text-dark mb-3 d-flex justify-content-between align-items-center cursor-pointer fw-bold"
+              data-bs-toggle="collapse"
+              data-bs-target="#iosCollapse">
+            iOS App Store Details
+            <i class="fas fa-chevron-down text-dark"></i>
+          </h6>
+          <div id="iosCollapse" class="collapse">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p class="text-sm mb-2 text-dark">
+                  <strong class="fw-bold">Transaction ID:</strong>
+                  <span class="ms-2 text-secondary font-monospace"><%= @subscription.ios_transaction_id.presence || "N/A" %></span>
+                </p>
+                <p class="text-sm mb-2 text-dark">
+                  <strong class="fw-bold">Original Trans ID:</strong>
+                  <span class="ms-2 text-secondary font-monospace"><%= @subscription.ios_original_transaction_id.presence || "N/A" %></span>
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p class="text-sm mb-2 text-dark">
+                  <strong class="fw-bold">Product ID:</strong>
+                  <span class="ms-2 text-secondary"><%= @subscription.ios_product_id.presence || "N/A" %></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if @subscription.cancelled_at.present? %>
+          <hr class="horizontal dark my-3 border-top border-secondary border-2 opacity-50">
+          <div class="alert alert-light border-radius-lg p-3">
+            <h6 class="text-danger text-sm text-uppercase fw-bold mb-2">Cancellation Info</h6>
+            <p class="text-sm mb-0 text-dark">
+              This subscription was cancelled on: 
+              <strong class="fw-bold"><%= @subscription.cancelled_at.strftime("%d %b %Y %I:%M %p") %></strong>
+            </p>
+          </div>
+        <% end %>
+        <div class="mt-4">
+          <%= link_to admin_user_subscriptions_path(page: params[:page]),
+              class:"btn btn-secondary btn-sm text-uppercase fw-bold float-end" do %>
+            Back 
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

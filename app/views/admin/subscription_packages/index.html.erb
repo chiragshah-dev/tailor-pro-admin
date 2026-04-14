@@ -1,0 +1,169 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <!-- HEADER -->
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+          <h6 class="text-white text-capitalize ps-3 mb-0">Subscription Packages</h6>
+          <%= link_to new_admin_subscription_package_path,
+              class: "btn btn-sm btn-white text-dark text-uppercase font-weight-bold me-3" do %>
+            <i class="fas fa-plus me-1"></i> New Package
+          <% end %>
+        </div>
+      </div>
+      <!-- BODY -->
+      <div class="card-body px-0 pb-2">
+        <!-- SEARCH & FILTERS -->
+        <div class="px-3 pb-3 d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="mb-0 text-sm text-dark fw-bold">
+              Total Packages :
+              <span class="text-info"><%= @subscription_packages.total_count %></span>
+            </h6>
+          </div>
+          <div>
+            <%= render "admin/shared/search",
+                url: admin_subscription_packages_path,
+                placeholder: "Search packages..." do %>
+              <div class="w-11">
+                <%= select_tag :active,
+                    options_for_select(
+                      [["All", ""], ["Active", "true"], ["Inactive", "false"]],
+                      params[:active]
+                    ),
+                    class: "form-select",
+                    onchange: "this.form.submit();" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <!-- TABLE -->
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">#</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold">
+                  <%= sortable_header("name", "Name") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Icon</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("price_month", "Monthly Price") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("price_year", "Yearly Price") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("invoice_fee_percent", "Invoice Fee") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("position", "Position") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
+                  <%= sortable_header("active", "Status") %>
+                </th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="sortable_table" data-reorder-url="<%= reorder_admin_subscription_packages_path %>">
+              <% if @subscription_packages.present? %>
+                <% @subscription_packages.each_with_index do |package, index| %>
+                  <tr id="sortable_item<%= package.id %>" style="cursor: move;">
+                    <td>
+                      <p class="text-sm text-dark mb-0 px-3 py-1">
+                        <%= (@subscription_packages.current_page - 1) * @subscription_packages.limit_value + index + 1 %>
+                      </p>
+                    </td>
+                    <td>
+                      <div class="d-flex flex-column px-3 py-1">
+                        <p class="text-sm font-weight-bold text-dark mb-0"><%= package.name %></p>
+                        <p class="text-xs text-secondary mb-0"><%= package.currency %></p>
+                      </div>
+                    </td>
+                    <td>
+                      <% if package.icon.attached? %>
+                        <%= image_tag package.icon,
+                              class: "avatar avatar-sm border-radius-lg",
+                              alt: package.name %>
+                      <% else %>
+                        <span class="text-dark text-xs">NA</span>
+                      <% end %>
+                    </td>
+                    <td>
+                      <p class="text-sm text-dark mb-0">
+                        <% if package.free? %>
+                          <span class="badge bg-gradient-success">Free</span>
+                        <% else %>
+                          <%= package.symbol %><%= number_with_precision(package.price_month, precision: 2) %>
+                        <% end %>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="text-sm text-dark mb-0">
+                        <% if package.free? %>
+                          <span class="badge bg-gradient-success">Free</span>
+                        <% else %>
+                          <%= package.symbol %><%= number_with_precision(package.price_year, precision: 2) %>
+                        <% end %>
+                      </p>
+                    </td>
+                    <td>
+                      <p class="text-sm text-dark mb-0">
+                        <%= number_with_precision(package.invoice_fee_percent, precision: 2) %>%
+                      </p>
+                    </td>
+                    <td class="text-center">
+                      <span class="badge bg-gradient-info">
+                        <%= package.position || '-' %>
+                      </span>
+                    </td>
+                    <td>
+                      <% if package.active? %>
+                        <span class="badge bg-gradient-success">Active</span>
+                      <% else %>
+                        <span class="badge bg-gradient-secondary">Inactive</span>
+                      <% end %>
+                    </td>
+                    <td class="align-middle text-center">
+                      <div class="d-flex justify-content-center gap-1">
+                        <%= link_to admin_subscription_package_path(package, page: params[:page]),
+                              class: "btn btn-xs rounded btn-secondary", title: "Show" do %>
+                          <i class="fas fa-eye"></i>
+                        <% end %>
+                        <%= link_to edit_admin_subscription_package_path(package, page: params[:page]),
+                              class: "btn btn-xs rounded btn-secondary", title: "Edit" do %>
+                          <i class="fas fa-edit"></i>
+                        <% end %>
+                        <%= button_to admin_subscription_package_path(package, page: params[:page]),
+                              method: :delete,
+                              class: "btn btn-xs rounded btn-secondary",
+                              data: { turbo_confirm: "Are you sure you want to delete #{package.name}?" } do %>
+                          <i class="fas fa-trash"></i>
+                        <% end %>
+                        <%= link_to history_admin_subscription_package_path(package),
+                            class: "btn btn-xs rounded btn-secondary",
+                            title: "View History" do %>
+                          <i class="fas fa-history"></i>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr>
+                  <td colspan="7" class="text-center">
+                    <p class="no-content-text">No record found.</p>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- PAGINATION -->
+        <div class="d-flex justify-content-center px-3 mt-3">
+          <%= paginate @subscription_packages %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -164,136 +164,277 @@ puts "Total Sub-Categories: #{StitchIt::Category.where.not(parent_id: nil).count
 puts "Total Products: #{StitchIt::Product.count}"
 puts "================================================="
 
-puts "🧵 Seeding StitchIt::GarmentType..."
+# ---------------------------------------------------------------------------
+# Auto-detect image root
+# ---------------------------------------------------------------------------
+def stitch_it_find_image_root
+  candidates = [
+    Rails.root.join("app", "assets", "images"),
+    Rails.root.parent.join("tailor-pro-admin", "app", "assets", "images"),
+    Rails.root.parent.join("tailor_pro_admin", "app", "assets", "images"),
+    Pathname.new("/home/developer/Desktop/Nisha/tailor-pro-admin/app/assets/images"),
+  ]
 
-male_garments = ["Shirt", "Trouser", "Kurta", "Sherwani", "Coat"]
-female_garments = ["Blouse", "Dress", "Kurti", "Lehenga", "Salwar Suit"]
-
-male_garments.each do |name|
-  StitchIt::GarmentType.find_or_create_by!(name: name, gender: 0) do |gt|
-    gt.active = true
-    gt.category_type = 0 # single
-    gt.parent_id = nil
+  candidates.each do |root|
+    next unless root.exist?
+    return root if root.join("Items (female)").exist? ||
+                   root.join("Items (male)").exist? ||
+                   root.join("Tailor's Pro").exist?
   end
-  puts "#{name}"
+
+  Rails.root.join("app", "assets", "images")
 end
 
-female_garments.each do |name|
-  StitchIt::GarmentType.find_or_create_by!(name: name, gender: 1) do |gt|
-    gt.active = true
-    gt.category_type = 0 # single
-    gt.parent_id = nil
+IMAGE_ROOT = stitch_it_find_image_root
+FEMALE_FOLDER = IMAGE_ROOT.join("Items (female)")
+MALE_FOLDER = IMAGE_ROOT.join("Items (male)")
+MEASUREMENT_FOLDER = IMAGE_ROOT.join("Tailor's Pro")
+
+puts "📁 Image root : #{IMAGE_ROOT}"
+puts "  Female      : #{FEMALE_FOLDER.exist? ? "✔" : "⚠️  MISSING"}"
+puts "  Male        : #{MALE_FOLDER.exist? ? "✔" : "⚠️  MISSING"}"
+puts "  Measurement : #{MEASUREMENT_FOLDER.exist? ? "✔" : "⚠️  MISSING"}"
+
+# ---------------------------------------------------------------------------
+# Helper — attach image via Active Storage (idempotent)
+# ---------------------------------------------------------------------------
+def attach_image(record, local_path, filename)
+  local_path = Pathname.new(local_path.to_s)
+
+  unless local_path.exist?
+    puts "  ⚠️  Not found: #{filename}"
+    return
   end
-  puts "#{name}"
+
+  record.image.attach(
+    io: File.open(local_path),
+    filename: filename,
+    content_type: "image/png",
+  )
+  puts "  ✅ Attached: #{filename}"
+rescue => e
+  puts "  ❌ Failed [#{filename}]: #{e.message}"
 end
 
-puts "StitchIt::GarmentType seeding complete!"
+# ---------------------------------------------------------------------------
+# Garment types data
+# name, gender, file (inside Items (female)/ or Items (male)/)
+# ---------------------------------------------------------------------------
+STITCH_IT_GARMENTS = [
+  # Female
+  { name: "Blouse", gender: "female", file: "Blouse.png" },
+  { name: "Dress", gender: "female", file: "Dress.png" },
+  { name: "Kurti", gender: "female", file: "Kurti.png" },
+  { name: "Lehenga", gender: "female", file: "Lehenga.png" },
+  { name: "Salwar Suit", gender: "female", file: "Salwar Suit.png" },
+  # Male
+  { name: "Shirt", gender: "male", file: "Shirt.png" },
+  { name: "Trouser", gender: "male", file: "Trouser.png" },
+  { name: "Kurta", gender: "male", file: "Kurta.png" },
+  { name: "Sherwani", gender: "male", file: "Shervani.png" },
+  { name: "Coat", gender: "male", file: "Coat.png" },
+].freeze
 
-# -------------------------------------------------------------------
-# StitchIt::MeasurementField — global shared fields
-# -------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Measurement fields data
+# label => { key:, position:, image_file: (inside Tailor's Pro/) }
+# All filenames confirmed from VSCode screenshots.
+# ---------------------------------------------------------------------------
+STITCH_IT_MEASUREMENT_FIELDS = {
+  # Circumference / width
+  "Shoulder" => { key: "shoulder", position: 1, image_file: "Shoulder Width.png" },
+  "Chest" => { key: "chest", position: 2, image_file: "Chest Circumference.png" },
+  "Under Bust" => { key: "under_bust", position: 3, image_file: "Lower Bust Circumference.png" },
+  "Upper Bust" => { key: "upper_bust", position: 4, image_file: "Chest Circumference.png" },
+  "Waist" => { key: "waist", position: 5, image_file: "Waist Circumference.png" },
+  "Seat / Hip" => { key: "seat_hip", position: 6, image_file: "Hip Circumference.png" },
+  "Armhole" => { key: "armhole", position: 7, image_file: "Scye.png" },
+  "Bicep" => { key: "bicep", position: 8, image_file: "Bicep Circumference.png" },
+  "Elbow" => { key: "elbow", position: 9, image_file: "Elbow Circumference.png" },
+  "Sleeve Round" => { key: "sleeve_round", position: 10, image_file: "Wrist Circumference.png" },
+  "Wrist / Cuff" => { key: "wrist_cuff", position: 11, image_file: "Cuff Circumference.png" },
+  "Neck" => { key: "neck", position: 12, image_file: "Neck Circumference.png" },
+  "Neck Width" => { key: "neck_width", position: 13, image_file: "Neck Circumference.png" },
+  "Front Neck Depth" => { key: "front_neck_depth", position: 14, image_file: "Neck Depth.png" },
+  "Back Neck Depth" => { key: "back_neck_depth", position: 15, image_file: "Neck Depth.png" },
+  # Lengths
+  "Sleeve" => { key: "sleeve", position: 16, image_file: "Sleeve Length.png" },
+  "Blouse Length" => { key: "blouse_length", position: 17, image_file: "Blouse Length.png" },
+  "Kurti Length" => { key: "kurti_length", position: 18, image_file: "Kurti Length.png" },
+  "Kurta Length" => { key: "kurta_length", position: 19, image_file: "Kurta Length.png" },
+  "Kameez Length" => { key: "kameez_length", position: 20, image_file: "Kameez Length.png" },
+  "Sherwani Length" => { key: "sherwani_length", position: 21, image_file: "Sherwani Length.png" },
+  "Shirt Length" => { key: "shirt_length", position: 22, image_file: "Shirt Length.png" },
+  "Length" => { key: "length", position: 23, image_file: "Pent Length.png" },
+  "Pant Length" => { key: "pant_length", position: 24, image_file: "Pent Length.png" },
+  "Trouser Length" => { key: "trouser_length", position: 25, image_file: "Trouser Length.png" },
+  "Inseam" => { key: "inseam", position: 26, image_file: "Inseam Length.png" },
+  "Salwar Length" => { key: "salwar_length", position: 27, image_file: "Salwar Length.png" },
+  # Lower body
+  "Thigh" => { key: "thigh", position: 28, image_file: "Thigh Circumference.png" },
+  "Knee" => { key: "knee", position: 29, image_file: "Knee Circumference.png" },
+  "Bottom" => { key: "bottom", position: 30, image_file: "Calf Circumference.png" },
+  "Calf" => { key: "calf", position: 31, image_file: "Calf Circumference.png" },
+  "Ankle" => { key: "ankle", position: 32, image_file: "Ankle Circumference.png" },
+  # Lehenga
+  "Flare / Gher" => { key: "flare_gher", position: 33, image_file: "Lahenga Length.png" },
+}.freeze
 
-puts "\n📐 Seeding StitchIt::MeasurementField..."
-
-all_measurement_labels = [
-  "Chest/Bust", "Underbust", "Waist", "Hip", "Seat",
-  "Shoulder Width", "Armhole", "Neck Round",
-  "Sleeve Length", "Sleeve Round", "Cuff Round",
-  "Shirt Length", "Blouse Length", "Kurti Length", "Kurta Length",
-  "Sherwani Length", "Coat Length", "Dress Length", "Kameez Length",
-  "Lehenga Length", "Trouser Length", "Salwar Length", "Inseam Length",
-  "Front Neck Depth", "Back Neck Depth",
-  "Thigh", "Knee", "Calf", "Ankle",
-  "Salwar Waist", "Salwar Hip",
-  "Bottom Bells / Hem Width",
-]
-
-all_measurement_labels.each_with_index do |label, index|
-  StitchIt::MeasurementField.find_or_create_by!(label: label) do |f|
-    f.field_key = label.downcase.gsub(/[\s\/]+/, "_").gsub(/[^a-z0-9_]/, "")
-    f.position = index + 1
-    f.active = true
-  end
-  puts "#{label}"
-end
-
-puts "StitchIt::MeasurementField seeding complete!"
-
-# -------------------------------------------------------------------
-# StitchIt::GarmentTypeMeasurement — join table
-# -------------------------------------------------------------------
-
-puts "\n🔗 Seeding StitchIt::GarmentTypeMeasurement..."
-
-measurement_mappings = {
+# ---------------------------------------------------------------------------
+# Garment → measurement field mappings
+# ---------------------------------------------------------------------------
+STITCH_IT_GARMENT_MEASUREMENTS = {
   "Blouse" => [
-    "Chest/Bust", "Underbust", "Waist", "Shoulder Width", "Armhole",
-    "Sleeve Length", "Sleeve Round", "Blouse Length",
-    "Front Neck Depth", "Back Neck Depth",
+    "Shoulder", "Chest", "Under Bust", "Upper Bust", "Waist",
+    "Armhole", "Sleeve", "Sleeve Round",
+    "Blouse Length", "Front Neck Depth", "Back Neck Depth", "Neck Width",
   ],
   "Dress" => [
-    "Chest/Bust", "Waist", "Hip", "Shoulder Width", "Armhole",
-    "Sleeve Length", "Sleeve Round", "Dress Length",
+    "Shoulder", "Chest", "Waist", "Seat / Hip", "Armhole",
+    "Sleeve", "Sleeve Round", "Length",
     "Front Neck Depth", "Back Neck Depth",
   ],
   "Kurti" => [
-    "Chest/Bust", "Waist", "Hip", "Shoulder Width", "Armhole",
-    "Sleeve Length", "Sleeve Round", "Kurti Length",
-    "Front Neck Depth", "Back Neck Depth",
+    "Shoulder", "Chest", "Waist", "Seat / Hip", "Armhole",
+    "Sleeve", "Sleeve Round", "Bicep", "Wrist / Cuff",
+    "Kurti Length", "Front Neck Depth", "Back Neck Depth", "Neck Width",
   ],
   "Lehenga" => [
-    "Waist", "Hip", "Lehenga Length", "Bottom Bells / Hem Width",
+    "Waist", "Seat / Hip", "Length", "Flare / Gher",
   ],
   "Salwar Suit" => [
-    "Chest/Bust", "Waist", "Hip", "Shoulder Width", "Armhole",
-    "Sleeve Length", "Sleeve Round", "Kameez Length",
-    "Front Neck Depth", "Back Neck Depth",
-    "Salwar Waist", "Salwar Hip", "Thigh", "Knee", "Calf", "Ankle", "Salwar Length",
+    "Shoulder", "Chest", "Waist", "Seat / Hip", "Armhole",
+    "Sleeve", "Sleeve Round", "Wrist / Cuff",
+    "Front Neck Depth", "Back Neck Depth", "Neck Width",
+    "Kameez Length", "Thigh", "Knee", "Bottom", "Salwar Length",
   ],
   "Shirt" => [
-    "Neck Round", "Shoulder Width", "Chest/Bust", "Waist",
-    "Hip", "Sleeve Length", "Cuff Round", "Shirt Length",
+    "Neck", "Shoulder", "Chest", "Waist", "Seat / Hip",
+    "Sleeve", "Sleeve Round", "Bicep", "Wrist / Cuff",
+    "Length", "Armhole",
   ],
   "Trouser" => [
-    "Waist", "Hip", "Seat", "Thigh", "Knee", "Calf", "Ankle",
-    "Trouser Length", "Inseam Length",
+    "Waist", "Seat / Hip", "Trouser Length", "Thigh",
+    "Knee", "Bottom", "Calf", "Inseam",
   ],
   "Kurta" => [
-    "Chest/Bust", "Waist", "Hip", "Shoulder Width", "Armhole",
-    "Sleeve Length", "Sleeve Round", "Kurta Length",
+    "Neck", "Shoulder", "Chest", "Waist", "Seat / Hip",
+    "Sleeve", "Sleeve Round", "Bicep", "Wrist / Cuff",
+    "Armhole", "Kurta Length",
     "Front Neck Depth", "Back Neck Depth",
   ],
   "Sherwani" => [
-    "Chest/Bust", "Waist", "Hip", "Shoulder Width", "Armhole",
-    "Sleeve Length", "Sleeve Round", "Sherwani Length",
+    "Neck", "Shoulder", "Chest", "Waist", "Seat / Hip",
+    "Sleeve", "Sleeve Round", "Bicep", "Wrist / Cuff",
+    "Armhole", "Sherwani Length",
     "Front Neck Depth", "Back Neck Depth",
   ],
   "Coat" => [
-    "Chest/Bust", "Shoulder Width", "Sleeve Length", "Sleeve Round", "Coat Length",
+    "Neck", "Shoulder", "Chest", "Waist", "Seat / Hip",
+    "Sleeve", "Armhole",
   ],
-}
+}.freeze
 
-measurement_mappings.each do |garment_name, labels|
-  garment = StitchIt::GarmentType.find_by(name: garment_name)
-  unless garment
-    puts "StitchIt::GarmentType not found: #{garment_name}, skipping..."
-    next
+# ===========================================================================
+# EXECUTION
+# ===========================================================================
+puts "\n" + "=" * 70
+puts "🧵 StitchIt — Seeding with Active Storage"
+puts "=" * 70
+
+ActiveRecord::Base.transaction do
+
+  # -------------------------------------------------------------------------
+  # 1. Garment Types
+  # -------------------------------------------------------------------------
+  puts "\n👗 Seeding StitchIt::GarmentType …"
+
+  garment_records = {}
+
+  STITCH_IT_GARMENTS.each do |g|
+    garment = StitchIt::GarmentType.find_or_initialize_by(
+      name: g[:name],
+      gender: g[:gender],
+    )
+
+    garment.active = true
+    garment.category_type = "single"
+    garment.parent_id = nil
+    garment.save!
+
+    # Attach image via Active Storage only if not already attached
+    unless garment.image.attached?
+      folder = g[:gender] == "female" ? FEMALE_FOLDER : MALE_FOLDER
+      attach_image(garment, folder.join(g[:file]), g[:file])
+    else
+      puts "  ⏭  #{g[:name]} — image already attached"
+    end
+
+    garment_records[g[:name]] = garment
+    puts "  ✔ #{g[:gender].capitalize} — #{g[:name]} (id: #{garment.id})"
   end
 
-  labels.each do |label|
-    field = StitchIt::MeasurementField.find_by(label: label)
-    unless field
-      puts "StitchIt::MeasurementField not found: #{label}, skipping..."
+  # -------------------------------------------------------------------------
+  # 2. Measurement Fields
+  # -------------------------------------------------------------------------
+  puts "\n📐 Seeding StitchIt::MeasurementField …"
+
+  field_records = {}
+
+  STITCH_IT_MEASUREMENT_FIELDS.each do |label, meta|
+    field = StitchIt::MeasurementField.find_or_initialize_by(label: label)
+
+    field.field_key = meta[:key]
+    field.position = meta[:position]
+    field.active = true
+    field.save!
+
+    # Attach image via Active Storage only if not already attached
+    unless field.image.attached?
+      attach_image(field, MEASUREMENT_FOLDER.join(meta[:image_file]), meta[:image_file])
+    else
+      puts "  ⏭  #{label} — image already attached"
+    end
+
+    field_records[label] = field
+    puts "  ✔ [#{meta[:position].to_s.rjust(2)}] #{label}"
+  end
+
+  # -------------------------------------------------------------------------
+  # 3. GarmentTypeMeasurement join table
+  # -------------------------------------------------------------------------
+  puts "\n🔗 Seeding StitchIt::GarmentTypeMeasurement …"
+
+  STITCH_IT_GARMENT_MEASUREMENTS.each do |garment_name, labels|
+    garment = garment_records[garment_name]
+    unless garment
+      puts "  ⚠️  GarmentType not found: #{garment_name} — skipping"
       next
     end
 
-    StitchIt::GarmentTypeMeasurement.find_or_create_by!(
-      garment_type_id: garment.id,
-      measurement_field_id: field.id,
-    )
+    labels.each do |label|
+      field = field_records[label]
+      unless field
+        puts "  ⚠️  MeasurementField '#{label}' not found for #{garment_name} — skipping"
+        next
+      end
+
+      StitchIt::GarmentTypeMeasurement.find_or_create_by!(
+        garment_type_id: garment.id,
+        measurement_field_id: field.id,
+      )
+    end
+
+    puts "  ✔ #{garment_name} → #{labels.size} fields linked"
   end
+end # transaction
 
-  puts "Linked #{labels.size} fields to #{garment_name}"
-end
-
-puts "\n StitchIt measurement seeding complete!"
+# ---------------------------------------------------------------------------
+# Summary
+# ---------------------------------------------------------------------------
+puts "\n" + "=" * 70
+puts "✅ StitchIt seeding complete!"
+puts "   GarmentTypes            : #{StitchIt::GarmentType.count}"
+puts "   MeasurementFields       : #{StitchIt::MeasurementField.count}"
+puts "   GarmentTypeMeasurements : #{StitchIt::GarmentTypeMeasurement.count}"
+puts "=" * 70
