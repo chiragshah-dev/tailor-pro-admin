@@ -58,6 +58,12 @@
                 <%= @subscription_package.created_at.strftime("%d %b %Y %I:%M %p") %>
               </span>
             </p>
+            <p class="text-sm mb-2 text-dark">
+              <strong>Order Amount Free Limit:</strong>
+              <span class="ms-2">
+                <%= @subscription_package.amount_limit %>
+              </span>
+            </p>
           </div>
           <!-- RIGHT -->
           <div class="col-md-6">
@@ -120,6 +126,14 @@
               </p>
             <% end %>
           </div>
+          <div class="col-12">
+            <p class="text-sm mb-2 text-dark">
+              <strong>Message:</strong>
+              <span class="ms-2">
+                <%= @subscription_package.message %>
+              </span>
+            </p>
+          </p>
         </div>
         <!-- DESCRIPTION -->
         <% if @subscription_package.description.present? %>

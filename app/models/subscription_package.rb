@@ -18,7 +18,7 @@ class SubscriptionPackage < ApplicationRecord
   # -------------------------
   # Validations
   # -------------------------
-  validates :name, presence: true
+  validates :name, :amount_limit, :message, presence: true
   validates :price_month, numericality: { greater_than_or_equal_to: 0 }
   validates :price_year, numericality: { greater_than_or_equal_to: 0 }
   validates :invoice_fee_percent, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
