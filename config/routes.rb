@@ -60,6 +60,7 @@ Rails.application.routes.draw do
       resources :order_payments, only: [:index], as: :payments, concerns: :historyable
     end
     resources :order_items, only: [:show], concerns: :historyable
+    resources :custom_products, only: [:show], concerns: :historyable
     resources :order_measurements, only: [:show], concerns: :historyable
     resources :customers, only: [:index, :show], concerns: :historyable
     resources :job_roles, concerns: :historyable
@@ -80,6 +81,7 @@ Rails.application.routes.draw do
         post :reorder
       end
     end
+    resources :user_subscriptions, only: [:index, :show], concerns: :historyable
     resources :questions
   end
 end

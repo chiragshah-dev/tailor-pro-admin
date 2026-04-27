@@ -40,7 +40,7 @@ class User < ApplicationRecord
            as: :recipient,
            dependent: :destroy
   has_many :tailor_subscriptions, dependent: :destroy
-  has_one :active_subscription, -> { where(active: true) }, class_name: "TailorSubscription"
+  # has_one :active_subscription, -> { where(active: true) }, class_name: "TailorSubscription"
   has_many :contact_supports, dependent: :destroy
   has_many :app_sessions, dependent: :destroy
 
@@ -53,6 +53,10 @@ class User < ApplicationRecord
   after_create :assign_free_subscription
   before_save :assign_timezone, if: :will_save_change_to_country_code?
   before_destroy :clear_active_store
+
+  has_one :active_user_subscription,
+          -> { current },
+          class_name: "UserSubscription"
 
   def self.ransackable_associations(auth_object = nil)
     ["active_store", "active_subscription", "dresses", "folders", "job_roles", "notifications", "setting", "stitch_features", "stores", "tailor_subscriptions", "tasks"]

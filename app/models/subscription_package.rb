@@ -2,6 +2,7 @@ class SubscriptionPackage < ApplicationRecord
   include Auditable
   has_one_attached :icon
   has_many :tailor_subscriptions
+  has_many :user_subscriptions, dependent: :restrict_with_error
 
   # # Safely calculate duration in days
   # def total_duration_in_days
@@ -17,7 +18,7 @@ class SubscriptionPackage < ApplicationRecord
   # -------------------------
   # Validations
   # -------------------------
-  validates :name, presence: true
+  validates :name, :amount_limit, :message, presence: true
   validates :price_month, numericality: { greater_than_or_equal_to: 0 }
   validates :price_year, numericality: { greater_than_or_equal_to: 0 }
   validates :invoice_fee_percent, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
@@ -25,6 +26,8 @@ class SubscriptionPackage < ApplicationRecord
   validates :currency, inclusion: { in: CURRENCIES }
 
   before_create :set_position
+  before_destroy :recalculate_position_on_delete
+
   # -------------------------
   # Scopes
   # -------------------------
@@ -71,5 +74,9 @@ class SubscriptionPackage < ApplicationRecord
   def set_position
     last_position = SubscriptionPackage.maximum(:position)
     self.position = last_position ? last_position + 1 : 1
+  end
+
+  def recalculate_position_on_delete
+    SubscriptionPackage.unscoped.where("position > ?", self.position).update_all("position = position - 1")
   end
 end

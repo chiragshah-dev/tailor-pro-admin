@@ -26,6 +26,7 @@
                 <%# </th>  %>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Contact Number</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Active Store</th>
+                <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">Active Subscription</th>
                 <th class="text-uppercase text-dark text-xxs font-weight-bold ps-2">
                   <%= sortable_header("deleted", "Deleted") %>
                 </th>
@@ -67,6 +68,16 @@
                       <% end %>
                     <% else %>
                       <span class="text-dark">-</span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% sub = user.active_user_subscription %>
+                    <% if sub.present? %>
+                      <%= link_to admin_user_subscription_path(sub), class: "text-sm text-info" do %>
+                        <%= sub.subscription_package&.name %>
+                      <% end %>
+                    <% else %>
+                      <small class="text-muted">No Active Subscription</small>
                     <% end %>
                   </td>
                   <td>

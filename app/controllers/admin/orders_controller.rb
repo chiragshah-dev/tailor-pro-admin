@@ -80,12 +80,14 @@ class Admin::OrdersController < ApplicationController
     @order = Order.find(params[:id])
 
     items_page = params[:items_page]
-
+    custom_products_page = params[:custom_products_page]
     @order_items = @order.order_items
                          .includes(:worker, :garment_type)
                          .order(created_at: :asc)
                          .page(items_page)
                          .per(10)
+
+    @custom_products = @order.custom_products.order(created_at: :asc).page(custom_products_page).per(10)
   end
 
   private

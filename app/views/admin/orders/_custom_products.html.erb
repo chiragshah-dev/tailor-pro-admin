@@ -1,0 +1,86 @@
+<turbo-frame id="custom_products_frame">
+  <hr class="horizontal dark my-4">
+  <h6 class="text-uppercase text-dark mb-3">Custom Products</h6>
+  <% if @custom_products.any? %>
+    <small class="text-dark font-weight-bold text-xs mb-2">
+      Showing <%= @custom_products.offset_value + 1 %> -
+      <%= @custom_products.offset_value + @custom_products.length %>
+      of <%= @custom_products.total_count %> results
+    </small>
+  <% end %>
+  <div class="card my-2">
+    <div class="card-body px-0 pb-2">
+      <div class="table-responsive p-0">
+        <table class="table align-items-center mb-0">
+          <thead>
+            <tr>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">ID</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Name</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Unit Price</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Quantity</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Note</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bold">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @custom_products.any? %>
+              <% @custom_products.each_with_index do |product, index| %>
+                <tr>
+                  <td class="text-center text-dark text-sm">
+                    <%= @custom_products.offset_value + index + 1 %>
+                  </td>
+                  <td class="text-center text-dark text-sm text-capitalize">
+                    <%= product.name %>
+                  </td>
+                  <td class="text-center text-dark text-sm">
+                    ₹ <%= product.price %>
+                  </td>
+                  <td class="text-center text-dark text-sm">
+                    <%= product.quantity %>
+                  </td>
+                  <td class="text-center text-dark text-sm text-wrap" style="max-width: 250px;">
+                    <%= product.note.presence || "-" %>
+                  </td>
+                  <td class="text-center">
+                    <%= link_to admin_custom_product_path(product),
+                        class: "btn btn-xs rounded btn-secondary",
+                        title: "Show",
+                        data: { turbo_frame: "_top" } do %>
+                      <i class="fas fa-eye"></i>
+                    <% end %>
+                    <%= link_to history_admin_custom_product_path(product),  
+                        class: "btn btn-xs rounded btn-secondary",
+                        title: "History",
+                        data: { turbo_frame: "_top" } do %>
+                      <i class="fas fa-history"></i>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td colspan="5" class="text-center py-4">
+                  <p class="no-content-text mb-0 text-sm">No custom products found.</p>
+                </td>
+              </tr>
+            <% end %>
+            <% if @custom_products.total_pages > 1 %>
+              <tr>
+                <td colspan="5" class="text-center py-3">
+                  <%= paginate @custom_products,
+                param_name: :custom_products_page,
+                link_options: {
+                  data: {
+                    turbo_frame: "custom_products_frame",
+                    turbo_prefetch: "false"
+                  }
+                } %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</turbo-frame>

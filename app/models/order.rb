@@ -19,7 +19,7 @@ class Order < ApplicationRecord
   has_one_attached :voice_note
   has_many :order_payments, dependent: :destroy
   has_many :wallet_transactions, foreign_key: :reference_id, dependent: :destroy
-
+  has_many :custom_products, dependent: :destroy
   # Validations
   validates :order_number, uniqueness: { scope: :store_id }
   validates :status, :order_date, presence: true, on: :update
