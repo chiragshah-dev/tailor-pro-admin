@@ -27,8 +27,10 @@ class User < ApplicationRecord
 
   # Associations
   has_many :stores, dependent: :destroy
+  has_many :owned_stores, class_name: "Store", foreign_key: "user_id", dependent: :destroy
   has_many :customers, through: :stores
   belongs_to :active_store, class_name: "Store", optional: true
+  has_many :sub_users, class_name: "User", foreign_key: "parent_id"
   has_many :tasks, dependent: :destroy
   has_one :setting, dependent: :destroy
   has_many :stitch_features, dependent: :destroy
@@ -41,6 +43,8 @@ class User < ApplicationRecord
   # has_one :active_subscription, -> { where(active: true) }, class_name: "TailorSubscription"
   has_many :contact_supports, dependent: :destroy
   has_many :app_sessions, dependent: :destroy
+
+  enum :role, { owner: 0, sub_user: 1 }
 
   # Callbacks
   after_create :setup_default_records
@@ -105,8 +109,14 @@ class User < ApplicationRecord
 
   def soft_delete!
     transaction do
-      update!(deleted: true)
-      stores.find_each(&:soft_delete!)
+      update_column(:deleted, true)
+
+      if owner?
+        owned_stores.find_each(&:soft_delete!)
+        sub_users.find_each { |sub| sub.update_column(:deleted, true) }
+      else
+        update_column(:deleted, true)
+      end
     end
   end
 
