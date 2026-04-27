@@ -75,6 +75,14 @@ class Store < ApplicationRecord
     total_billing_amount >= limit
   end
 
+  def soft_delete!
+    transaction do
+      update!(deleted: true)
+      workers.update_all(deleted: true)
+      User.where(active_store_id: id, role: :sub_user).update_all(deleted: true)
+    end
+  end
+
   private
 
   def set_main_store
