@@ -47,7 +47,7 @@
               </div>
             </div>
             <!-- Invoice Fee -->
-            <div class="col-md-6">
+            <div class="col-md-3">
               <label class="form-label font-weight-bold text-dark">Invoice Fee (%)</label>
               <div class="input-group input-group-outline">
                 <%= f.number_field :invoice_fee_percent,
@@ -57,6 +57,19 @@
               </div>
               <div id="invoice_err" class="text-danger text-xs mt-2">
                 <%= @subscription_package.errors.full_messages_for(:invoice_fee_percent).first %>
+              </div>
+            </div>
+            <!-- free order amount limit -->
+            <div class="col-md-3">
+              <label class="form-label font-weight-bold text-dark">Free Order Amount Limit</label>
+              <div class="input-group input-group-outline">
+                <%= f.number_field :amount_limit,
+                  step: 0.01,
+                  class: "form-control",
+                  id: "amount_limit" %>
+              </div>
+              <div id="amount_limit_err" class="text-danger text-xs mt-2">
+                <%= @subscription_package.errors.full_messages_for(:amount_limit).first %>
               </div>
             </div>
             <!-- Monthly Price -->
@@ -127,6 +140,16 @@
               <div>
                 <div id="editor" style="height: 200px; background-color: #fff; border: 1px solid #ced4da; border-radius: 0.25rem;"></div>
                 <%= f.hidden_field :description, id: "description" %>
+              </div>
+            </div>
+            <!-- message -->
+            <div class="col-12">
+              <label class="form-label font-weight-bold text-dark">Message</label>
+              <div class="input-group input-group-outline">
+                <%= f.text_field :message, class: "form-control" %>
+              </div>
+              <div id="message_err" class="text-danger text-xs mt-2">
+                <%= @subscription_package.errors.full_messages_for(:message).first %>
               </div>
             </div>
             <!-- Active -->

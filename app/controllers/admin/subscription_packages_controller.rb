@@ -110,7 +110,8 @@ class Admin::SubscriptionPackagesController < ApplicationController
       :razorpay_plan_id_yearly,
       :ios_product_id_monthly,
       :ios_product_id_yearly,
-      :icon
+      :icon,
+      :amount_limit, :message
     )
   end
 end
